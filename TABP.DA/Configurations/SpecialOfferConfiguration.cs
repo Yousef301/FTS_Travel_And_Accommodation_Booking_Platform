@@ -9,5 +9,7 @@ public class SpecialOfferConfiguration : IEntityTypeConfiguration<SpecialOffer>
     public void Configure(EntityTypeBuilder<SpecialOffer> builder)
     {
         builder.HasKey(so => so.Id);
+
+        builder.HasIndex(so => new { so.StartDate, so.EndDate });
     }
 }

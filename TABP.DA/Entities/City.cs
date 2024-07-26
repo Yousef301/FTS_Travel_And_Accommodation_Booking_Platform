@@ -10,5 +10,5 @@ public class City : IAuditableEntity
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
     public ICollection<Hotel> Hotels { get; set; } = new List<Hotel>();
-    public ICollection<Image> Images { get; set; } = new List<Image>();
+    public ICollection<CityImage> Images { get; set; } = new List<CityImage>();
 }

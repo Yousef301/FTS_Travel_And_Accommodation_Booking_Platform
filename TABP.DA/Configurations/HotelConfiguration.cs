@@ -11,8 +11,8 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
         builder.HasKey(h => h.Id);
 
         builder.HasMany(h => h.Images)
-            .WithOne(i => i.Hotel)
-            .IsRequired(false)
+            .WithOne(hi => hi.Hotel)
+            .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(h => h.Bookings)
@@ -29,5 +29,7 @@ public class HotelConfiguration : IEntityTypeConfiguration<Hotel>
             .WithOne(r => r.Hotel)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(h => h.Rating);
     }
 }

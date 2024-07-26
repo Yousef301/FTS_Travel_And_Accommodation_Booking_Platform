@@ -14,5 +14,8 @@ public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
             .WithOne(p => p.Invoice)
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Property(i => i.TotalPrice)
+            .HasPrecision(10, 2);
     }
 }

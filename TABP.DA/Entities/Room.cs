@@ -16,7 +16,7 @@ public class Room : IAuditableEntity
     public int MaxAdults { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
-    public ICollection<Image> Images { get; set; } = new List<Image>();
+    public ICollection<RoomImage> Images { get; set; } = new List<RoomImage>();
     public ICollection<BookingDetail> BookingDetails { get; set; } = new List<BookingDetail>();
     public ICollection<RoomAmenity> RoomAmenities { get; set; } = new List<RoomAmenity>();
     public ICollection<SpecialOffer> SpecialOffers { get; set; } = new List<SpecialOffer>();

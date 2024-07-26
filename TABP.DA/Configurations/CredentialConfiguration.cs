@@ -9,5 +9,8 @@ public class CredentialConfiguration : IEntityTypeConfiguration<Credential>
     public void Configure(EntityTypeBuilder<Credential> builder)
     {
         builder.HasKey(c => c.Id);
+
+        builder.HasIndex(c => c.Username)
+            .IsUnique();
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TABP.DAL.Entities;
+using TABP.DAL.Enums;
 
 namespace TABP.DAL.Configurations;
 
@@ -19,5 +21,17 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .WithOne(i => i.Booking)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(b => b.BookingStatus)
+            .HasConversion(new EnumToStringConverter<BookingStatus>());
+
+        builder.Property(b => b.PaymentStatus)
+            .HasConversion(new EnumToStringConverter<PaymentStatus>());
+
+        builder.Property(b => b.TotalPrice)
+            .HasPrecision(10, 2);
+
+        builder.HasIndex(b => b.BookingDate);
+        builder.HasIndex(b => new { b.CheckInDate, b.CheckOutDate });
     }
 }

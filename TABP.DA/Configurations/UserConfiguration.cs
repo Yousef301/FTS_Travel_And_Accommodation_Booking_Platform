@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TABP.DAL.Entities;
+using TABP.DAL.Enums;
 
 namespace TABP.DAL.Configurations;
 
@@ -29,5 +31,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne(b => b.User)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(u => u.Role)
+            .HasConversion(new EnumToStringConverter<Role>());
     }
 }
