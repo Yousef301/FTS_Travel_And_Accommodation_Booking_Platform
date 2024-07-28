@@ -10,11 +10,6 @@ public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
     {
         builder.HasKey(i => i.Id);
 
-        builder.HasMany(i => i.Payments)
-            .WithOne(p => p.Invoice)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
-
         builder.Property(i => i.TotalPrice)
             .HasPrecision(10, 2);
     }

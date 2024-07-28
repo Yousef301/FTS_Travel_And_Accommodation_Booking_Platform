@@ -13,6 +13,7 @@ public class Booking : IAuditableEntity
     public DateTime CheckOutDate { get; set; }
     public BookingStatus BookingStatus { get; set; } = BookingStatus.Pending;
     public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
+    public PaymentMethod PaymentMethod { get; set; }
     public double TotalPrice { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
@@ -20,4 +21,5 @@ public class Booking : IAuditableEntity
     public Invoice? Invoice { get; set; }
     public User User { get; set; }
     public Hotel Hotel { get; set; }
+    public Payment Payment { get; set; }
 }

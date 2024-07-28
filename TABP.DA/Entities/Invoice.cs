@@ -12,5 +12,4 @@ public class Invoice : IAuditableEntity
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
     public Booking Booking { get; set; }
-    public ICollection<Payment> Payments { get; set; } = new List<Payment>();
 }

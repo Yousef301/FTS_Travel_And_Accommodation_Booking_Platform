@@ -22,11 +22,19 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(b => b.Payment)
+            .WithOne(p => p.Booking)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Property(b => b.BookingStatus)
             .HasConversion(new EnumToStringConverter<BookingStatus>());
 
         builder.Property(b => b.PaymentStatus)
             .HasConversion(new EnumToStringConverter<PaymentStatus>());
+
+        builder.Property(b => b.PaymentMethod)
+            .HasConversion(new EnumToStringConverter<PaymentMethod>());
 
         builder.Property(b => b.TotalPrice)
             .HasPrecision(10, 2);

@@ -9,7 +9,7 @@ namespace TABP.DAL;
 
 public static class DALServicesConfiguration
 {
-    internal static IServiceCollection BuildInfrastructure(
+    public static IServiceCollection AddDALInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
     {

@@ -15,9 +15,6 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.Property(p => p.TotalPrice)
             .HasPrecision(10, 2);
 
-        builder.Property(p => p.PaymentMethod)
-            .HasConversion(new EnumToStringConverter<PaymentMethod>());
-
         builder.Property(p => p.PaymentStatus)
             .HasConversion(new EnumToStringConverter<PaymentStatus>());
 
