@@ -1,8 +1,13 @@
-﻿namespace TABP.Web.Services.Interfaces;
+﻿using TABP.DAL.Enums;
+
+namespace TABP.Web.Services.Interfaces;
 
 public interface IUserContext
 {
     Guid Id { get; }
-    string Role { get; }
+    string Username { get; }
+    string FirstName { get; }
+    string LastName { get; }
     string Email { get; }
+    Role Role { get; }
 }
