@@ -8,9 +8,9 @@ public class Booking : IAuditableEntity
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
     public Guid HotelId { get; set; }
-    public DateTime BookingDate { get; set; }
-    public DateTime CheckInDate { get; set; }
-    public DateTime CheckOutDate { get; set; }
+    public DateOnly BookingDate { get; set; }
+    public DateOnly CheckInDate { get; set; }
+    public DateOnly CheckOutDate { get; set; }
     public BookingStatus BookingStatus { get; set; } = BookingStatus.Pending;
     public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
     public PaymentMethod PaymentMethod { get; set; }

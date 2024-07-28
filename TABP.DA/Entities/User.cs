@@ -11,7 +11,7 @@ public class User : IAuditableEntity
     public string Email { get; set; } = "";
     public string PhoneNumber { get; set; } = "";
     public string Address { get; set; } = "";
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
     public Role Role { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }

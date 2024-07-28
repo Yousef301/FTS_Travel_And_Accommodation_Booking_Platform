@@ -9,8 +9,7 @@ namespace TABP.DAL;
 
 public static class DALServicesConfiguration
 {
-    public static IServiceCollection AddDALInfrastructure(
-        this IServiceCollection services,
+    public static IServiceCollection AddDALInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext(configuration)

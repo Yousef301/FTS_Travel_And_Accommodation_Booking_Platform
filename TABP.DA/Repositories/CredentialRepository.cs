@@ -24,6 +24,13 @@ public class CredentialRepository : ICredentialRepository
         return await _context.Credentials.FindAsync(id);
     }
 
+    public async Task<Credential?> GetByUsername(string username)
+    {
+        return await _context.Credentials
+            .Include(u => u.User)
+            .FirstOrDefaultAsync(c => c.Username == username);
+    }
+
     public async Task<Credential> CreateAsync(Credential credential)
     {
         var createdCredential = await _context.Credentials

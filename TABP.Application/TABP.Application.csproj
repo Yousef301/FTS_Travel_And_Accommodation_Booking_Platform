@@ -6,4 +6,18 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+      <PackageReference Include="MediatR" Version="12.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Queries\Auth\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\TABP.DA\TABP.DA.csproj" />
+    </ItemGroup>
+
 </Project>
