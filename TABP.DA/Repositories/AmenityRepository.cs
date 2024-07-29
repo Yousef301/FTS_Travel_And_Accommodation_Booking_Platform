@@ -32,9 +32,11 @@ public class AmenityRepository : IAmenityRepository
         return createdAmenity.Entity;
     }
 
-    public async Task DeleteAsync(Amenity amenity)
+    public async Task DeleteAsync(Guid id)
     {
-        if (!await _context.Amenities.AnyAsync(a => a.Id == amenity.Id))
+        var amenity = await _context.Amenities.FindAsync(id);
+
+        if (amenity == null)
         {
             return;
         }
@@ -46,7 +48,7 @@ public class AmenityRepository : IAmenityRepository
     {
         if (!await _context.Amenities.AnyAsync(a => a.Id == amenity.Id))
             return;
-        
+
         _context.Amenities.Update(amenity);
     }
 
