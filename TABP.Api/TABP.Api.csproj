@@ -23,7 +23,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TABP.Application\TABP.Application.csproj" />
-      <ProjectReference Include="..\TABP.DA\TABP.DA.csproj" />
     </ItemGroup>
 
 </Project>

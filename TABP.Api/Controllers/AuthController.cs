@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult> Login(LoginRequest request)
+    public async Task<ActionResult> Login([FromBody] LoginRequest request)
 
     {
         var loginCommand = _mapper.Map<LoginCommand>(request);
@@ -31,7 +31,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult> Login(RegisterRequest request)
+    public async Task<ActionResult> Register([FromBody] RegisterRequest request)
 
     {
         var loginCommand = _mapper.Map<RegisterCommand>(request);
