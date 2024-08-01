@@ -54,9 +54,9 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
                 room.RoomAmenities.Add(roomAmenity);
 
                 await _unitOfWork.SaveChangesAsync();
-
-                await _unitOfWork.CommitTransactionAsync();
             }
+
+            await _unitOfWork.CommitTransactionAsync();
         }
         catch
         {

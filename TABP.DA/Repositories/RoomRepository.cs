@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
+using TABP.DAL.Enums;
 using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.DAL.Repositories;
@@ -25,6 +26,13 @@ public class RoomRepository : IRoomRepository
             .Where(r => r.HotelId == id)
             .Include(r => r.RoomAmenities)
             .ThenInclude(ra => ra.Amenity)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Room>> GetAvailableRoomsAsync(Guid id)
+    {
+        return await _context.Rooms
+            .Where(r => r.HotelId == id && r.Status == RoomStatus.Available)
             .ToListAsync();
     }
 

@@ -16,6 +16,12 @@ public class RoomProfile : Profile
         CreateMap<Room, RoomResponse>()
             .ForMember(dest => dest.Amenities
                 , opt => opt.MapFrom(
-                    src => src.RoomAmenities.Select(ra => ra.Amenity)));
+                    src => src.RoomAmenities.Select(ra => ra.Amenity)))
+            .ForMember(dest => dest.RoomType
+                , opt => opt.MapFrom(
+                    src => src.RoomType.ToString()))
+            .ForMember(dest => dest.Status
+                , opt => opt.MapFrom(
+                    src => src.Status.ToString()));
     }
 }
