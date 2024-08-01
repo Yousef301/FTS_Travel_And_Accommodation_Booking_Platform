@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
+using TABP.DAL.Entities.Procedures;
 using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.DAL.Repositories;
@@ -19,6 +20,11 @@ public class CityRepository : ICityRepository
         return await _context.Cities.ToListAsync();
     }
 
+    public async Task<IEnumerable<TrendingCities>> GetTrendingDestinations()
+    {
+        return await _context.GetTrendingCitiesAsync();
+    }
+
     public async Task<City?> GetByIdAsync(Guid id)
     {
         return await _context.Cities.FindAsync(id);
@@ -32,9 +38,11 @@ public class CityRepository : ICityRepository
         return createdCity.Entity;
     }
 
-    public async Task DeleteAsync(City city)
+    public async Task DeleteAsync(Guid id)
     {
-        if (!await _context.Cities.AnyAsync(c => c.Id == city.Id))
+        var city = await _context.Cities.FindAsync(id);
+
+        if (city == null)
         {
             return;
         }

@@ -19,6 +19,19 @@ public class SpecialOfferRepository : ISpecialOfferRepository
         return await _context.SpecialOffers.ToListAsync();
     }
 
+    public async Task<IEnumerable<SpecialOffer>> GetRoomOffersAsync(Guid roomId)
+    {
+        return await _context.SpecialOffers
+            .Where(so => so.RoomId == roomId)
+            .ToListAsync();
+    }
+
+    public async Task<SpecialOffer?> GetByRoomIdAndOfferIdAsync(Guid id, Guid roomId)
+    {
+        return await _context.SpecialOffers
+            .FirstOrDefaultAsync(so => so.Id == id && so.RoomId == roomId);
+    }
+
     public async Task<SpecialOffer?> GetByIdAsync(Guid id)
     {
         return await _context.SpecialOffers.FindAsync(id);
@@ -30,6 +43,19 @@ public class SpecialOfferRepository : ISpecialOfferRepository
             .AddAsync(specialOffer);
 
         return createdSpecialOffer.Entity;
+    }
+
+    public async Task DeleteAsync(Guid id, Guid roomId)
+    {
+        var specialOffer = await _context.SpecialOffers
+            .FirstOrDefaultAsync(so => so.Id == id && so.RoomId == roomId);
+
+        if (specialOffer is null)
+        {
+            return;
+        }
+
+        _context.SpecialOffers.Remove(specialOffer);
     }
 
     public async Task DeleteAsync(SpecialOffer specialOffer)

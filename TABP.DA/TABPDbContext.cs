@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Configurations;
 using TABP.DAL.Entities;
+using TABP.DAL.Entities.Procedures;
 
 namespace TABP.DAL;
 
@@ -59,5 +61,11 @@ public class TABPDbContext : DbContext
         modelBuilder.ApplyConfiguration(new RoomConfiguration());
         modelBuilder.ApplyConfiguration(new SpecialOfferConfiguration());
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+    }
+
+    public async Task<IEnumerable<TrendingCities>> GetTrendingCitiesAsync()
+    {
+        return await Database.GetDbConnection()
+            .QueryAsync<TrendingCities>("EXEC SP_GetTrendingCities");
     }
 }

@@ -19,6 +19,15 @@ public class RoomRepository : IRoomRepository
         return await _context.Rooms.ToListAsync();
     }
 
+    public async Task<IEnumerable<Room>> GetByHotelAsync(Guid id)
+    {
+        return await _context.Rooms
+            .Where(r => r.HotelId == id)
+            .Include(r => r.RoomAmenities)
+            .ThenInclude(ra => ra.Amenity)
+            .ToListAsync();
+    }
+
     public async Task<Room?> GetByIdAsync(Guid id)
     {
         return await _context.Rooms.FindAsync(id);
@@ -32,9 +41,11 @@ public class RoomRepository : IRoomRepository
         return createdRoom.Entity;
     }
 
-    public async Task DeleteAsync(Room room)
+    public async Task DeleteAsync(Guid id)
     {
-        if (!await _context.Rooms.AnyAsync(r => r.Id == room.Id))
+        var room = await _context.Rooms.FindAsync(id);
+
+        if (room == null)
         {
             return;
         }

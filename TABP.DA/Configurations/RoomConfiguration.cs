@@ -15,12 +15,12 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
         builder.HasMany(r => r.RoomAmenities)
             .WithOne(ra => ra.Room)
             .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(r => r.Images)
             .WithOne(ri => ri.Room)
             .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(r => r.BookingDetails)
             .WithOne(bd => bd.Room)

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TABP.DAL;
 
@@ -11,9 +12,11 @@ using TABP.DAL;
 namespace TABP.DAL.Migrations
 {
     [DbContext(typeof(TABPDbContext))]
-    partial class TABPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240731160926_UpdateRoomTableConstraints")]
+    partial class UpdateRoomTableConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,10 +149,6 @@ namespace TABP.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PostOffice")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Cities");
@@ -221,7 +220,7 @@ namespace TABP.DAL.Migrations
                         new
                         {
                             Id = new Guid("a3c9b0a8-d7e6-4d1c-bb9d-4d2c3bde7a1e"),
-                            CreatedAt = new DateTime(2024, 8, 1, 15, 34, 19, 308, DateTimeKind.Local).AddTicks(2092),
+                            CreatedAt = new DateTime(2024, 7, 31, 19, 9, 26, 466, DateTimeKind.Local).AddTicks(2440),
                             HashedPassword = "$2a$11$.0I3bFzDhORA0SMV8eNIieR1qJoGVWXkQkFbSVqqS6nuBOvBsdrwO",
                             UserId = new Guid("d9b4bcca-9d5b-4f3d-bf89-7a367becfbd2"),
                             Username = "Admin1"
@@ -229,7 +228,7 @@ namespace TABP.DAL.Migrations
                         new
                         {
                             Id = new Guid("7e8b9d0a-cf4a-4a22-b7a5-7d8b2e9a6f0c"),
-                            CreatedAt = new DateTime(2024, 8, 1, 15, 34, 19, 308, DateTimeKind.Local).AddTicks(2097),
+                            CreatedAt = new DateTime(2024, 7, 31, 19, 9, 26, 466, DateTimeKind.Local).AddTicks(2444),
                             HashedPassword = "$2a$11$tJjrJ/X9lTu5Vxc7T5Rv1uoNxG0QQa0wFhPEYEtvRPraUku1y8WNm",
                             UserId = new Guid("e7b7c08e-4c3a-41f5-9a9d-8571b2e4a5f4"),
                             Username = "Customer1"
@@ -610,7 +609,7 @@ namespace TABP.DAL.Migrations
                             Id = new Guid("d9b4bcca-9d5b-4f3d-bf89-7a367becfbd2"),
                             Address = "Admin Address",
                             BirthDate = new DateOnly(2001, 9, 22),
-                            CreatedAt = new DateTime(2024, 8, 1, 15, 34, 19, 309, DateTimeKind.Local).AddTicks(4057),
+                            CreatedAt = new DateTime(2024, 7, 31, 19, 9, 26, 467, DateTimeKind.Local).AddTicks(4183),
                             Email = "admin@example.com",
                             FirstName = "Admin",
                             LastName = "Admin",
@@ -622,7 +621,7 @@ namespace TABP.DAL.Migrations
                             Id = new Guid("e7b7c08e-4c3a-41f5-9a9d-8571b2e4a5f4"),
                             Address = "Customer Address",
                             BirthDate = new DateOnly(1996, 2, 4),
-                            CreatedAt = new DateTime(2024, 8, 1, 15, 34, 19, 309, DateTimeKind.Local).AddTicks(4062),
+                            CreatedAt = new DateTime(2024, 7, 31, 19, 9, 26, 467, DateTimeKind.Local).AddTicks(4189),
                             Email = "customer@example.com",
                             FirstName = "Customer",
                             LastName = "Customer",
