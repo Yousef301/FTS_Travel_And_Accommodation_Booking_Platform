@@ -29,7 +29,7 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
 
         var updatedAmenityDto = _mapper.Map<AmenityUpdate>(amenity);
 
-        request.amenityDocument.ApplyTo(updatedAmenityDto);
+        request.AmenityDocument.ApplyTo(updatedAmenityDto);
 
         _mapper.Map(updatedAmenityDto, amenity);
 

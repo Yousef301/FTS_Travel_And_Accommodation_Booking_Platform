@@ -10,8 +10,8 @@ public class AmenityProfile : Profile
 {
     public AmenityProfile()
     {
-        CreateMap<Amenity, AmenityResponse>();
         CreateMap<CreateAmenityCommand, Amenity>();
+        CreateMap<Amenity, AmenityResponse>();
         CreateMap<Amenity, AmenityUpdate>();
         CreateMap<AmenityUpdate, Amenity>();
     }

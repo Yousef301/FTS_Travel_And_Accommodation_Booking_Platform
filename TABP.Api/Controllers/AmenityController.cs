@@ -8,8 +8,8 @@ using TABP.Application.Commands.Amenities.DeleteAmenity;
 using TABP.Application.Commands.Amenities.UpdateAmenity;
 using TABP.Application.Queries.Amenities.GetAmenities;
 using TABP.Application.Queries.Amenities.GetAmenityById;
-using TABP.DAL.Enums;
 using TABP.Web.DTOs.Amenities;
+using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
 
@@ -45,9 +45,9 @@ public class AmenityController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateAmenity([FromBody] AmenityCreateDto amenityCreateDto)
+    public async Task<IActionResult> CreateAmenity([FromBody] CreateAmenityDto createAmenityDto)
     {
-        var command = _mapper.Map<CreateAmenityCommand>(amenityCreateDto);
+        var command = _mapper.Map<CreateAmenityCommand>(createAmenityDto);
 
         var amenity = await _mediator.Send(command);
 
@@ -64,11 +64,11 @@ public class AmenityController : ControllerBase
 
     [HttpPatch("{id:guid}")]
     public async Task<IActionResult> UpdateAmenity(Guid id,
-        [FromBody] JsonPatchDocument<AmenityUpdateDto> amenityUpdateDto)
+        [FromBody] JsonPatchDocument<UpdateAmenityDto> amenityUpdateDto)
     {
-        var amenity = _mapper.Map<JsonPatchDocument<AmenityUpdate>>(amenityUpdateDto);
+        var amenityDocument = _mapper.Map<JsonPatchDocument<AmenityUpdate>>(amenityUpdateDto);
 
-        await _mediator.Send(new UpdateAmenityCommand { Id = id, amenityDocument = amenity });
+        await _mediator.Send(new UpdateAmenityCommand { Id = id, AmenityDocument = amenityDocument });
 
         return Ok();
     }

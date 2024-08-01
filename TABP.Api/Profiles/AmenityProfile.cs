@@ -11,8 +11,8 @@ public class AmenityProfile : Profile
 {
     public AmenityProfile()
     {
-        CreateMap<AmenityCreateDto, CreateAmenityCommand>();
-        CreateMap<JsonPatchDocument<AmenityUpdateDto>, JsonPatchDocument<AmenityUpdate>>();
-        CreateMap<Operation<AmenityUpdateDto>, Operation<AmenityUpdate>>();
+        CreateMap<CreateAmenityDto, CreateAmenityCommand>();
+        CreateMap<JsonPatchDocument<UpdateAmenityDto>, JsonPatchDocument<AmenityUpdate>>();
+        CreateMap<Operation<UpdateAmenityDto>, Operation<AmenityUpdate>>();
     }
 }
