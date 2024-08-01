@@ -2,7 +2,7 @@
 
 namespace TABP.Application.Queries.Rooms.GetRooms;
 
-public class GetRoomsQuery : IRequest<IEnumerable<RoomResponse>>
+public class GetRoomsForAdminQuery : IRequest<IEnumerable<RoomResponse>>
 {
     public Guid HotelId { get; set; }
 }
