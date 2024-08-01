@@ -7,6 +7,7 @@ public interface IHotelRepository
 {
     Task<IEnumerable<Hotel>> GetAsync();
     Task<Hotel?> GetByIdAsync(Guid id);
+    Task<Hotel?> GetByIdDetailsIncludedAsync(Guid id);
     Task<Hotel> CreateAsync(Hotel hotel);
     Task DeleteAsync(Hotel hotel);
     Task UpdateAsync(Hotel hotel);

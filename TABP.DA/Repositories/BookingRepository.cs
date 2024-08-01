@@ -19,6 +19,16 @@ public class BookingRepository : IBookingRepository
         return await _context.Bookings.ToListAsync();
     }
 
+    public async Task<IEnumerable<Guid>> GetRecentBookingsHotelsIdForAUser(Guid userId, int count = 5)
+    {
+        return await _context.Bookings
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.CheckOutDate)
+            .Take(count)
+            .Select(b => b.HotelId)
+            .ToListAsync();
+    }
+
     public async Task<Booking?> GetByIdAsync(Guid id)
     {
         return await _context.Bookings.FindAsync(id);

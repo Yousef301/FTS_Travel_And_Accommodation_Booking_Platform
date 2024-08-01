@@ -24,6 +24,14 @@ public class HotelRepository : IHotelRepository
         return await _context.Hotels.FindAsync(id);
     }
 
+    public async Task<Hotel?> GetByIdDetailsIncludedAsync(Guid id)
+    {
+        return await _context.Hotels
+            .Include(h => h.City)
+            .Include(h => h.Rooms)
+            .FirstOrDefaultAsync(h => h.Id == id);
+    }
+
     public async Task<Hotel> CreateAsync(Hotel hotel)
     {
         var createdHotel = await _context.Hotels
