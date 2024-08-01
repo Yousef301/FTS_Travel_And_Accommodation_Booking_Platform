@@ -7,6 +7,7 @@ using TABP.Web.DTOs.Auth;
 
 namespace TABP.Web.Controllers;
 
+[ApiController]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {

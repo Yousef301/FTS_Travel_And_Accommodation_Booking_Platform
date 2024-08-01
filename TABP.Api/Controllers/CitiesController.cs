@@ -12,6 +12,7 @@ using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
 
+[ApiController]
 [Route("api/cities")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class CitiesController : ControllerBase
