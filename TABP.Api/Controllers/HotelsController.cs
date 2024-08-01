@@ -1,7 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using TABP.Application.Commands.Hotels.CreateHotel;
+using TABP.Application.Commands.Hotels.DeleteHotel;
+using TABP.Application.Commands.Hotels.UpdateHotel;
+using TABP.Application.Queries.Hotels.GetHotels;
+using TABP.Web.DTOs.Hotels;
 using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
@@ -20,11 +26,45 @@ public class HotelsController : ControllerBase
         _mapper = mapper;
     }
 
-    // [HttpGet]
-    // public async Task<IActionResult> GetHotels(CancellationToken cancellationToken)
-    // {
-    //     var query = new GetHotelsQuery();
-    //     var hotels = await _mediator.Send(query, cancellationToken);
-    //     return Ok();
-    // }
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetHotels()
+    {
+        var hotels = await _mediator.Send(new GetHotelsQuery());
+
+        return Ok(hotels);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDto request)
+    {
+        var command = _mapper.Map<CreateHotelCommand>(request);
+
+        var hotel = await _mediator.Send(command);
+
+        return Ok(hotel);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteHotel(Guid id)
+    {
+        await _mediator.Send(new DeleteHotelCommand { Id = id });
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> UpdateHotel(Guid id,
+        [FromBody] JsonPatchDocument<UpdateHotelDto> hotelUpdateDto)
+    {
+        var hotelDocument = _mapper.Map<JsonPatchDocument<HotelUpdate>>(hotelUpdateDto);
+
+        await _mediator.Send(new UpdateHotelCommand
+        {
+            Id = id,
+            HotelDocument = hotelDocument
+        });
+
+        return Ok();
+    }
 }

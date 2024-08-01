@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Rooms.CreateRoom;
 using TABP.Application.Commands.Rooms.DeleteRoom;
 using TABP.Application.Commands.Rooms.UpdateRoom;
+using TABP.Application.Queries.Rooms.GetAvailableRooms;
 using TABP.Application.Queries.Rooms.GetRooms;
 using TABP.Web.DTOs.Rooms;
 using TABP.Web.Enums;
@@ -27,10 +28,18 @@ public class RoomsController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetRooms(Guid hotelId)
+    public async Task<IActionResult> GetRoomsForAdmin(Guid hotelId)
     {
-        var rooms = await _mediator.Send(new GetRoomsQuery { HotelId = hotelId });
+        var rooms = await _mediator.Send(new GetRoomsForAdminQuery { HotelId = hotelId });
+
+        return Ok(rooms);
+    }
+
+    [HttpGet("available")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAvailableRooms(Guid hotelId)
+    {
+        var rooms = await _mediator.Send(new GetAvailableRoomsQuery() { HotelId = hotelId });
 
         return Ok(rooms);
     }

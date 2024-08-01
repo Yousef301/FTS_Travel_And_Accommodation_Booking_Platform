@@ -19,6 +19,13 @@ public class HotelRepository : IHotelRepository
         return await _context.Hotels.ToListAsync();
     }
 
+    public async Task<IEnumerable<Hotel>> GetIncludeCityAsync()
+    {
+        return await _context.Hotels
+            .Include(h => h.City)
+            .ToListAsync();
+    }
+
     public async Task<Hotel?> GetByIdAsync(Guid id)
     {
         return await _context.Hotels.FindAsync(id);
@@ -40,9 +47,11 @@ public class HotelRepository : IHotelRepository
         return createdHotel.Entity;
     }
 
-    public async Task DeleteAsync(Hotel hotel)
+    public async Task DeleteAsync(Guid id)
     {
-        if (!await _context.Hotels.AnyAsync(bd => bd.Id == hotel.Id))
+        var hotel = await _context.Hotels.FindAsync(id);
+
+        if (hotel == null)
         {
             return;
         }

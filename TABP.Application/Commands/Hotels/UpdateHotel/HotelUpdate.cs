@@ -1,6 +1,6 @@
-﻿namespace TABP.Web.DTOs.Hotels;
+﻿namespace TABP.Application.Commands.Hotels.UpdateHotel;
 
-public class HotelBase
+public class HotelUpdate
 {
     public string Name { get; set; }
     public string Owner { get; set; }
