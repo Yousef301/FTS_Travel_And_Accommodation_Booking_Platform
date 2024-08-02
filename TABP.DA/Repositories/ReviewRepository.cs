@@ -19,6 +19,28 @@ public class ReviewRepository : IReviewRepository
         return await _context.Reviews.ToListAsync();
     }
 
+    public async Task<IEnumerable<Review>> GetByHotelIdAsync(Guid hotelId)
+    {
+        return await _context.Reviews
+            .Where(r => r.HotelId == hotelId)
+            .Include(r => r.User)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Review>> GetHotelReviewsForUserAsync(Guid hotelId, Guid userId)
+    {
+        return await _context.Reviews
+            .Where(r => r.HotelId == hotelId && r.UserId == userId)
+            .Include(r => r.User)
+            .ToListAsync();
+    }
+
+    public async Task<int> GetHotelReviewsCount(Guid hotelId)
+    {
+        return await _context.Reviews
+            .CountAsync(r => r.HotelId == hotelId);
+    }
+
     public async Task<Review?> GetByIdAsync(Guid id)
     {
         return await _context.Reviews.FindAsync(id);
@@ -32,9 +54,11 @@ public class ReviewRepository : IReviewRepository
         return createdReview.Entity;
     }
 
-    public async Task DeleteAsync(Review review)
+    public async Task DeleteAsync(Guid id)
     {
-        if (!await _context.Reviews.AnyAsync(r => r.Id == review.Id))
+        var review = await _context.Reviews.FindAsync(id);
+
+        if (review == null)
         {
             return;
         }
@@ -53,5 +77,11 @@ public class ReviewRepository : IReviewRepository
     public async Task<bool> ExistsAsync(Expression<Func<Review, bool>> predicate)
     {
         return await _context.Reviews.AnyAsync(predicate);
+    }
+
+    public async Task<bool> ExistsAsync(Guid hotelId, Guid userId)
+    {
+        return await _context.Reviews
+            .AnyAsync(r => r.HotelId == hotelId && r.UserId == userId);
     }
 }
