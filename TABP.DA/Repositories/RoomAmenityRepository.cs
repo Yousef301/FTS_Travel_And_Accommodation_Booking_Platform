@@ -19,6 +19,14 @@ public class RoomAmenityRepository : IRoomAmenityRepository
         return await _context.RoomAmenities.ToListAsync();
     }
 
+    public async Task<IEnumerable<RoomAmenity>> GetRoomAmenitiesAsync(Guid roomId)
+    {
+        return await _context.RoomAmenities
+            .Where(ra => ra.RoomId == roomId)
+            .Include(ra => ra.Amenity)
+            .ToListAsync();
+    }
+
     public async Task<RoomAmenity?> GetByIdAsync(Guid id)
     {
         return await _context.RoomAmenities.FindAsync(id);
@@ -32,9 +40,11 @@ public class RoomAmenityRepository : IRoomAmenityRepository
         return createdRoomAmenity.Entity;
     }
 
-    public async Task DeleteAsync(RoomAmenity roomAmenity)
+    public async Task DeleteAsync(Guid id)
     {
-        if (!await _context.RoomAmenities.AnyAsync(ra => ra.Id == roomAmenity.Id))
+        var roomAmenity = await _context.RoomAmenities.FindAsync(id);
+
+        if (roomAmenity == null)
         {
             return;
         }
