@@ -7,11 +7,11 @@ using TABP.DAL.Entities;
 
 namespace TABP.Application.Services.Implementations;
 
-public class JwtTokenGenerator : IJwtTokenGenerator
+public class JwtTokenGeneratorService : IJwtTokenGeneratorService
 {
     private readonly IConfiguration _configuration;
 
-    public JwtTokenGenerator(IConfiguration configuration)
+    public JwtTokenGeneratorService(IConfiguration configuration)
     {
         _configuration = configuration;
     }
