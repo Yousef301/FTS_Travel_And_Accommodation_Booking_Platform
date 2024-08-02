@@ -2,5 +2,4 @@
 
 public class CreateRoomDto : RoomBase
 {
-    public IEnumerable<Guid> AmenityIds { get; set; }
 }

@@ -12,5 +12,4 @@ public class CreateRoomCommand : IRequest<RoomResponse>
     public int MaxChildren { get; set; }
     public int MaxAdults { get; set; }
     public double Price { get; set; }
-    public IEnumerable<Guid> AmenityIds { get; set; }
 }

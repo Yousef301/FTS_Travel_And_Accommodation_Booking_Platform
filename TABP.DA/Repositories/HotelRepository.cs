@@ -26,7 +26,7 @@ public class HotelRepository : IHotelRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5)
+    public async Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5) // TODO: MAKE IT FASTER IF POSSIBLE
     {
         var hotels = await _context.Hotels
             .Include(h => h.Rooms)
@@ -55,7 +55,6 @@ public class HotelRepository : IHotelRepository
         return hotels;
     }
 
-
     public async Task<Hotel?> GetByIdAsync(Guid id)
     {
         return await _context.Hotels.FindAsync(id);
@@ -67,6 +66,14 @@ public class HotelRepository : IHotelRepository
             .Include(h => h.City)
             .Include(h => h.Rooms)
             .FirstOrDefaultAsync(h => h.Id == id);
+    }
+
+    public async Task<double> GetHotelRateAsync(Guid id)
+    {
+        return await _context.Hotels
+            .Where(r => r.Id == id)
+            .Select(r => r.Rating)
+            .FirstOrDefaultAsync();
     }
 
     public async Task<Hotel> CreateAsync(Hotel hotel)
@@ -95,6 +102,18 @@ public class HotelRepository : IHotelRepository
             return;
 
         _context.Hotels.Update(hotel);
+    }
+
+    public async Task UpdateRateAsync(Guid id, double rate)
+    {
+        var hotel = await _context.Hotels.FindAsync(id);
+
+        if (hotel == null)
+        {
+            return;
+        }
+
+        hotel.Rating = rate;
     }
 
     public async Task<bool> ExistsAsync(Expression<Func<Hotel, bool>> predicate)

@@ -19,7 +19,7 @@ public class BookingRepository : IBookingRepository
         return await _context.Bookings.ToListAsync();
     }
 
-    public async Task<IEnumerable<Guid>> GetRecentBookingsHotelsIdForAUser(Guid userId, int count = 5)
+    public async Task<IEnumerable<Guid>> GetHotelsIdsForAUserBookings(Guid userId, int count = 5)
     {
         return await _context.Bookings
             .Where(b => b.UserId == userId)
@@ -63,5 +63,10 @@ public class BookingRepository : IBookingRepository
     public async Task<bool> ExistsAsync(Expression<Func<Booking, bool>> predicate)
     {
         return await _context.Bookings.AnyAsync(predicate);
+    }
+
+    public async Task<bool> ExistsAsync(Guid hotelId, Guid userId)
+    {
+        return await _context.Bookings.AnyAsync(b => b.HotelId == hotelId && b.UserId == userId);
     }
 }

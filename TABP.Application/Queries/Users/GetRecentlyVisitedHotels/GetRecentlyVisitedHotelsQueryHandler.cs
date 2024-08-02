@@ -26,7 +26,7 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
         var hotels = new List<Hotel>();
 
         var hotelsId = await _bookingRepository
-            .GetRecentBookingsHotelsIdForAUser(request.UserId);
+            .GetHotelsIdsForAUserBookings(request.UserId);
 
         foreach (var hotelId in hotelsId)
         {

@@ -10,8 +10,10 @@ public interface IHotelRepository
     Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5);
     Task<Hotel?> GetByIdAsync(Guid id);
     Task<Hotel?> GetByIdDetailsIncludedAsync(Guid id);
+    Task<double> GetHotelRateAsync(Guid id);
     Task<Hotel> CreateAsync(Hotel hotel);
     Task DeleteAsync(Guid id);
     Task UpdateAsync(Hotel hotel);
+    Task UpdateRateAsync(Guid id, double rate);
     Task<bool> ExistsAsync(Expression<Func<Hotel, bool>> predicate);
 }
