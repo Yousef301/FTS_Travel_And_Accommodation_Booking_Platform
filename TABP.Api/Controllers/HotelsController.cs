@@ -7,6 +7,7 @@ using TABP.Application.Commands.Hotels.CreateHotel;
 using TABP.Application.Commands.Hotels.DeleteHotel;
 using TABP.Application.Commands.Hotels.UpdateHotel;
 using TABP.Application.Queries.Hotels.GetHotels;
+using TABP.Application.Queries.Hotels.GetHotelsWithFeaturedDeals;
 using TABP.Web.DTOs.Hotels;
 using TABP.Web.Enums;
 
@@ -34,6 +35,17 @@ public class HotelsController : ControllerBase
 
         return Ok(hotels);
     }
+
+    [HttpGet("featured-deals")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetFeaturedDeals()
+    {
+        var hotels = await _mediator.Send(
+            new GetHotelsWithFeaturedDealsQuery());
+
+        return Ok(hotels);
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> CreateHotel([FromBody] CreateHotelDto request)

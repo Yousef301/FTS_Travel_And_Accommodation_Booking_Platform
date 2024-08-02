@@ -19,6 +19,13 @@ public class SpecialOfferRepository : ISpecialOfferRepository
         return await _context.SpecialOffers.ToListAsync();
     }
 
+    public async Task<IEnumerable<SpecialOffer>> GetExpiredOffersAsync()
+    {
+        return await _context.SpecialOffers
+            .Where(so => so.IsActive && so.EndDate < DateTime.Now)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<SpecialOffer>> GetRoomOffersAsync(Guid roomId)
     {
         return await _context.SpecialOffers

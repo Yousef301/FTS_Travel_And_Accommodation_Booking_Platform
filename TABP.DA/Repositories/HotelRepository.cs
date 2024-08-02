@@ -26,6 +26,36 @@ public class HotelRepository : IHotelRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5)
+    {
+        var hotels = await _context.Hotels
+            .Include(h => h.Rooms)
+            .ThenInclude(r => r.SpecialOffers)
+            .Where(h => h.Rooms.Any(r => r.SpecialOffers.Any(so => so.IsActive)))
+            .Select(h => new Hotel
+            {
+                Id = h.Id,
+                CityId = h.CityId,
+                Name = h.Name,
+                Owner = h.Owner,
+                Address = h.Address,
+                Description = h.Description,
+                PhoneNumber = h.PhoneNumber,
+                Email = h.Email,
+                Rating = h.Rating,
+                Rooms = h.Rooms
+                    .Where(r => r.SpecialOffers.Any(so => so.IsActive))
+                    .OrderByDescending(r => r.SpecialOffers.Max(so => so.Discount))
+                    .Take(1)
+                    .ToList()
+            })
+            .Take(count)
+            .ToListAsync();
+
+        return hotels;
+    }
+
+
     public async Task<Hotel?> GetByIdAsync(Guid id)
     {
         return await _context.Hotels.FindAsync(id);

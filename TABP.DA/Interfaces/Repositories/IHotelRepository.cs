@@ -7,6 +7,7 @@ public interface IHotelRepository
 {
     Task<IEnumerable<Hotel>> GetAsync();
     Task<IEnumerable<Hotel>> GetIncludeCityAsync();
+    Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5);
     Task<Hotel?> GetByIdAsync(Guid id);
     Task<Hotel?> GetByIdDetailsIncludedAsync(Guid id);
     Task<Hotel> CreateAsync(Hotel hotel);

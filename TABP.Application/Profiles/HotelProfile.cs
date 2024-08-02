@@ -25,5 +25,15 @@ public class HotelProfile : Profile
         CreateMap<CreateHotelCommand, Hotel>();
         CreateMap<Hotel, HotelUpdate>();
         CreateMap<HotelUpdate, Hotel>();
+        CreateMap<Hotel, HotelWithFeaturedDealResponse>()
+            .ForMember(dest => dest.OriginalPrice,
+                opt => opt.MapFrom(src => src.Rooms.First().Price))
+            .ForMember(dest => dest.DiscountedPrice,
+                opt => opt.MapFrom(src =>
+                    src.Rooms.First().SpecialOffers.Any(so => so.IsActive)
+                        ? src.Rooms.First().Price -
+                          ((src.Rooms.First().SpecialOffers.First(so => so.IsActive).Discount / 100) *
+                           src.Rooms.First().Price)
+                        : src.Rooms.First().Price));
     }
 }
