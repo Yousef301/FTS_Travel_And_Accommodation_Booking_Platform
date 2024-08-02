@@ -16,8 +16,9 @@ public static class ApplicationConfiguration
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddDALInfrastructure(configuration);
 
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddSingleton<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         services.AddScoped<IPasswordService, PasswordService>();
+        services.AddHostedService<SpecialOfferExpirationService>();
 
         return services;
     }
