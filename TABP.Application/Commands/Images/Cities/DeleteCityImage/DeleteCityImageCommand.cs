@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace TABP.Application.Commands.Images.DeleteCityImage;
+namespace TABP.Application.Commands.Images.Cities.DeleteCityImage;
 
 public class DeleteCityImageCommand : IRequest
 {

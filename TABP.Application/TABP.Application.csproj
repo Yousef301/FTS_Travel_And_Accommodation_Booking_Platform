@@ -21,4 +21,8 @@
       <ProjectReference Include="..\TABP.DA\TABP.DA.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Commands\Images\Cities\" />
+    </ItemGroup>
+
 </Project>

@@ -24,7 +24,7 @@ public class CityImageRepository : ICityImageRepository
         return await _context.CityImages.FindAsync(id);
     }
 
-    public async Task<string?> GetCityImagePathAsync(Guid id)
+    public async Task<string?> GetImagePathAsync(Guid id)
     {
         return await _context.CityImages
             .Where(ci => ci.Id == id)
@@ -32,7 +32,7 @@ public class CityImageRepository : ICityImageRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<string>> GetCityImagesPathAsync(Guid id)
+    public async Task<IEnumerable<string>> GetImagesPathAsync(Guid id)
     {
         return await _context.CityImages
             .Where(ci => ci.CityId == id)
@@ -40,7 +40,7 @@ public class CityImageRepository : ICityImageRepository
             .ToListAsync();
     }
 
-    public async Task<string?> GetCityThumbnailPathAsync(Guid id)
+    public async Task<string?> GetThumbnailPathAsync(Guid id)
     {
         var cityName = await _context.Cities
             .Where(c => c.Id == id)

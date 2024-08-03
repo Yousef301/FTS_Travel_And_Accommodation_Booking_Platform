@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace TABP.Application.Commands.Images.CreateCityImage;
+namespace TABP.Application.Commands.Images.Cities.CreateCityImage;
 
 public class CreateCityImageCommand : IRequest
 {

@@ -2,7 +2,7 @@
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 
-namespace TABP.Application.Queries.Images.GetCityImageById;
+namespace TABP.Application.Queries.Images.Cities.GetCityImageById;
 
 public class GetCityImageByIdQueryHandler : IRequestHandler<GetCityImageByIdQuery, ImageResponse>
 {

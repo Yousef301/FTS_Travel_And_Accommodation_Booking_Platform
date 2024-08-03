@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TABP.Application.Commands.Images.CreateCityImage;
-using TABP.Application.Commands.Images.CreateCityThumbnail;
-using TABP.Application.Commands.Images.DeleteCityImage;
-using TABP.Application.Queries.Images.GetCityImageById;
-using TABP.Application.Queries.Images.GetCityImages;
-using TABP.Application.Queries.Images.GetCityThumbnail;
+using TABP.Application.Commands.Images.Cities.CreateCityImage;
+using TABP.Application.Commands.Images.Cities.CreateCityThumbnail;
+using TABP.Application.Commands.Images.Cities.DeleteCityImage;
+using TABP.Application.Queries.Images.Cities.GetCityImageById;
+using TABP.Application.Queries.Images.Cities.GetCityImages;
+using TABP.Application.Queries.Images.Cities.GetCityThumbnail;
+
 
 namespace TABP.Web.Controllers;
 

@@ -4,7 +4,7 @@ using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 
-namespace TABP.Application.Commands.Images.CreateCityImage;
+namespace TABP.Application.Commands.Images.Cities.CreateCityImage;
 
 public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageCommand>
 {

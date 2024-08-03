@@ -2,7 +2,7 @@
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 
-namespace TABP.Application.Queries.Images.GetCityThumbnail;
+namespace TABP.Application.Queries.Images.Cities.GetCityThumbnail;
 
 public class GetCityThumbnailQueryHandler : IRequestHandler<GetCityThumbnailQuery, ImageResponse>
 {
@@ -17,7 +17,7 @@ public class GetCityThumbnailQueryHandler : IRequestHandler<GetCityThumbnailQuer
 
     public async Task<ImageResponse> Handle(GetCityThumbnailQuery request, CancellationToken cancellationToken)
     {
-        var thumbnailPath = await _cityImageRepository.GetCityThumbnailPathAsync(request.CityId);
+        var thumbnailPath = await _cityImageRepository.GetThumbnailPathAsync(request.CityId);
         var image = await _imageService.GetImageAsync(thumbnailPath);
 
         return new ImageResponse

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace TABP.Application.Queries.Images.GetCityImages;
+namespace TABP.Application.Queries.Images.Cities.GetCityImages;
 
 public class GetCityImagesQuery : IRequest<IEnumerable<string>>
 {

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace TABP.Application.Commands.Images.CreateCityThumbnail;
+namespace TABP.Application.Commands.Images.Cities.CreateCityThumbnail;
 
 public class CreateCityThumbnailCommand : IRequest
 {

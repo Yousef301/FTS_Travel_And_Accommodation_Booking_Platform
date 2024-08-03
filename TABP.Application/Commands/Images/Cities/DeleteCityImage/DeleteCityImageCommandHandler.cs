@@ -3,7 +3,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 
-namespace TABP.Application.Commands.Images.DeleteCityImage;
+namespace TABP.Application.Commands.Images.Cities.DeleteCityImage;
 
 public class DeleteCityImageCommandHandler : IRequestHandler<DeleteCityImageCommand>
 {
@@ -21,7 +21,7 @@ public class DeleteCityImageCommandHandler : IRequestHandler<DeleteCityImageComm
 
     public async Task Handle(DeleteCityImageCommand request, CancellationToken cancellationToken)
     {
-        var cityImagesPath = await _cityImageRepository.GetCityImagePathAsync(request.ImageId);
+        var cityImagesPath = await _cityImageRepository.GetImagePathAsync(request.ImageId);
 
         await _imageService.DeleteImageAsync(cityImagesPath);
 

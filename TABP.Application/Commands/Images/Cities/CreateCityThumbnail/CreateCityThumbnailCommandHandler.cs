@@ -4,9 +4,8 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
-using System.IO; // Add this for Path.GetExtension
 
-namespace TABP.Application.Commands.Images.CreateCityThumbnail;
+namespace TABP.Application.Commands.Images.Cities.CreateCityThumbnail;
 
 public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumbnailCommand>
 {
