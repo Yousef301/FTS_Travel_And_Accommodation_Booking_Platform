@@ -11,9 +11,9 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageService _imageService;
     private readonly ICityRepository _cityRepository;
-    private readonly ICityImageRepository _cityImageRepository;
+    private readonly IImageRepository<CityImage> _cityImageRepository;
 
-    public CreateCityImageCommandHandler(IImageService imageService, ICityImageRepository cityImageRepository,
+    public CreateCityImageCommandHandler(IImageService imageService, IImageRepository<CityImage> cityImageRepository,
         IUnitOfWork unitOfWork, ICityRepository cityRepository)
     {
         _unitOfWork = unitOfWork;

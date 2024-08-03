@@ -12,10 +12,10 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageService _imageService;
     private readonly IHotelRepository _hotelRepository;
-    private readonly IHotelImageRepository _hotelImageRepository;
+    private readonly IImageRepository<HotelImage> _hotelImageRepository;
 
     public CreateHotelThumbnailCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        IHotelRepository hotelRepository, IHotelImageRepository hotelImageRepository)
+        IHotelRepository hotelRepository, IImageRepository<HotelImage> hotelImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
@@ -23,6 +23,7 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
         _hotelImageRepository = hotelImageRepository;
     }
 
+    // TODO: Handle if there is already a thumbnail for the hotel
     public async Task Handle(CreateHotelThumbnailCommand request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.HotelId);

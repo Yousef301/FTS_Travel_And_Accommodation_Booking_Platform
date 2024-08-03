@@ -1,11 +1,10 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.DAL.Repositories;
 
-public class HotelImageRepository : IHotelImageRepository
+public class HotelImageRepository : IImageRepository<HotelImage>
 {
     private readonly TABPDbContext _context;
 
@@ -38,22 +37,10 @@ public class HotelImageRepository : IHotelImageRepository
 
     public async Task<string?> GetThumbnailPathAsync(Guid id)
     {
-        var hotelName = await _context.Hotels
-            .Where(h => h.Id == id)
-            .Select(h => h.Name)
-            .FirstOrDefaultAsync();
-
-        if (hotelName == null)
-            return null;
-
-        var hotelImages = await _context.HotelImages
-            .Where(h => h.HotelId == id)
-            .ToListAsync();
-
-        return hotelImages
-            .Where(h => h.ImagePath.Contains($"{hotelName}_thumbnail.", StringComparison.OrdinalIgnoreCase))
+        return await _context.HotelImages
+            .Where(h => h.HotelId == id && h.Thumbnail)
             .Select(h => h.ImagePath)
-            .FirstOrDefault();
+            .FirstOrDefaultAsync();
     }
 
     public async Task<HotelImage> CreateAsync(HotelImage hotelImage)

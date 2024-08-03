@@ -5,7 +5,7 @@ using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.DAL.Repositories;
 
-public class CityImageRepository : ICityImageRepository
+public class CityImageRepository : IImageRepository<CityImage>
 {
     private readonly TABPDbContext _context;
 
@@ -42,22 +42,10 @@ public class CityImageRepository : ICityImageRepository
 
     public async Task<string?> GetThumbnailPathAsync(Guid id)
     {
-        var cityName = await _context.Cities
-            .Where(c => c.Id == id)
-            .Select(c => c.Name)
+        return await _context.CityImages
+            .Where(h => h.CityId == id && h.Thumbnail)
+            .Select(h => h.ImagePath)
             .FirstOrDefaultAsync();
-
-        if (cityName == null)
-            return null;
-
-        var cityImages = await _context.CityImages
-            .Where(ci => ci.CityId == id)
-            .ToListAsync();
-
-        return cityImages
-            .Where(ci => ci.ImagePath.Contains($"{cityName}_thumbnail.", StringComparison.OrdinalIgnoreCase))
-            .Select(ci => ci.ImagePath)
-            .FirstOrDefault();
     }
 
 

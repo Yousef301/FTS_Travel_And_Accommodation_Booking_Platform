@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TABP.Application.Services.Interfaces;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 
@@ -9,10 +10,10 @@ public class DeleteHotelImageCommandHandler : IRequestHandler<DeleteHotelImageCo
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageService _imageService;
-    private readonly IHotelImageRepository _hotelImageRepository;
+    private readonly IImageRepository<HotelImage> _hotelImageRepository;
 
     public DeleteHotelImageCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        IHotelImageRepository hotelImageRepository)
+        IImageRepository<HotelImage> hotelImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;

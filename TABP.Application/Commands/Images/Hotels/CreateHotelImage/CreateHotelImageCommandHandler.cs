@@ -11,10 +11,10 @@ public class CreateHotelImageCommandHandler : IRequestHandler<CreateHotelImageCo
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageService _imageService;
     private readonly IHotelRepository _hotelRepository;
-    private readonly IHotelImageRepository _hotelImageRepository;
+    private readonly IImageRepository<HotelImage> _hotelImageRepository;
 
     public CreateHotelImageCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        IHotelRepository hotelRepository, IHotelImageRepository hotelImageRepository)
+        IHotelRepository hotelRepository, IImageRepository<HotelImage> hotelImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;

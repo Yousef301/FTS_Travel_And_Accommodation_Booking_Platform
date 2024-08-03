@@ -1,15 +1,16 @@
 ﻿using MediatR;
 using TABP.Application.Services.Interfaces;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.Application.Queries.Images.Hotels.GetHotelImageById;
 
 public class GetHotelImageByIdQueryHandler : IRequestHandler<GetHotelImageByIdQuery, ImageResponse>
 {
-    private readonly IHotelImageRepository _hotelImageRepository;
+    private readonly IImageRepository<HotelImage> _hotelImageRepository;
     private readonly IImageService _imageService;
 
-    public GetHotelImageByIdQueryHandler(IHotelImageRepository hotelImageRepository, IImageService imageService)
+    public GetHotelImageByIdQueryHandler(IImageRepository<HotelImage> hotelImageRepository, IImageService imageService)
     {
         _hotelImageRepository = hotelImageRepository;
         _imageService = imageService;

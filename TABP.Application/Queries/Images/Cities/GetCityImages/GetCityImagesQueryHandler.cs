@@ -1,15 +1,16 @@
 ﻿using MediatR;
 using TABP.Application.Services.Interfaces;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.Application.Queries.Images.Cities.GetCityImages;
 
 public class GetCityImagesQueryHandler : IRequestHandler<GetCityImagesQuery, IEnumerable<string>>
 {
-    private readonly ICityImageRepository _cityImageRepository;
+    private readonly IImageRepository<CityImage> _cityImageRepository;
     private readonly IImageService _imageService;
 
-    public GetCityImagesQueryHandler(ICityImageRepository cityImageRepository, IImageService imageService)
+    public GetCityImagesQueryHandler(IImageRepository<CityImage> cityImageRepository, IImageService imageService)
     {
         _cityImageRepository = cityImageRepository;
         _imageService = imageService;

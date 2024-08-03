@@ -12,17 +12,18 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageService _imageService;
     private readonly ICityRepository _cityRepository;
-    private readonly ICityImageRepository _cityImageRepository;
+    private readonly IImageRepository<CityImage> _cityImageRepository;
 
     public CreateCityThumbnailCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        ICityRepository cityRepository, ICityImageRepository cityImageRepository)
+        ICityRepository cityRepository, IImageRepository<CityImage> cityImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
         _cityRepository = cityRepository;
         _cityImageRepository = cityImageRepository;
     }
-
+    
+    // TODO: Handle if there is already a thumbnail for the city
     public async Task Handle(CreateCityThumbnailCommand request, CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.CityId);
