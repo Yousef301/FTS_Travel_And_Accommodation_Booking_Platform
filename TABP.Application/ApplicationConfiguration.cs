@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TABP.Application.Services.Implementations;
@@ -18,7 +19,12 @@ public static class ApplicationConfiguration
 
         services.AddSingleton<IJwtTokenGeneratorService, JwtTokenGeneratorService>();
         services.AddScoped<IPasswordService, PasswordService>();
+        services.AddScoped<IImageService, ImageService>();
+
         services.AddHostedService<SpecialOfferExpirationService>();
+
+        services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+        services.AddAWSService<IAmazonS3>();
 
         return services;
     }

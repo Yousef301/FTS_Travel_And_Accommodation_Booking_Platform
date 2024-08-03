@@ -24,6 +24,43 @@ public class CityImageRepository : ICityImageRepository
         return await _context.CityImages.FindAsync(id);
     }
 
+    public async Task<string?> GetCityImagePathAsync(Guid id)
+    {
+        return await _context.CityImages
+            .Where(ci => ci.Id == id)
+            .Select(ci => ci.ImagePath)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<IEnumerable<string>> GetCityImagesPathAsync(Guid id)
+    {
+        return await _context.CityImages
+            .Where(ci => ci.CityId == id)
+            .Select(ci => ci.ImagePath)
+            .ToListAsync();
+    }
+
+    public async Task<string?> GetCityThumbnailPathAsync(Guid id)
+    {
+        var cityName = await _context.Cities
+            .Where(c => c.Id == id)
+            .Select(c => c.Name)
+            .FirstOrDefaultAsync();
+
+        if (cityName == null)
+            return null;
+
+        var cityImages = await _context.CityImages
+            .Where(ci => ci.CityId == id)
+            .ToListAsync();
+
+        return cityImages
+            .Where(ci => ci.ImagePath.Contains($"{cityName}_thumbnail.", StringComparison.OrdinalIgnoreCase))
+            .Select(ci => ci.ImagePath)
+            .FirstOrDefault();
+    }
+
+
     public async Task<CityImage> CreateAsync(CityImage cityImage)
     {
         var createdCityImage = await _context.CityImages
@@ -32,9 +69,16 @@ public class CityImageRepository : ICityImageRepository
         return createdCityImage.Entity;
     }
 
-    public async Task DeleteAsync(CityImage cityImage)
+    public async Task AddRangeAsync(IEnumerable<CityImage> cityImages)
     {
-        if (!await _context.CityImages.AnyAsync(ci => ci.Id == cityImage.Id))
+        await _context.CityImages.AddRangeAsync(cityImages);
+    }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        var cityImage = await _context.CityImages.FindAsync(id);
+
+        if (cityImage == null)
         {
             return;
         }
