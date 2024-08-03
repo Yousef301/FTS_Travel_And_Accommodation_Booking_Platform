@@ -16,12 +16,10 @@ namespace TABP.Web.Controllers;
 public class CityImagesController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
 
-    public CityImagesController(IMediator mediator, IMapper mapper)
+    public CityImagesController(IMediator mediator)
     {
         _mediator = mediator;
-        _mapper = mapper;
     }
 
     [HttpGet]

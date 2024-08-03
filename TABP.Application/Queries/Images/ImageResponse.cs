@@ -1,4 +1,4 @@
-﻿namespace TABP.Application.Queries.Images.Cities;
+﻿namespace TABP.Application.Queries.Images;
 
 public class ImageResponse
 {

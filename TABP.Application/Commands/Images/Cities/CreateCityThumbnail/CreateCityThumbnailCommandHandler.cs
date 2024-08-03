@@ -29,7 +29,6 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
         city.Name = city.Name.ToLower();
 
         var fileExtension = Path.GetExtension(request.Image.FileName);
-        var imagePath = $"cities/{city.Name}_thumbnail{fileExtension}";
 
         await _imageService.UploadImagesAsync(new List<IFormFile> { request.Image },
             new Dictionary<string, object>
@@ -37,15 +36,14 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
                 { "folder", "cities" },
                 { "prefix", $"{city.Name}" },
                 { "fileExtension", $"{fileExtension}" },
-                { "thumbnail", true }
             });
 
         var cityThumbnail = new CityImage
         {
             Id = new Guid(),
             CityId = request.CityId,
-            ImagePath = imagePath,
-            Description = "Thumbnail"
+            ImagePath = $"cities/{city.Name}_{request.Image.FileName}".Replace(' ', '_'),
+            Thumbnail = true
         };
 
         await _cityImageRepository.CreateAsync(cityThumbnail);

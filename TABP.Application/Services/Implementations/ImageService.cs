@@ -27,13 +27,7 @@ public class ImageService : IImageService
             if (file.Length > 0)
             {
                 var fileName = $"{configurations["prefix"]}_{file.FileName}";
-
-                if (configurations.ContainsKey("thumbnail") && (bool)configurations["thumbnail"])
-                {
-                    fileName = $"{configurations["prefix"]}_thumbnail{configurations["fileExtension"]}";
-                }
-
-                var fileKey = $"{configurations["folder"]}/{fileName}";
+                var fileKey = $"{configurations["folder"]}/{fileName}".Replace(' ', '_');
 
                 using (var stream = new MemoryStream())
                 {

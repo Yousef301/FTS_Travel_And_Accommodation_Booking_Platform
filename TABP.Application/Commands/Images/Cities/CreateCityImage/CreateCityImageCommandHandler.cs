@@ -31,15 +31,14 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
         {
             { "folder", "cities" },
             { "prefix", city.Name },
-            { "thumbnail", false }
         });
 
         var cityImages = request.Images.Select(image => new CityImage
         {
             Id = new Guid(),
             CityId = request.CityId,
-            ImagePath = $"cities/{city.Name}_" + image.FileName,
-            Description = image.Name
+            ImagePath = $"cities/{city.Name}_{image.FileName}".Replace(' ', '_'),
+            Thumbnail = false
         });
 
         await _cityImageRepository.AddRangeAsync(cityImages);
