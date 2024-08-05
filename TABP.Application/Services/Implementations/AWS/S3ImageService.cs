@@ -5,15 +5,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TABP.Application.Services.Interfaces;
 
-namespace TABP.Application.Services.Implementations;
+namespace TABP.Application.Services.Implementations.AWS;
 
-public class ImageService : IImageService
+public class AWSImageService : IImageService
 {
     private readonly IAmazonS3 _s3Client;
     private readonly string _bucketName;
     // private readonly ILogger<ImageService> _logger;
 
-    public ImageService(IAmazonS3 s3Client, IConfiguration configuration, ILogger<ImageService> logger)
+    public AWSImageService(IAmazonS3 s3Client, IConfiguration configuration, ILogger<AWSImageService> logger)
     {
         _s3Client = s3Client;
         _bucketName = configuration["AWS:BucketName"] ?? throw new ArgumentNullException(nameof(configuration));
@@ -82,7 +82,7 @@ public class ImageService : IImageService
         }
     }
 
-    public async Task<IEnumerable<string>> GetSpecificImagesAsync(IEnumerable<string> specificPaths)
+    public async Task<IEnumerable<Dictionary<string, string>>> GetSpecificImagesAsync(IEnumerable<string> specificPaths)
     {
         var listRequest = new ListObjectsV2Request
         {
@@ -96,7 +96,11 @@ public class ImageService : IImageService
 
             var filteredObjects = listResponse.S3Objects
                 .Where(o => specificPaths.Contains(o.Key))
-                .Select(o => baseUrl + o.Key);
+                .Select(o => new Dictionary<string, string>
+                {
+                    { "url", baseUrl + o.Key },
+                    { "uploadDate", o.LastModified.ToString("yyyy-MM-ddTHH:mm:ssZ") }
+                });
 
             return filteredObjects.ToList();
         }

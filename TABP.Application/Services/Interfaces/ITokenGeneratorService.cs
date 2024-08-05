@@ -2,7 +2,7 @@
 
 namespace TABP.Application.Services.Interfaces;
 
-public interface IJwtTokenGeneratorService
+public interface ITokenGeneratorService
 {
     public string GenerateToken(User user, string username);
 }
