@@ -3,7 +3,7 @@ using TABP.Application.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations;
 
-public class PasswordService : IPasswordService
+public class BCryptPasswordService : IPasswordService
 {
     public string HashPassword(string plainPassword)
     {

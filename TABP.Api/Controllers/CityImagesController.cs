@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Images.Cities.CreateCityImage;
 using TABP.Application.Commands.Images.Cities.CreateCityThumbnail;
@@ -7,12 +8,14 @@ using TABP.Application.Commands.Images.Cities.DeleteCityImage;
 using TABP.Application.Queries.Images.Cities.GetCityImageById;
 using TABP.Application.Queries.Images.Cities.GetCityImages;
 using TABP.Application.Queries.Images.Cities.GetCityThumbnail;
+using TABP.Web.Enums;
 
 
 namespace TABP.Web.Controllers;
 
 [ApiController]
 [Route("api/cities/{cityId}/images")]
+[Authorize(Roles = nameof(Role.Admin))]
 public class CityImagesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -23,6 +26,7 @@ public class CityImagesController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetImages(Guid cityId)
     {
         var images = await _mediator.Send(new GetCityImagesQuery
@@ -34,6 +38,7 @@ public class CityImagesController : ControllerBase
     }
 
     [HttpGet("{imageId:guid}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetImage(Guid imageId)
     {
         var images = await _mediator.Send(new GetCityImageByIdQuery
@@ -58,6 +63,7 @@ public class CityImagesController : ControllerBase
     }
 
     [HttpGet("thumbnail")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetThumbnail(Guid cityId)
     {
         var images = await _mediator.Send(new GetCityThumbnailQuery

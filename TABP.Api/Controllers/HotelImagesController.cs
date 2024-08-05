@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Images.Hotels.CreateHotelImage;
 using TABP.Application.Commands.Images.Hotels.CreateHotelThumbnail;
@@ -6,11 +7,13 @@ using TABP.Application.Commands.Images.Hotels.DeleteHotelImage;
 using TABP.Application.Queries.Images.Hotels.GetHotelImageById;
 using TABP.Application.Queries.Images.Hotels.GetHotelImages;
 using TABP.Application.Queries.Images.Hotels.GetHotelThumbnail;
+using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
 
 [ApiController]
 [Route("api/hotels/{hotelId}/images")]
+[Authorize(Roles = nameof(Role.Admin))]
 public class HotelImagesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -21,6 +24,7 @@ public class HotelImagesController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetImages(Guid hotelId)
     {
         var images = await _mediator.Send(new GetHotelImagesQuery
@@ -32,6 +36,7 @@ public class HotelImagesController : ControllerBase
     }
 
     [HttpGet("{imageId:guid}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetImage(Guid imageId)
     {
         var images = await _mediator.Send(new GetHotelImageByIdQuery
@@ -56,6 +61,7 @@ public class HotelImagesController : ControllerBase
     }
 
     [HttpGet("thumbnail")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetThumbnail(Guid hotelId)
     {
         var images = await _mediator.Send(new GetHotelThumbnailQuery

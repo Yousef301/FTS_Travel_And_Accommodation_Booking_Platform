@@ -7,13 +7,13 @@ using TABP.Application.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations.AWS;
 
-public class AWSImageService : IImageService
+public class S3ImageService : IImageService
 {
     private readonly IAmazonS3 _s3Client;
     private readonly string _bucketName;
     // private readonly ILogger<ImageService> _logger;
 
-    public AWSImageService(IAmazonS3 s3Client, IConfiguration configuration, ILogger<AWSImageService> logger)
+    public S3ImageService(IAmazonS3 s3Client, IConfiguration configuration, ILogger<S3ImageService> logger)
     {
         _s3Client = s3Client;
         _bucketName = configuration["AWS:BucketName"] ?? throw new ArgumentNullException(nameof(configuration));
