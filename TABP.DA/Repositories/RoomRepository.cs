@@ -20,7 +20,7 @@ public class RoomRepository : IRoomRepository
         return await _context.Rooms.ToListAsync();
     }
 
-    public async Task<IEnumerable<Room>> GetByHotelAsync(Guid id)
+    public async Task<IEnumerable<Room>> GetByHotelIdAsync(Guid id)
     {
         return await _context.Rooms
             .Where(r => r.HotelId == id)
@@ -35,6 +35,29 @@ public class RoomRepository : IRoomRepository
             .Where(r => r.HotelId == id && r.Status == RoomStatus.Available)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<Room>> GetByIdAndHotelIdAsync(Guid hotelId, IEnumerable<Guid> roomIds)
+    {
+        var roomsWithOffers = await _context.Rooms
+            .Where(r => r.HotelId == hotelId && roomIds.Contains(r.Id))
+            .Select(r => new
+            {
+                Room = r,
+                SpecialOffer = _context.SpecialOffers
+                    .SingleOrDefault(so => so.RoomId == r.Id && so.IsActive)
+            })
+            .ToListAsync();
+
+        foreach (var item in roomsWithOffers)
+        {
+            item.Room.SpecialOffers = item.SpecialOffer != null
+                ? new List<SpecialOffer> { item.SpecialOffer }
+                : new List<SpecialOffer>();
+        }
+
+        return roomsWithOffers.Select(x => x.Room);
+    }
+
 
     public async Task<Room?> GetByIdAsync(Guid id)
     {
@@ -65,6 +88,18 @@ public class RoomRepository : IRoomRepository
     {
         if (!await _context.Rooms.AnyAsync(r => r.Id == room.Id))
             return;
+
+        _context.Rooms.Update(room);
+    }
+
+    public async Task UpdateStatusToReservedByIdAsync(Guid id)
+    {
+        var room = await _context.Rooms.FindAsync(id);
+
+        if (room == null)
+            return;
+
+        room.Status = RoomStatus.Reserved;
 
         _context.Rooms.Update(room);
     }

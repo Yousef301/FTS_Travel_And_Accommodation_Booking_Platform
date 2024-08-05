@@ -19,6 +19,22 @@ public class BookingDetailRepository : IBookingDetailRepository
         return await _context.BookingDetails.ToListAsync();
     }
 
+    public async Task<IEnumerable<BookingDetail>> GetByRoomIdAsync(Guid roomId)
+    {
+        return await _context.BookingDetails
+            .Where(bd => bd.RoomId == roomId)
+            .Include(bd => bd.Booking)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<BookingDetail>> GetByBookingIdAsync(Guid bookingId)
+    {
+        return await _context.BookingDetails
+            .Where(bd => bd.BookingId == bookingId)
+            .Include(bd => bd.Room)
+            .ToListAsync();
+    }
+
     public async Task<BookingDetail?> GetByIdAsync(Guid id)
     {
         return await _context.BookingDetails.FindAsync(id);

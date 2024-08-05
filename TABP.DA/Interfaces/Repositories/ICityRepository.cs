@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using TABP.DAL.Entities;
-using TABP.DAL.Entities.Procedures;
+using TABP.DAL.Models.Procedures;
 
 namespace TABP.DAL.Interfaces.Repositories;
 
