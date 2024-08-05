@@ -1,4 +1,4 @@
-﻿namespace TABP.DAL.Entities.Procedures;
+﻿namespace TABP.DAL.Models.Procedures;
 
 public class TrendingCities
 {

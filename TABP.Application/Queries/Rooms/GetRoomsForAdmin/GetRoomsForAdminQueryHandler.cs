@@ -19,7 +19,7 @@ public class GetRoomsForAdminQueryHandler : IRequestHandler<GetRoomsForAdminQuer
 
     public async Task<IEnumerable<RoomResponse>> Handle(GetRoomsForAdminQuery request, CancellationToken cancellationToken)
     {
-        var rooms = await _roomRepository.GetByHotelAsync(request.HotelId);
+        var rooms = await _roomRepository.GetByHotelIdAsync(request.HotelId);
 
         return _mapper.Map<IEnumerable<RoomResponse>>(rooms);
     }

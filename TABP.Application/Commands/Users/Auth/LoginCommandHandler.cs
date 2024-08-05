@@ -8,13 +8,13 @@ namespace TABP.Application.Commands.Users.Auth;
 public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 {
     private readonly ICredentialRepository _credentialRepository;
-    private readonly IJwtTokenGeneratorService _jwtTokenGeneratorService;
+    private readonly ITokenGeneratorService _tokenGeneratorService;
     private readonly IPasswordService _passwordService;
 
-    public LoginCommandHandler(IJwtTokenGeneratorService jwtTokenGeneratorService,
+    public LoginCommandHandler(ITokenGeneratorService tokenGeneratorService,
         ICredentialRepository credentialRepository, IPasswordService passwordService)
     {
-        _jwtTokenGeneratorService = jwtTokenGeneratorService;
+        _tokenGeneratorService = tokenGeneratorService;
         _credentialRepository = credentialRepository;
         _passwordService = passwordService;
     }
@@ -29,7 +29,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
         return new LoginResponse()
         {
-            Token = _jwtTokenGeneratorService.GenerateToken(user.User, request.Username)
+            Token = _tokenGeneratorService.GenerateToken(user.User, request.Username)
         };
     }
 }

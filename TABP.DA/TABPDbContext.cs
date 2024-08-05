@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Configurations;
 using TABP.DAL.Entities;
-using TABP.DAL.Entities.Procedures;
+using TABP.DAL.Models.Procedures;
 
 namespace TABP.DAL;
 

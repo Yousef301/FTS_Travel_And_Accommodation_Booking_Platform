@@ -3,7 +3,7 @@ using TABP.Application.Commands.Cities.CreateCity;
 using TABP.Application.Commands.Cities.UpdateCity;
 using TABP.Application.Queries.Cities;
 using TABP.DAL.Entities;
-using TABP.DAL.Entities.Procedures;
+using TABP.DAL.Models.Procedures;
 
 namespace TABP.Application.Profiles;
 

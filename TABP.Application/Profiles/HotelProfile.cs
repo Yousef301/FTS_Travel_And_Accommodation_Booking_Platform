@@ -11,10 +11,15 @@ public class HotelProfile : Profile
 {
     public HotelProfile()
     {
+        CreateMap<CreateHotelCommand, Hotel>();
+        CreateMap<Hotel, HotelUpdate>();
+        CreateMap<HotelUpdate, Hotel>();
+        
         CreateMap<Hotel, HotelResponse>()
             .ForMember(dest => dest.City,
                 opt =>
                     opt.MapFrom(src => src.City.Name));
+        
         CreateMap<Hotel, RecentlyVisitedHotelsResponse>()
             .ForMember(dest => dest.City,
                 opt =>
@@ -22,9 +27,7 @@ public class HotelProfile : Profile
             .ForMember(dest => dest.Price,
                 opt =>
                     opt.MapFrom(src => src.Rooms.Min(r => r.Price)));
-        CreateMap<CreateHotelCommand, Hotel>();
-        CreateMap<Hotel, HotelUpdate>();
-        CreateMap<HotelUpdate, Hotel>();
+
         CreateMap<Hotel, HotelWithFeaturedDealResponse>()
             .ForMember(dest => dest.OriginalPrice,
                 opt => opt.MapFrom(src => src.Rooms.First().Price))
