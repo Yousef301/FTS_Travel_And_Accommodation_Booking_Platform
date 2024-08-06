@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TABP.Application.Queries.Invoices;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Enums;
@@ -88,11 +89,11 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
             await _emailService.SendEmailAsync(request.UserEmail, "Booking Invoice", new EmailInvoiceBody
             {
                 InvoiceId = invoice.Id,
-                BookingId = booking.Id,
+                BookingId = invoice.BookingId,
                 PaymentMethod = booking.PaymentMethod.ToString(),
                 PaymentStatus = payment.PaymentStatus.ToString(),
                 PaymentDate = payment.PaymentDate,
-                TotalAmount = payment.TotalPrice,
+                TotalAmount = invoice.TotalPrice,
                 InvoiceDate = invoice.InvoiceDate
             });
 

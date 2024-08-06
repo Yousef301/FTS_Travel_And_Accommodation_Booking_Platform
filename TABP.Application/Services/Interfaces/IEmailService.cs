@@ -1,4 +1,4 @@
-﻿using TABP.Application.Commands.Bookings;
+﻿using TABP.Application.Queries.Invoices;
 
 namespace TABP.Application.Services.Interfaces;
 

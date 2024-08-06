@@ -1,11 +1,9 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Text;
-using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using TABP.Application.Commands.Bookings;
+using TABP.Application.Queries.Invoices;
 using TABP.Application.Services.Interfaces;
-using TABP.DAL.Entities;
 
 namespace TABP.Application.Services.Implementations;
 

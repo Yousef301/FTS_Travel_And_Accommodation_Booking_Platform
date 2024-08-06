@@ -1,6 +1,4 @@
-﻿using Amazon.S3.Model.Internal.MarshallTransformations;
-
-namespace TABP.Application.Commands.Bookings;
+﻿namespace TABP.Application.Queries.Invoices;
 
 public class EmailInvoiceBody
 {

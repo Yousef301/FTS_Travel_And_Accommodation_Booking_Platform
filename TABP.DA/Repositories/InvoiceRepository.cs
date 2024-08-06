@@ -24,6 +24,14 @@ public class InvoiceRepository : IInvoiceRepository
         return await _context.Invoices.FindAsync(id);
     }
 
+    public async Task<Invoice?> GetByBookingIdAsync(Guid id)
+    {
+        return await _context.Invoices
+            .Where(i => i.BookingId == id)
+            .Include(i => i.Booking)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Invoice> CreateAsync(Invoice invoice)
     {
         var createdInvoice = await _context.Invoices

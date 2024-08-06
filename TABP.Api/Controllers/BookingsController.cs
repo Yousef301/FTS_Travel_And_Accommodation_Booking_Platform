@@ -7,6 +7,7 @@ using TABP.Application.Commands.Bookings.CheckoutBooking;
 using TABP.Application.Commands.Bookings.CreateBooking;
 using TABP.Application.Queries.Bookings.GetBookingById;
 using TABP.Application.Queries.Bookings.GetBookings;
+using TABP.Application.Queries.Invoices.GetInvoiceAsPdf;
 using TABP.Web.DTOs.Bookings;
 using TABP.Web.Enums;
 using TABP.Web.Services.Interfaces;
@@ -84,5 +85,16 @@ public class BookingsController : ControllerBase
         });
 
         return Ok();
+    }
+
+    [HttpGet("{bookingId:guid}/invoice")]
+    public async Task<IActionResult> GetInvoiceAsPdf(Guid bookingId)
+    {
+        var invoice = await _mediator.Send(new GetInvoiceAsPdfQuery
+        {
+            BookingId = bookingId
+        });
+
+        return File(invoice, "application/pdf", "invoice.pdf");
     }
 }
