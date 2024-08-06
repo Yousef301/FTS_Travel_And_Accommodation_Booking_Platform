@@ -6,6 +6,7 @@ namespace TABP.DAL.Interfaces.Repositories;
 public interface IPaymentRepository
 {
     Task<IEnumerable<Payment>> GetAsync();
+    Task<IEnumerable<Payment>> GetUserPaymentsAsync(Guid userId);
     Task<Payment?> GetByIdAsync(Guid id);
     Task<Payment> CreateAsync(Payment payment);
     Task DeleteAsync(Payment payment);

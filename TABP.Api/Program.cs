@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using TABP.Application;
 using TABP.Application.Services.Implementations;
 using TABP.Application.Services.Interfaces;
@@ -45,7 +46,32 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(opts =>
+{
+    opts.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    opts.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
 
 var app = builder.Build();
 

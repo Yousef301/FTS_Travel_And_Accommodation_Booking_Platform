@@ -17,5 +17,5 @@ public interface IBookingRepository
     Task UpdateAsync(Booking booking);
     Task<bool> ExistsAsync(Expression<Func<Booking, bool>> predicate);
     Task<bool> ExistsAsync(Guid hotelId, Guid userId);
-    Task<bool> IsBookingOverlappingAsync(Guid hotelId, Guid userId, DateOnly checkInDate, DateOnly checkOutDate);
+    Task<bool> IsBookingOverlapsAsync(Guid hotelId, Guid userId, DateOnly checkInDate, DateOnly checkOutDate);
 }

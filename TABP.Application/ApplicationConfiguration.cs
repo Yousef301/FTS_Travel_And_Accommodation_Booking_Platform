@@ -23,6 +23,7 @@ public static class ApplicationConfiguration
         services.AddScoped<IRoomBookingService, RoomBookingService>();
         services.AddScoped<IEmailService, SmtpEmailService>();
         services.AddScoped<IImageService, S3ImageService>();
+        services.AddScoped<IPdfService, PdfService>();
 
         services.AddDefaultAWSOptions(configuration.GetAWSOptions());
         services.AddAWSService<IAmazonS3>();

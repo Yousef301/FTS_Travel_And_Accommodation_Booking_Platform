@@ -47,7 +47,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
             throw new ArgumentException(string.Join(Environment.NewLine, results));
         }
 
-        if (await IsBookingOverlapping(request.HotelId, request.UserId, request.CheckInDate,
+        if (await _bookingRepository.IsBookingOverlapsAsync(request.HotelId, request.UserId, request.CheckInDate,
                 request.CheckOutDate))
         {
             throw new ArgumentException("Booking is overlapping with an existing booking.");
@@ -59,7 +59,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
             ? parsedPaymentMethod
             : throw new ArgumentException("Invalid payment method");
 
-        var pendingBooking = await PendingBooking(request.UserId);
+        var pendingBooking = await _bookingRepository.GetPendingBooking(request.UserId);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -126,12 +126,6 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         return unavailableRooms;
     }
 
-    private async Task<bool> IsBookingOverlapping(Guid hotelId, Guid userId, DateOnly checkInDate,
-        DateOnly checkOutDate)
-    {
-        return await _bookingRepository.IsBookingOverlappingAsync(hotelId, userId, checkInDate, checkOutDate);
-    }
-
     private double CalculateTotalPrice(IEnumerable<Room> rooms)
     {
         double totalPrice = 0;
@@ -150,10 +144,5 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         }
 
         return totalPrice;
-    }
-
-    private async Task<Booking?> PendingBooking(Guid userId)
-    {
-        return await _bookingRepository.GetPendingBooking(userId);
     }
 }

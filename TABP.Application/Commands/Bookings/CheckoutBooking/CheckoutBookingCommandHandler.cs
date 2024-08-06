@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using TABP.Application.Queries.Invoices;
+using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Enums;
 using TABP.DAL.Interfaces;
@@ -13,11 +15,12 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
     private readonly IPaymentRepository _paymentRepository;
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IRoomRepository _roomRepository;
+    private readonly IEmailService _emailService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CheckoutBookingCommandHandler(IBookingRepository bookingRepository, IPaymentRepository paymentRepository,
         IInvoiceRepository invoiceRepository, IRoomRepository roomRepository, IUnitOfWork unitOfWork,
-        IBookingDetailRepository bookingDetailRepository)
+        IBookingDetailRepository bookingDetailRepository, IEmailService emailService)
     {
         _bookingRepository = bookingRepository;
         _paymentRepository = paymentRepository;
@@ -25,6 +28,7 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
         _bookingDetailRepository = bookingDetailRepository;
+        _emailService = emailService;
     }
 
     public async Task Handle(CheckoutBookingCommand request, CancellationToken cancellationToken)
@@ -81,6 +85,17 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
             await _invoiceRepository.CreateAsync(invoice);
 
             await _unitOfWork.SaveChangesAsync();
+
+            await _emailService.SendEmailAsync(request.UserEmail, "Booking Invoice", new EmailInvoiceBody
+            {
+                InvoiceId = invoice.Id,
+                BookingId = invoice.BookingId,
+                PaymentMethod = booking.PaymentMethod.ToString(),
+                PaymentStatus = payment.PaymentStatus.ToString(),
+                PaymentDate = payment.PaymentDate,
+                TotalAmount = invoice.TotalPrice,
+                InvoiceDate = invoice.InvoiceDate
+            });
 
             await _unitOfWork.CommitTransactionAsync();
         }

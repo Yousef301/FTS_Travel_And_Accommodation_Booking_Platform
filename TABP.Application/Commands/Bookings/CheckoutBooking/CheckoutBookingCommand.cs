@@ -6,4 +6,5 @@ public class CheckoutBookingCommand : IRequest
 {
     public Guid UserId { get; set; }
     public Guid BookingId { get; set; }
+    public string UserEmail { get; set; }
 }
