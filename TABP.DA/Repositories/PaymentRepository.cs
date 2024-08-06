@@ -19,6 +19,13 @@ public class PaymentRepository : IPaymentRepository
         return await _context.Payments.ToListAsync();
     }
 
+    public async Task<IEnumerable<Payment>> GetUserPaymentsAsync(Guid userId)
+    {
+        return await _context.Payments
+            .Where(p => p.UserId == userId)
+            .ToListAsync();
+    }
+
     public async Task<Payment?> GetByIdAsync(Guid id)
     {
         return await _context.Payments.FindAsync(id);
