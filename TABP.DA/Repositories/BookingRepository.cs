@@ -114,7 +114,7 @@ public class BookingRepository : IBookingRepository
         return await _context.Bookings.AnyAsync(b => b.HotelId == hotelId && b.UserId == userId);
     }
 
-    public async Task<bool> IsBookingOverlappingAsync(Guid hotelId, Guid userId, DateOnly checkInDate,
+    public async Task<bool> IsBookingOverlapsAsync(Guid hotelId, Guid userId, DateOnly checkInDate,
         DateOnly checkOutDate)
     {
         return await _context.Bookings

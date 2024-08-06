@@ -78,8 +78,9 @@ public class BookingsController : ControllerBase
     {
         await _mediator.Send(new CheckoutBookingCommand
         {
+            UserEmail = _userContext.Email,
             UserId = _userContext.Id,
-            BookingId = bookingId
+            BookingId = bookingId,
         });
 
         return Ok();

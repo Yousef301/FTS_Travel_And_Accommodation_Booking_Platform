@@ -25,4 +25,8 @@
       <ProjectReference Include="..\TABP.Application\TABP.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\InvoiceTemplate.html" />
+    </ItemGroup>
+
 </Project>
