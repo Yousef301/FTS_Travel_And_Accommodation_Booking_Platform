@@ -9,7 +9,10 @@ using TABP.Application.Commands.Hotels.UpdateHotel;
 using TABP.Application.Queries.Hotels.GetHotels;
 using TABP.Application.Queries.Hotels.GetHotelsWithFeaturedDeals;
 using TABP.Domain.Enums;
+using TABP.Domain.Extensions;
+using TABP.Domain.Models;
 using TABP.Web.DTOs.Hotels;
+using TABP.Web.Extensions;
 
 namespace TABP.Web.Controllers;
 
@@ -35,7 +38,11 @@ public class HotelsController : ControllerBase
 
         var hotels = await _mediator.Send(query);
 
-        return Ok(hotels);
+        var metadata = hotels.ToMetadata();
+
+        Response.AddPaginationMetadata(metadata, Request);
+
+        return Ok(hotels.Items);
     }
 
     [HttpGet("featured-deals")]
