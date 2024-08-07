@@ -49,6 +49,8 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
         {
             foreach (var bookingDetail in bookingDetails)
             {
+                // TODO: If the reservation in the future don't set it to reserved
+
                 await _roomRepository.UpdateStatusToReservedByIdAsync(bookingDetail.RoomId);
             }
 

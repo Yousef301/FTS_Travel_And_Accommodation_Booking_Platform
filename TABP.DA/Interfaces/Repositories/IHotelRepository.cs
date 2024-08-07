@@ -7,7 +7,7 @@ namespace TABP.DAL.Interfaces.Repositories;
 
 public interface IHotelRepository
 {
-    Task<PagedList<Hotel>> GetAsync(Query query, bool includeCities = false);
+    Task<PagedList<Hotel>> GetAsync(Query<Hotel> query, bool includeCities = false);
     Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5);
     Task<Hotel?> GetByIdAsync(Guid id);
     Task<Hotel?> GetByIdDetailsIncludedAsync(Guid id);

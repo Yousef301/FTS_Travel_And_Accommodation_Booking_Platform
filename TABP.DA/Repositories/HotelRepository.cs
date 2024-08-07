@@ -16,9 +16,11 @@ public class HotelRepository : IHotelRepository
         _context = context;
     }
 
-    public async Task<PagedList<Hotel>> GetAsync(Query query, bool includeCities = false)
+    public async Task<PagedList<Hotel>> GetAsync(Query<Hotel> query, bool includeCities = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
+
+        hotelsQuery = hotelsQuery.Where(query.Expression!);
 
         if (includeCities)
         {
