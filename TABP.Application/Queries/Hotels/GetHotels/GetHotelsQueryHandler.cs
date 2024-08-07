@@ -23,13 +23,14 @@ public class GetHotelsQueryHandler : IRequestHandler<GetHotelsQuery, PagedList<H
 
     public async Task<PagedList<HotelResponse>> Handle(GetHotelsQuery request, CancellationToken cancellationToken)
     {
-        var hotels = await _hotelRepository.GetAsync(new Query<Hotel>
+        var hotels = await _hotelRepository.GetAsync(new Filters<Hotel>
         {
             Page = request.Page,
             PageSize = request.PageSize,
             SearchString = request.SearchString,
-            Expression = GetSearchExpression(request),
-        }, true);
+            FilterExpression = GetSearchExpression(request),
+            SortExpression = GetSortExpression(request)
+        }, true, true);
 
         return _mapper.Map<PagedList<HotelResponse>>(hotels);
     }
@@ -94,5 +95,15 @@ public class GetHotelsQueryHandler : IRequestHandler<GetHotelsQuery, PagedList<H
 
         return h => h.Rooms.Any(r =>
             r.RoomAmenities.Any(ra => amenities.Contains(ra.AmenityId)));
+    }
+
+    private Expression<Func<Hotel, object>> GetSortExpression(GetHotelsQuery request)
+    {
+        return request.SortBy?.ToLower() switch
+        {
+            "price" => h => h.Rooms.Min(r => r.Price),
+            "rating" => h => h.Rating,
+            _ => h => h.Name
+        };
     }
 }

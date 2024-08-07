@@ -3,12 +3,12 @@ using TABP.Domain.Enums;
 
 namespace TABP.Domain.Models;
 
-public class Query<T>
+public class Filters<T>
 {
-    public Expression<Func<T, bool>>? Expression { get; init; }
-    public string? SearchString { get; init; }
-    public string SortColumn { get; init; }
+    public Expression<Func<T, bool>>? FilterExpression { get; init; }
+    public Expression<Func<T, object>>? SortExpression { get; init; }
     public SortOrder SortOrder { get; init; }
+    public string? SearchString { get; init; }
     public int Page { get; init; }
     public int PageSize { get; init; }
 }

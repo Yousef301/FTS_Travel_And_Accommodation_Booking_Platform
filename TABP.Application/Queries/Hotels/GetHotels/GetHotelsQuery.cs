@@ -7,6 +7,8 @@ namespace TABP.Application.Queries.Hotels.GetHotels;
 public class GetHotelsQuery : IRequest<PagedList<HotelResponse>>
 {
     public string? SearchString { get; init; }
+    public string? SortBy { get; set; }
+    public SortOrder SortOrder { get; set; }
     public DateOnly CheckInDate { get; init; }
     public DateOnly CheckOutDate { get; init; }
     public int NumberOfRooms { get; init; }

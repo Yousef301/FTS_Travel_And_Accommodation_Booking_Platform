@@ -11,4 +11,5 @@ public class HotelResponse
     public string Email { get; set; }
     public string Description { get; set; }
     public double Rating { get; set; }
+    public double Price { get; set; }
 }

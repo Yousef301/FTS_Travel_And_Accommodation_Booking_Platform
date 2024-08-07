@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.DAL.Models;
+using TABP.Domain.Enums;
 using TABP.Domain.Models;
 
 namespace TABP.DAL.Repositories;
@@ -16,21 +17,31 @@ public class HotelRepository : IHotelRepository
         _context = context;
     }
 
-    public async Task<PagedList<Hotel>> GetAsync(Query<Hotel> query, bool includeCities = false)
+    public async Task<PagedList<Hotel>> GetAsync(Filters<Hotel> filters, bool includeCity = false,
+        bool includeRooms = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
 
-        hotelsQuery = hotelsQuery.Where(query.Expression!);
+        hotelsQuery = hotelsQuery.Where(filters.FilterExpression!);
 
-        if (includeCities)
+        if (includeCity)
         {
             hotelsQuery = hotelsQuery.Include(h => h.City);
         }
 
+        if (includeRooms)
+        {
+            hotelsQuery = hotelsQuery.Include(h => h.Rooms);
+        }
+
+        hotelsQuery = filters.SortOrder == SortOrder.DESC
+            ? hotelsQuery.OrderByDescending(filters.SortExpression!)
+            : hotelsQuery.OrderBy(filters.SortExpression!);
+
         var hotels = await PagedList<Hotel>.CreateAsync(
             hotelsQuery,
-            query.Page,
-            query.PageSize
+            filters.Page,
+            filters.PageSize
         );
 
         return hotels;
@@ -65,9 +76,21 @@ public class HotelRepository : IHotelRepository
         return hotels;
     }
 
-    public async Task<Hotel?> GetByIdAsync(Guid id)
+    public async Task<Hotel?> GetByIdAsync(Guid id, bool includeCity = false, bool includeRooms = false)
     {
-        return await _context.Hotels.FindAsync(id);
+        var hotelsQuery = _context.Hotels.AsQueryable();
+
+        if (includeCity)
+        {
+            hotelsQuery = hotelsQuery.Include(h => h.City);
+        }
+
+        if (includeRooms)
+        {
+            hotelsQuery = hotelsQuery.Include(h => h.Rooms);
+        }
+
+        return await hotelsQuery.FirstOrDefaultAsync(h => h.Id == id);
     }
 
     public async Task<Hotel?> GetByIdDetailsIncludedAsync(Guid id)

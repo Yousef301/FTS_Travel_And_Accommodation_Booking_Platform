@@ -30,7 +30,7 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
 
         foreach (var hotelId in hotelsId)
         {
-            var hotel = await _hotelRepository.GetByIdDetailsIncludedAsync(hotelId);
+            var hotel = await _hotelRepository.GetByIdAsync(hotelId, true, true);
             hotels.Add(hotel);
         }
 
