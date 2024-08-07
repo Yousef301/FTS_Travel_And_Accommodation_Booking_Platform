@@ -7,8 +7,8 @@ using TABP.Application.Commands.SpecialOffers.CreateSpecialOffer;
 using TABP.Application.Commands.SpecialOffers.DeleteSpecialOffer;
 using TABP.Application.Commands.SpecialOffers.UpdateSpecialOffer;
 using TABP.Application.Queries.SpecialOffers.GetSpecialOffers;
+using TABP.Domain.Enums;
 using TABP.Web.DTOs.SpecialOffers;
-using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
 

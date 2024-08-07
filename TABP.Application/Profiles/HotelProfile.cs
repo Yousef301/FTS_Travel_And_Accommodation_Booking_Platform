@@ -4,6 +4,7 @@ using TABP.Application.Commands.Hotels.UpdateHotel;
 using TABP.Application.Queries.Hotels;
 using TABP.DAL.Entities;
 using TABP.Application.Queries.Users;
+using TABP.Domain.Models;
 
 namespace TABP.Application.Profiles;
 
@@ -14,12 +15,17 @@ public class HotelProfile : Profile
         CreateMap<CreateHotelCommand, Hotel>();
         CreateMap<Hotel, HotelUpdate>();
         CreateMap<HotelUpdate, Hotel>();
-        
+
         CreateMap<Hotel, HotelResponse>()
             .ForMember(dest => dest.City,
                 opt =>
                     opt.MapFrom(src => src.City.Name));
-        
+
+        CreateMap<PagedList<Hotel>, PagedList<HotelResponse>>()
+            .ForMember(dest => dest.Items,
+                opt =>
+                    opt.MapFrom(src => src.Items));
+
         CreateMap<Hotel, RecentlyVisitedHotelsResponse>()
             .ForMember(dest => dest.City,
                 opt =>

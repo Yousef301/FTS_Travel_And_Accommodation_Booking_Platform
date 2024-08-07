@@ -1,4 +1,4 @@
-﻿using TABP.DAL.Enums;
+﻿using TABP.Domain.Enums;
 
 namespace TABP.Web.Services.Interfaces;
 

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TABP.DAL.Entities;
-using TABP.DAL.Enums;
+using TABP.Domain.Enums;
 
 namespace TABP.DAL.Configurations;
 

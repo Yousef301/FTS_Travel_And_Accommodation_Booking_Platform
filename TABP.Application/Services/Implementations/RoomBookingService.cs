@@ -1,6 +1,6 @@
 ﻿using TABP.Application.Services.Interfaces;
-using TABP.DAL.Enums;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Enums;
 
 namespace TABP.Application.Services.Implementations;
 

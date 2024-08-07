@@ -8,8 +8,8 @@ using TABP.Application.Commands.Rooms.DeleteRoom;
 using TABP.Application.Commands.Rooms.UpdateRoom;
 using TABP.Application.Queries.Rooms.GetAvailableRooms;
 using TABP.Application.Queries.Rooms.GetRooms;
+using TABP.Domain.Enums;
 using TABP.Web.DTOs.Rooms;
-using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
 

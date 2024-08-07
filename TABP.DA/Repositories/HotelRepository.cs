@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.DAL.Models;
+using TABP.Domain.Models;
 
 namespace TABP.DAL.Repositories;
 
@@ -14,16 +16,22 @@ public class HotelRepository : IHotelRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Hotel>> GetAsync()
+    public async Task<PagedList<Hotel>> GetAsync(Query query, bool includeCities = false)
     {
-        return await _context.Hotels.ToListAsync();
-    }
+        var hotelsQuery = _context.Hotels.AsQueryable();
 
-    public async Task<IEnumerable<Hotel>> GetIncludeCityAsync()
-    {
-        return await _context.Hotels
-            .Include(h => h.City)
-            .ToListAsync();
+        if (includeCities)
+        {
+            hotelsQuery = hotelsQuery.Include(h => h.City);
+        }
+
+        var hotels = await PagedList<Hotel>.CreateAsync(
+            hotelsQuery,
+            query.Page,
+            query.PageSize
+        );
+
+        return hotels;
     }
 
     public async Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5) // TODO: MAKE IT FASTER IF POSSIBLE

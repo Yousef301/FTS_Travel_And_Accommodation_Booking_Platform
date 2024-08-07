@@ -7,8 +7,8 @@ using TABP.Application.Commands.Bookings.CheckoutBooking;
 using TABP.Application.Commands.Bookings.CreateBooking;
 using TABP.Application.Queries.Bookings.GetBookingById;
 using TABP.Application.Queries.Bookings.GetBookings;
+using TABP.Domain.Enums;
 using TABP.Web.DTOs.Bookings;
-using TABP.Web.Enums;
 using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Controllers;

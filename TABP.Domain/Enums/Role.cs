@@ -1,4 +1,4 @@
-﻿namespace TABP.DAL.Enums;
+﻿namespace TABP.Domain.Enums;
 
 public enum Role
 {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Queries.Invoices.GetInvoiceAsPdf;
-using TABP.Web.Enums;
+using TABP.Domain.Enums;
 using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Controllers;

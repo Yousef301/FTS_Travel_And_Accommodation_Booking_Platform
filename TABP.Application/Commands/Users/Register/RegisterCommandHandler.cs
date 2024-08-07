@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using TABP.Application.Exceptions;
-using TABP.Application.Services.Implementations;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
-using TABP.DAL.Enums;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Enums;
 
 namespace TABP.Application.Commands.Users.Register;
 

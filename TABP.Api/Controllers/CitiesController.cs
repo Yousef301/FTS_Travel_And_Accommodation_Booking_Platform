@@ -7,8 +7,8 @@ using TABP.Application.Commands.Cities.CreateCity;
 using TABP.Application.Commands.Cities.DeleteCity;
 using TABP.Application.Commands.Cities.UpdateCity;
 using TABP.Application.Queries.Cities.GetTrendingCities;
+using TABP.Domain.Enums;
 using TABP.Web.DTOs.Cities;
-using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
 

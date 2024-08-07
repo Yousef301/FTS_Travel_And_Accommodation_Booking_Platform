@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Images.Cities.CreateCityImage;
@@ -8,7 +7,7 @@ using TABP.Application.Commands.Images.Cities.DeleteCityImage;
 using TABP.Application.Queries.Images.Cities.GetCityImageById;
 using TABP.Application.Queries.Images.Cities.GetCityImages;
 using TABP.Application.Queries.Images.Cities.GetCityThumbnail;
-using TABP.Web.Enums;
+using TABP.Domain.Enums;
 
 
 namespace TABP.Web.Controllers;

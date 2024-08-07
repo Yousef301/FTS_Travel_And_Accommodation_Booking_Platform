@@ -8,8 +8,8 @@ using TABP.Application.Commands.Reviews.DeleteReview;
 using TABP.Application.Commands.Reviews.UpdateReview;
 using TABP.Application.Queries.Reviews.GetHotelReviews;
 using TABP.Application.Queries.Reviews.GetUserHotelReviews;
+using TABP.Domain.Enums;
 using TABP.Web.DTOs.Reviews;
-using TABP.Web.Enums;
 using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Controllers;

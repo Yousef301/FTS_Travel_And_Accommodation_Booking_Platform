@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using MediatR;
-using TABP.DAL.Enums;
+﻿using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Enums;
 
 namespace TABP.Application.Commands.Bookings.CancelBooking;
 

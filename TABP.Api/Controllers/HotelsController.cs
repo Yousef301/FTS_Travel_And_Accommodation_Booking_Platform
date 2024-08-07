@@ -8,8 +8,8 @@ using TABP.Application.Commands.Hotels.DeleteHotel;
 using TABP.Application.Commands.Hotels.UpdateHotel;
 using TABP.Application.Queries.Hotels.GetHotels;
 using TABP.Application.Queries.Hotels.GetHotelsWithFeaturedDeals;
+using TABP.Domain.Enums;
 using TABP.Web.DTOs.Hotels;
-using TABP.Web.Enums;
 
 namespace TABP.Web.Controllers;
 
@@ -27,11 +27,13 @@ public class HotelsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
+    [HttpGet("search")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetHotels()
+    public async Task<IActionResult> GetHotels([FromQuery] HotelsSearchDto searchDto)
     {
-        var hotels = await _mediator.Send(new GetHotelsQuery());
+        var query = _mapper.Map<GetHotelsQuery>(searchDto);
+
+        var hotels = await _mediator.Send(query);
 
         return Ok(hotels);
     }

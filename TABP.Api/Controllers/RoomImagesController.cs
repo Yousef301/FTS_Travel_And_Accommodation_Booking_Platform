@@ -5,7 +5,7 @@ using TABP.Application.Commands.Images.Rooms.CreateRoomImage;
 using TABP.Application.Commands.Images.Rooms.DeleteRoomImage;
 using TABP.Application.Queries.Images.Rooms.GetRoomImageById;
 using TABP.Application.Queries.Images.Rooms.GetRoomImages;
-using TABP.Web.Enums;
+using TABP.Domain.Enums;
 
 namespace TABP.Web.Controllers;
 

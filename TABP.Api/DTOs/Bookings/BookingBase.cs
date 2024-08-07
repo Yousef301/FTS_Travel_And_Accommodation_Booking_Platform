@@ -1,6 +1,4 @@
-﻿using TABP.Web.Enums;
-
-namespace TABP.Web.DTOs.Bookings;
+﻿namespace TABP.Web.DTOs.Bookings;
 
 public class BookingBase
 {

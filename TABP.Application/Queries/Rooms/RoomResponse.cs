@@ -1,5 +1,4 @@
 ﻿using TABP.Application.Queries.Amenities;
-using TABP.DAL.Enums;
 
 namespace TABP.Application.Queries.Rooms;
 

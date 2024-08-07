@@ -1,6 +1,5 @@
-﻿using System;
-using System.Security.Claims;
-using TABP.DAL.Enums;
+﻿using System.Security.Claims;
+using TABP.Domain.Enums;
 using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Services.Implementations;
