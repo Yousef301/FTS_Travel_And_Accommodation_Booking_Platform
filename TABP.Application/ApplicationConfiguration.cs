@@ -2,6 +2,7 @@
 using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Stripe;
 using TABP.Application.Helpers.Implementations;
 using TABP.Application.Helpers.Interfaces;
 using TABP.Application.Services.Implementations;
@@ -27,11 +28,14 @@ public static class ApplicationConfiguration
         services.AddScoped<IImageService, S3ImageService>();
         services.AddScoped<IPdfService, PdfService>();
         services.AddScoped<IHotelExpressions, HotelExpressions>();
+        services.AddScoped<IPaymentService, StripePaymentService>();
 
         services.AddDefaultAWSOptions(configuration.GetAWSOptions());
         services.AddAWSService<IAmazonS3>();
 
         services.AddHostedService<SpecialOfferExpirationService>();
+
+        StripeConfiguration.ApiKey = configuration["StripeSecretKey"];
 
         return services;
     }

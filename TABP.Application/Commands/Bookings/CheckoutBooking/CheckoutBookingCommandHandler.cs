@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
 using TABP.Application.Queries.Invoices;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
@@ -8,19 +9,22 @@ using TABP.Domain.Enums;
 
 namespace TABP.Application.Commands.Bookings.CheckoutBooking;
 
-public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingCommand>
+public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingCommand, string>
 {
     private readonly IBookingDetailRepository _bookingDetailRepository;
     private readonly IBookingRepository _bookingRepository;
     private readonly IPaymentRepository _paymentRepository;
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IRoomRepository _roomRepository;
+    private readonly IPaymentService _paymentService;
+    private readonly IConfiguration _configuration;
     private readonly IEmailService _emailService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CheckoutBookingCommandHandler(IBookingRepository bookingRepository, IPaymentRepository paymentRepository,
-        IInvoiceRepository invoiceRepository, IRoomRepository roomRepository, IUnitOfWork unitOfWork,
-        IBookingDetailRepository bookingDetailRepository, IEmailService emailService)
+    public CheckoutBookingCommandHandler(IBookingRepository bookingRepository,
+        IPaymentRepository paymentRepository, IInvoiceRepository invoiceRepository,
+        IRoomRepository roomRepository, IUnitOfWork unitOfWork, IPaymentService paymentService,
+        IBookingDetailRepository bookingDetailRepository, IEmailService emailService, IConfiguration configuration)
     {
         _bookingRepository = bookingRepository;
         _paymentRepository = paymentRepository;
@@ -29,9 +33,11 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
         _unitOfWork = unitOfWork;
         _bookingDetailRepository = bookingDetailRepository;
         _emailService = emailService;
+        _configuration = configuration;
+        _paymentService = paymentService;
     }
 
-    public async Task Handle(CheckoutBookingCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CheckoutBookingCommand request, CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdAsync(request.BookingId);
 
@@ -41,7 +47,15 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
                 "Booking is already confirmed or canceled.");
         }
 
-        var bookingDetails = await _bookingDetailRepository.GetByBookingIdAsync(request.BookingId);
+        var bookingDetails = await _bookingDetailRepository
+            .GetByBookingIdAsync(request.BookingId);
+
+        var successUrl = _configuration["Payment:SuccessUrl"] + $"{booking.Id}/invoice";
+        var cancelUrl = _configuration["Payment:CancelUrl"] + $"{booking.Id}";
+
+        var checkoutUrl =
+            await _paymentService.CreateCheckoutSessionAsync(Convert.ToDecimal(booking.TotalPrice),
+                "usd", successUrl, cancelUrl);
 
         await _unitOfWork.BeginTransactionAsync();
 
@@ -108,5 +122,7 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
             await _unitOfWork.RollbackTransactionAsync();
             throw;
         }
+
+        return checkoutUrl;
     }
 }

@@ -8,6 +8,7 @@ using TABP.Application.Commands.Bookings.CreateBooking;
 using TABP.Application.Queries.Bookings.GetBookingById;
 using TABP.Application.Queries.Bookings.GetBookings;
 using TABP.Domain.Enums;
+using TABP.Web.DTOs;
 using TABP.Web.DTOs.Bookings;
 using TABP.Web.Services.Interfaces;
 
@@ -76,13 +77,13 @@ public class BookingsController : ControllerBase
     [HttpPost("{bookingId:guid}/checkout")]
     public async Task<IActionResult> CheckoutBooking(Guid bookingId)
     {
-        await _mediator.Send(new CheckoutBookingCommand
+        var checkoutUrl = await _mediator.Send(new CheckoutBookingCommand
         {
             UserEmail = _userContext.Email,
             UserId = _userContext.Id,
             BookingId = bookingId,
         });
 
-        return Ok();
+        return Ok(new { Url = checkoutUrl });
     }
 }

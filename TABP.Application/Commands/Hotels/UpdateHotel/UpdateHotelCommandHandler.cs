@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Commands.Cities.UpdateCity;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 
