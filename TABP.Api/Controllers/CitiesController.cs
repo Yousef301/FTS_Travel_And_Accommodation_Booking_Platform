@@ -6,9 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Cities.CreateCity;
 using TABP.Application.Commands.Cities.DeleteCity;
 using TABP.Application.Commands.Cities.UpdateCity;
+using TABP.Application.Queries.Cities.GetCitiesForAdmin;
 using TABP.Application.Queries.Cities.GetTrendingCities;
 using TABP.Domain.Enums;
+using TABP.Domain.Extensions;
+using TABP.Web.DTOs;
 using TABP.Web.DTOs.Cities;
+using TABP.Web.Extensions;
 
 namespace TABP.Web.Controllers;
 
@@ -34,6 +38,21 @@ public class CitiesController : ControllerBase
             new GetTrendingCitiesQuery());
 
         return Ok(trendingCities);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetCitiesForAdmin([FromQuery] FilterParameters filterParameters)
+    {
+        var query = _mapper.Map<GetCitiesForAdminQuery>(filterParameters);
+
+        var cities = await _mediator.Send(query);
+
+        var metadata = cities.ToMetadata();
+
+        Response.AddPaginationMetadata(metadata, Request);
+
+
+        return Ok(cities.Items);
     }
 
     [HttpPost]

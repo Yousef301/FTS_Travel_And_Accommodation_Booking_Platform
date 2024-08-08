@@ -3,7 +3,7 @@ using TABP.Application.Queries.Hotels;
 
 namespace TABP.Application.Commands.Hotels.CreateHotel;
 
-public class CreateHotelCommand : IRequest<HotelResponse>
+public class CreateHotelCommand : IRequest<HotelUserResponse>
 {
     public Guid CityId { get; set; }
     public string Name { get; set; }

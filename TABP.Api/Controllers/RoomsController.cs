@@ -7,9 +7,12 @@ using TABP.Application.Commands.Rooms.CreateRoom;
 using TABP.Application.Commands.Rooms.DeleteRoom;
 using TABP.Application.Commands.Rooms.UpdateRoom;
 using TABP.Application.Queries.Rooms.GetAvailableRooms;
-using TABP.Application.Queries.Rooms.GetRooms;
+using TABP.Application.Queries.Rooms.GetRoomsForAdmin;
 using TABP.Domain.Enums;
+using TABP.Domain.Extensions;
+using TABP.Web.DTOs;
 using TABP.Web.DTOs.Rooms;
+using TABP.Web.Extensions;
 
 namespace TABP.Web.Controllers;
 
@@ -28,18 +31,30 @@ public class RoomsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetRoomsForAdmin(Guid hotelId)
+    public async Task<IActionResult> GetRoomsForAdmin(Guid hotelId,
+        [FromQuery] FilterParameters filterParameters)
     {
-        var rooms = await _mediator.Send(new GetRoomsForAdminQuery { HotelId = hotelId });
+        var query = _mapper.Map<GetRoomsForAdminQuery>(filterParameters);
+        query.HotelId = hotelId;
 
-        return Ok(rooms);
+        var rooms = await _mediator.Send(query);
+
+        var metadata = rooms.ToMetadata();
+
+        Response.AddPaginationMetadata(metadata, Request);
+
+        return Ok(rooms.Items);
     }
 
     [HttpGet("available")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetAvailableRooms(Guid hotelId)
+    public async Task<IActionResult> GetAvailableRooms(Guid hotelId,
+        [FromQuery] GetAvailableRoomsDto getAvailableRoomsDto)
     {
-        var rooms = await _mediator.Send(new GetAvailableRoomsQuery() { HotelId = hotelId });
+        var query = _mapper.Map<GetAvailableRoomsQuery>(getAvailableRoomsDto);
+        query.HotelId = hotelId;
+
+        var rooms = await _mediator.Send(query);
 
         return Ok(rooms);
     }
@@ -59,7 +74,10 @@ public class RoomsController : ControllerBase
     [HttpDelete("{roomId:guid}")]
     public async Task<IActionResult> DeleteRoom(Guid roomId)
     {
-        await _mediator.Send(new DeleteRoomCommand { Id = roomId });
+        await _mediator.Send(new DeleteRoomCommand
+        {
+            Id = roomId
+        });
 
         return NoContent();
     }
@@ -70,7 +88,11 @@ public class RoomsController : ControllerBase
     {
         var roomDocument = _mapper.Map<JsonPatchDocument<RoomUpdate>>(roomUpdateDto);
 
-        await _mediator.Send(new UpdateRoomCommand() { Id = id, RoomDocument = roomDocument });
+        await _mediator.Send(new UpdateRoomCommand()
+        {
+            Id = id,
+            RoomDocument = roomDocument
+        });
 
         return Ok();
     }

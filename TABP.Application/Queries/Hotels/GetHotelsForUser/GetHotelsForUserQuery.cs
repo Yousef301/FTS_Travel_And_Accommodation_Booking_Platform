@@ -2,9 +2,9 @@
 using TABP.Domain.Enums;
 using TABP.Domain.Models;
 
-namespace TABP.Application.Queries.Hotels.GetHotels;
+namespace TABP.Application.Queries.Hotels.GetHotelsForUser;
 
-public class GetHotelsQuery : IRequest<PagedList<HotelResponse>>
+public class GetHotelsForUserQuery : IRequest<PagedList<HotelUserResponse>>
 {
     public string? SearchString { get; init; }
     public string? SortBy { get; set; }

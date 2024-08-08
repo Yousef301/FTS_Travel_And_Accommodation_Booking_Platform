@@ -8,7 +8,6 @@ public class Filters<T>
     public Expression<Func<T, bool>>? FilterExpression { get; init; }
     public Expression<Func<T, object>>? SortExpression { get; init; }
     public SortOrder SortOrder { get; init; }
-    public string? SearchString { get; init; }
     public int Page { get; init; }
     public int PageSize { get; init; }
 }

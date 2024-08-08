@@ -7,7 +7,7 @@ using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.Application.Commands.Hotels.CreateHotel;
 
-public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, HotelResponse>
+public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, HotelUserResponse>
 {
     private readonly IHotelRepository _hotelRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -21,7 +21,7 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
         _mapper = mapper;
     }
 
-    public async Task<HotelResponse> Handle(CreateHotelCommand request, CancellationToken cancellationToken)
+    public async Task<HotelUserResponse> Handle(CreateHotelCommand request, CancellationToken cancellationToken)
     {
         var hotel = _mapper.Map<Hotel>(request);
 
@@ -31,6 +31,6 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand, Hot
 
         await _unitOfWork.SaveChangesAsync();
 
-        return _mapper.Map<HotelResponse>(createdHotel);
+        return _mapper.Map<HotelUserResponse>(createdHotel);
     }
 }

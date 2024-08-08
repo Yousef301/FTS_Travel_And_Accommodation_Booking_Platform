@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.DAL.Models.Procedures;
+using TABP.Domain.Enums;
+using TABP.Domain.Models;
 
 namespace TABP.DAL.Repositories;
 
@@ -15,9 +17,27 @@ public class CityRepository : ICityRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<City>> GetAsync()
+    public async Task<PagedList<City>> GetAsync(Filters<City> filters, bool includeHotels = false)
     {
-        return await _context.Cities.ToListAsync();
+        var citiesQuery = _context.Cities.AsQueryable();
+
+        citiesQuery = citiesQuery.Where(filters.FilterExpression!);
+
+        citiesQuery = filters.SortOrder == SortOrder.DESC
+            ? citiesQuery.OrderByDescending(filters.SortExpression!)
+            : citiesQuery.OrderBy(filters.SortExpression!);
+
+        if (includeHotels)
+        {
+            citiesQuery = citiesQuery.Include(c => c.Hotels);
+        }
+
+        var cities = await PagedList<City>.CreateAsync(
+            citiesQuery,
+            filters.Page,
+            filters.PageSize);
+
+        return cities;
     }
 
     public async Task<IEnumerable<TrendingCities>> GetTrendingDestinations()

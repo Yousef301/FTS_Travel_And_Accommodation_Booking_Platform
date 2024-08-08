@@ -2,5 +2,4 @@
 
 public class UpdateRoomDto : RoomBase
 {
-    public string Status { get; set; }
 }

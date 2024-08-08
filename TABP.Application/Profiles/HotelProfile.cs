@@ -15,8 +15,15 @@ public class HotelProfile : Profile
         CreateMap<CreateHotelCommand, Hotel>();
         CreateMap<Hotel, HotelUpdate>();
         CreateMap<HotelUpdate, Hotel>();
+        CreateMap<Hotel, HotelAdminResponse>()
+            .ForMember(dest => dest.City,
+                opt =>
+                    opt.MapFrom(src => src.City.Name))
+            .ForMember(dest => dest.NumberOfRooms,
+                opt =>
+                    opt.MapFrom(src => src.Rooms.Count));
 
-        CreateMap<Hotel, HotelResponse>()
+        CreateMap<Hotel, HotelUserResponse>()
             .ForMember(dest => dest.City,
                 opt =>
                     opt.MapFrom(src => src.City.Name))
@@ -24,7 +31,12 @@ public class HotelProfile : Profile
                 opt =>
                     opt.MapFrom(src => src.Rooms.Min(r => r.Price)));
 
-        CreateMap<PagedList<Hotel>, PagedList<HotelResponse>>()
+        CreateMap<PagedList<Hotel>, PagedList<HotelAdminResponse>>()
+            .ForMember(dest => dest.Items,
+                opt =>
+                    opt.MapFrom(src => src.Items));
+
+        CreateMap<PagedList<Hotel>, PagedList<HotelUserResponse>>()
             .ForMember(dest => dest.Items,
                 opt =>
                     opt.MapFrom(src => src.Items));

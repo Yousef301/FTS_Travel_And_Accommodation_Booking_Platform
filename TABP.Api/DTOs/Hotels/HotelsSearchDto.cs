@@ -2,7 +2,6 @@
 
 public class HotelsSearchDto : FilterParameters
 {
-    public string? SearchString { get; set; }
     public DateOnly CheckInDate { get; init; } = DateOnly.FromDateTime(DateTime.Now);
     public DateOnly CheckOutDate { get; init; } = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
     public int NumberOfRooms { get; set; } = 1;

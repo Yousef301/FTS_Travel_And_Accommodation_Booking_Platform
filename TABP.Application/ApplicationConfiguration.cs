@@ -2,6 +2,8 @@
 using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TABP.Application.Helpers.Implementations;
+using TABP.Application.Helpers.Interfaces;
 using TABP.Application.Services.Implementations;
 using TABP.Application.Services.Implementations.AWS;
 using TABP.Application.Services.Interfaces;
@@ -24,6 +26,7 @@ public static class ApplicationConfiguration
         services.AddScoped<IEmailService, SmtpEmailService>();
         services.AddScoped<IImageService, S3ImageService>();
         services.AddScoped<IPdfService, PdfService>();
+        services.AddScoped<IHotelExpressions, HotelExpressions>();
 
         services.AddDefaultAWSOptions(configuration.GetAWSOptions());
         services.AddAWSService<IAmazonS3>();

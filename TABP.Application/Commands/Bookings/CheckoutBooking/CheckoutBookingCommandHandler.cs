@@ -47,19 +47,12 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
 
         try
         {
-            foreach (var bookingDetail in bookingDetails)
-            {
-                // TODO: If the reservation in the future don't set it to reserved
-
-                await _roomRepository.UpdateStatusToReservedByIdAsync(bookingDetail.RoomId);
-            }
-
-            booking.PaymentStatus = PaymentStatus.Paid;
-            booking.BookingStatus = BookingStatus.Confirmed;
-
-            await _bookingRepository.UpdateAsync(booking);
-
-            await _unitOfWork.SaveChangesAsync();
+            // foreach (var bookingDetail in bookingDetails)
+            // {
+            //     // TODO: If the reservation in the future don't set it to reserved
+            //
+            //     await _roomRepository.UpdateStatusToReservedByIdAsync(bookingDetail.RoomId);
+            // }
 
             var payment = new Payment
             {
@@ -67,11 +60,16 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
                 UserId = request.UserId,
                 BookingId = booking.Id,
                 PaymentDate = DateTime.Now,
-                PaymentStatus = PaymentStatus.Paid,
+                PaymentStatus = PaymentStatus.Succeeded,
                 TotalPrice = booking.TotalPrice
             };
 
             await _paymentRepository.CreateAsync(payment);
+
+            booking.PaymentStatus = PaymentStatus.Succeeded;
+            booking.BookingStatus = BookingStatus.Confirmed;
+
+            await _bookingRepository.UpdateAsync(booking);
 
             await _unitOfWork.SaveChangesAsync();
 

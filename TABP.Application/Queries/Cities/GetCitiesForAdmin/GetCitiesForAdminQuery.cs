@@ -2,11 +2,10 @@
 using TABP.Domain.Enums;
 using TABP.Domain.Models;
 
-namespace TABP.Application.Queries.Rooms.GetRoomsForAdmin;
+namespace TABP.Application.Queries.Cities.GetCitiesForAdmin;
 
-public class GetRoomsForAdminQuery : IRequest<PagedList<RoomAdminResponse>>
+public class GetCitiesForAdminQuery : IRequest<PagedList<CityAdminResponse>>
 {
-    public Guid HotelId { get; set; }
     public string? SearchString { get; init; }
     public string? SortBy { get; set; }
     public SortOrder SortOrder { get; set; }

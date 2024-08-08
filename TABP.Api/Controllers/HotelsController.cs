@@ -6,11 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Hotels.CreateHotel;
 using TABP.Application.Commands.Hotels.DeleteHotel;
 using TABP.Application.Commands.Hotels.UpdateHotel;
-using TABP.Application.Queries.Hotels.GetHotels;
+using TABP.Application.Queries.Hotels.GetHotelsForAdmin;
+using TABP.Application.Queries.Hotels.GetHotelsForUser;
 using TABP.Application.Queries.Hotels.GetHotelsWithFeaturedDeals;
 using TABP.Domain.Enums;
 using TABP.Domain.Extensions;
-using TABP.Domain.Models;
+using TABP.Web.DTOs;
 using TABP.Web.DTOs.Hotels;
 using TABP.Web.Extensions;
 
@@ -32,9 +33,9 @@ public class HotelsController : ControllerBase
 
     [HttpGet("search")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetHotels([FromQuery] HotelsSearchDto searchDto)
+    public async Task<IActionResult> GetHotelsForUsers([FromQuery] HotelsSearchDto searchDto)
     {
-        var query = _mapper.Map<GetHotelsQuery>(searchDto);
+        var query = _mapper.Map<GetHotelsForUserQuery>(searchDto);
 
         var hotels = await _mediator.Send(query);
 
@@ -47,12 +48,29 @@ public class HotelsController : ControllerBase
 
     [HttpGet("featured-deals")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetFeaturedDeals()
+    public async Task<IActionResult> GetFeaturedDeals([FromQuery] int count = 5)
     {
         var hotels = await _mediator.Send(
-            new GetHotelsWithFeaturedDealsQuery());
+            new GetHotelsWithFeaturedDealsQuery
+            {
+                Count = count
+            });
 
         return Ok(hotels);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetHotelsForAdmin([FromQuery] FilterParameters filterParameters)
+    {
+        var query = _mapper.Map<GetHotelsForAdminQuery>(filterParameters);
+
+        var hotels = await _mediator.Send(query);
+
+        var metadata = hotels.ToMetadata();
+
+        Response.AddPaginationMetadata(metadata, Request);
+
+        return Ok(hotels.Items);
     }
 
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
+using TABP.Domain.Models;
 
 namespace TABP.DAL.Repositories;
 
@@ -20,20 +21,44 @@ public class RoomRepository : IRoomRepository
         return await _context.Rooms.ToListAsync();
     }
 
-    public async Task<IEnumerable<Room>> GetByHotelIdAsync(Guid id)
+    public async Task<PagedList<Room>> GetByHotelIdPagedAsync(Guid hotelId, Filters<Room> filters)
     {
-        return await _context.Rooms
-            .Where(r => r.HotelId == id)
-            .Include(r => r.RoomAmenities)
-            .ThenInclude(ra => ra.Amenity)
-            .ToListAsync();
+        var roomsQuery = _context.Rooms
+            .Where(r => r.HotelId == hotelId)
+            .AsQueryable();
+
+        roomsQuery = roomsQuery.Where(filters.FilterExpression!);
+
+        roomsQuery = filters.SortOrder == SortOrder.DESC
+            ? roomsQuery.OrderByDescending(filters.SortExpression!)
+            : roomsQuery.OrderBy(filters.SortExpression!);
+
+        var rooms = await PagedList<Room>.CreateAsync(
+            roomsQuery,
+            filters.Page,
+            filters.PageSize);
+
+        return rooms;
     }
 
-    public async Task<IEnumerable<Room>> GetAvailableRoomsAsync(Guid id)
+    public async Task<IEnumerable<Room>> GetByHotelIdAsync(Guid hotelId,
+        Expression<Func<Room, bool>>? predicate = null, bool includeAmenities = false)
     {
-        return await _context.Rooms
-            .Where(r => r.HotelId == id && r.Status == RoomStatus.Available)
-            .ToListAsync();
+        var query = _context.Rooms
+            .Where(r => r.HotelId == hotelId);
+
+        if (predicate != null)
+        {
+            query = query.Where(predicate);
+        }
+
+        if (includeAmenities)
+        {
+            query = query.Include(r => r.RoomAmenities)
+                .ThenInclude(ra => ra.Amenity);
+        }
+
+        return await query.ToListAsync();
     }
 
     public async Task<IEnumerable<Room>> GetByIdAndHotelIdAsync(Guid hotelId, IEnumerable<Guid> roomIds)
@@ -57,7 +82,6 @@ public class RoomRepository : IRoomRepository
 
         return roomsWithOffers.Select(x => x.Room);
     }
-
 
     public async Task<Room?> GetByIdAsync(Guid id)
     {

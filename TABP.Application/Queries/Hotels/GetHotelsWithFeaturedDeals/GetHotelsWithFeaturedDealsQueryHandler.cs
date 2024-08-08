@@ -10,21 +10,18 @@ public class
     IEnumerable<HotelWithFeaturedDealResponse>>
 {
     private readonly IHotelRepository _hotelRepository;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public GetHotelsWithFeaturedDealsQueryHandler(IHotelRepository hotelRepository, IUnitOfWork unitOfWork,
-        IMapper mapper)
+    public GetHotelsWithFeaturedDealsQueryHandler(IHotelRepository hotelRepository, IMapper mapper)
     {
         _hotelRepository = hotelRepository;
-        _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
     public async Task<IEnumerable<HotelWithFeaturedDealResponse>> Handle(GetHotelsWithFeaturedDealsQuery request,
         CancellationToken cancellationToken)
     {
-        var hotels = await _hotelRepository.GetHotelsWithDealsAsync();
+        var hotels = await _hotelRepository.GetHotelsWithDealsAsync(request.Count);
 
         var hotelResponses = _mapper.Map<IEnumerable<HotelWithFeaturedDealResponse>>(hotels);
 

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.DAL.Models;
 using TABP.Domain.Enums;
 using TABP.Domain.Models;
 
@@ -18,6 +17,36 @@ public class HotelRepository : IHotelRepository
     }
 
     public async Task<PagedList<Hotel>> GetAsync(Filters<Hotel> filters, bool includeCity = false,
+        bool includeRooms = false)
+    {
+        var hotelsQuery = _context.Hotels.AsQueryable();
+
+        hotelsQuery = hotelsQuery.Where(filters.FilterExpression!);
+
+        hotelsQuery = filters.SortOrder == SortOrder.DESC
+            ? hotelsQuery.OrderByDescending(filters.SortExpression!)
+            : hotelsQuery.OrderBy(filters.SortExpression!);
+
+        if (includeCity)
+        {
+            hotelsQuery = hotelsQuery.Include(h => h.City);
+        }
+
+        if (includeRooms)
+        {
+            hotelsQuery = hotelsQuery.Include(h => h.Rooms);
+        }
+
+        var hotels = await PagedList<Hotel>.CreateAsync(
+            hotelsQuery,
+            filters.Page,
+            filters.PageSize
+        );
+
+        return hotels;
+    }
+
+    public async Task<PagedList<Hotel>> GetFilteredHotelsAsync(Filters<Hotel> filters, bool includeCity = false,
         bool includeRooms = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();

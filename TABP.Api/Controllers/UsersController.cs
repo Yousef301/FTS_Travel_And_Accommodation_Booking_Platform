@@ -25,12 +25,13 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("recently-visited")]
-    public async Task<IActionResult> GetRecentlyVisitedHotels()
+    public async Task<IActionResult> GetRecentlyVisitedHotels([FromQuery] int count = 5)
     {
         var recentlyVisitedHotels = await _mediator.Send(
             new GetRecentlyVisitedHotelsQuery
             {
-                UserId = _userContext.Id
+                UserId = _userContext.Id,
+                Count = count
             });
 
         return Ok(recentlyVisitedHotels);
