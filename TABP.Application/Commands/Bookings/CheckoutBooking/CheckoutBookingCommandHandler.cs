@@ -47,12 +47,16 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
 
         try
         {
-            // foreach (var bookingDetail in bookingDetails)
-            // {
-            //     // TODO: If the reservation in the future don't set it to reserved
-            //
-            //     await _roomRepository.UpdateStatusToReservedByIdAsync(bookingDetail.RoomId);
-            // }
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var tomorrow = today.AddDays(1);
+
+            if (booking.CheckInDate == today || booking.CheckInDate == tomorrow)
+            {
+                foreach (var bookingDetail in bookingDetails)
+                {
+                    await _roomRepository.UpdateStatusToReservedByIdAsync(bookingDetail.RoomId);
+                }
+            }
 
             var payment = new Payment
             {

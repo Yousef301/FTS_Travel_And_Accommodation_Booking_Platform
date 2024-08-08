@@ -15,10 +15,9 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
     private readonly IBookingRepository _bookingRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
     public CreateBookingCommandHandler(IBookingDetailRepository bookingDetailRepository,
-        IBookingRepository bookingRepository, IUnitOfWork unitOfWork, IMapper mapper,
+        IBookingRepository bookingRepository, IUnitOfWork unitOfWork,
         IRoomBookingService roomBookingService, IRoomRepository roomRepository)
     {
         _bookingDetailRepository = bookingDetailRepository;
@@ -26,7 +25,6 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         _bookingRepository = bookingRepository;
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
     }
 
     public async Task Handle(CreateBookingCommand request, CancellationToken cancellationToken)
@@ -116,7 +114,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 
         foreach (var roomId in roomIds)
         {
-            var isRoomAvailable = await _roomBookingService.IsRoomAvailable(roomId, checkInDate, checkOutDate);
+            var isRoomAvailable =
+                await _bookingDetailRepository.IsRoomAvailableAsync(roomId, checkInDate, checkOutDate);
             if (!isRoomAvailable)
             {
                 unavailableRooms.Add($"Room with id {roomId} is not available.");

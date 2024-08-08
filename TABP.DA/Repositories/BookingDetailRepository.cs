@@ -70,4 +70,12 @@ public class BookingDetailRepository : IBookingDetailRepository
     {
         return await _context.BookingDetails.AnyAsync(predicate);
     }
+
+    public async Task<bool> IsRoomAvailableAsync(Guid roomId, DateOnly startDate, DateOnly endDate)
+    {
+        return !await _context.BookingDetails
+            .Where(bd => bd.RoomId == roomId)
+            .Where(bd => bd.Booking.CheckInDate <= endDate && bd.Booking.CheckOutDate >= startDate)
+            .AnyAsync();
+    }
 }

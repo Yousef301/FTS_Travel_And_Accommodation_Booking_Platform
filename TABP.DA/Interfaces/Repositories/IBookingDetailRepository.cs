@@ -13,4 +13,5 @@ public interface IBookingDetailRepository
     Task DeleteAsync(BookingDetail bookingDetail);
     Task UpdateAsync(BookingDetail bookingDetail);
     Task<bool> ExistsAsync(Expression<Func<BookingDetail, bool>> predicate);
+    Task<bool> IsRoomAvailableAsync(Guid roomId, DateOnly startDate, DateOnly endDate);
 }
