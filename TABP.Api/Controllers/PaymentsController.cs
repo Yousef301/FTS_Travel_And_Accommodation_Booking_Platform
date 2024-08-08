@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TABP.Application.Commands.Payments.PaymentWebhook;
 using TABP.Application.Queries.Payments.GetPayments;
 using TABP.Domain.Enums;
 using TABP.Web.Services.Interfaces;
@@ -30,5 +31,18 @@ public class PaymentsController : ControllerBase
         });
 
         return Ok(payments);
+    }
+
+    [HttpPost("webhook")]
+    [AllowAnonymous]
+    public async Task<IActionResult> StripeWebhook()
+    {
+        await _mediator.Send(new PaymentWebhookCommand
+        {
+            DataStream = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync(),
+            Signature = Request.Headers["Stripe-Signature"]
+        });
+
+        return Ok();
     }
 }

@@ -6,7 +6,7 @@ namespace TABP.Application.Services.Implementations;
 public class StripePaymentService : IPaymentService
 {
     public async Task<string> CreateCheckoutSessionAsync(decimal amount, string currency, string successUrl,
-        string cancelUrl)
+        string cancelUrl, string bookingId, string userId, string userEmail)
     {
         var options = new SessionCreateOptions
         {
@@ -30,6 +30,12 @@ public class StripePaymentService : IPaymentService
             Mode = "payment",
             SuccessUrl = successUrl,
             CancelUrl = cancelUrl,
+            Metadata = new Dictionary<string, string>
+            {
+                { "booking_id", bookingId },
+                { "user_id", userId },
+                { "user_email", userEmail }
+            }
         };
 
         var service = new SessionService();

@@ -47,81 +47,15 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
                 "Booking is already confirmed or canceled.");
         }
 
-        var bookingDetails = await _bookingDetailRepository
-            .GetByBookingIdAsync(request.BookingId);
 
         var successUrl = _configuration["Payment:SuccessUrl"] + $"{booking.Id}/invoice";
         var cancelUrl = _configuration["Payment:CancelUrl"] + $"{booking.Id}";
 
         var checkoutUrl =
             await _paymentService.CreateCheckoutSessionAsync(Convert.ToDecimal(booking.TotalPrice),
-                "usd", successUrl, cancelUrl);
+                "usd", successUrl, cancelUrl, booking.Id.ToString(), request.UserId.ToString(),
+                request.UserEmail);
 
-        await _unitOfWork.BeginTransactionAsync();
-
-        try
-        {
-            var today = DateOnly.FromDateTime(DateTime.Today);
-            var tomorrow = today.AddDays(1);
-
-            if (booking.CheckInDate == today || booking.CheckInDate == tomorrow)
-            {
-                foreach (var bookingDetail in bookingDetails)
-                {
-                    await _roomRepository.UpdateStatusToReservedByIdAsync(bookingDetail.RoomId);
-                }
-            }
-
-            var payment = new Payment
-            {
-                Id = new Guid(),
-                UserId = request.UserId,
-                BookingId = booking.Id,
-                PaymentDate = DateTime.Now,
-                PaymentStatus = PaymentStatus.Succeeded,
-                TotalPrice = booking.TotalPrice
-            };
-
-            await _paymentRepository.CreateAsync(payment);
-
-            booking.PaymentStatus = PaymentStatus.Succeeded;
-            booking.BookingStatus = BookingStatus.Confirmed;
-
-            await _bookingRepository.UpdateAsync(booking);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            var invoice = new Invoice
-            {
-                Id = new Guid(),
-                BookingId = booking.Id,
-                TotalPrice = booking.TotalPrice,
-                InvoiceDate = DateTime.Now,
-                PaymentStatus = payment.PaymentStatus
-            };
-
-            await _invoiceRepository.CreateAsync(invoice);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            await _emailService.SendEmailAsync(request.UserEmail, "Booking Invoice", new EmailInvoiceBody
-            {
-                InvoiceId = invoice.Id,
-                BookingId = invoice.BookingId,
-                PaymentMethod = booking.PaymentMethod.ToString(),
-                PaymentStatus = payment.PaymentStatus.ToString(),
-                PaymentDate = payment.PaymentDate,
-                TotalAmount = invoice.TotalPrice,
-                InvoiceDate = invoice.InvoiceDate
-            });
-
-            await _unitOfWork.CommitTransactionAsync();
-        }
-        catch
-        {
-            await _unitOfWork.RollbackTransactionAsync();
-            throw;
-        }
 
         return checkoutUrl;
     }
