@@ -45,7 +45,7 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
             var stripeEvent = EventUtility.ConstructEvent(
                 request.DataStream,
                 request.Signature,
-                _configuration["StripeWebhook"]
+                _configuration["StripeWebhookSecret"]
             );
 
             if (stripeEvent.Type == Events.CheckoutSessionCompleted)
