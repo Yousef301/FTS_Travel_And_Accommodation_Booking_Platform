@@ -12,7 +12,7 @@ public class Payment : IAuditableEntity
     public PaymentStatus PaymentStatus { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }
-    public double TotalPrice { get; set; }
+    public decimal TotalPrice { get; set; }
     public User User { get; set; }
     public Booking Booking { get; set; }
 }

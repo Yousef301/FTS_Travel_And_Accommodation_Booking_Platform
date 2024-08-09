@@ -24,8 +24,8 @@ public class HotelExpressions : IHotelExpressions
                                      && r.MaxChildren >= numberOfChildren);
     } // TODO: Need to add more logic
 
-    public Expression<Func<Hotel, bool>> GetHotelsBasedOnPriceRangeExpression(double minPrice,
-        double maxPrice)
+    public Expression<Func<Hotel, bool>> GetHotelsBasedOnPriceRangeExpression(decimal minPrice,
+        decimal maxPrice)
     {
         return h => h.Rooms.Any(r => r.Price >= minPrice && r.Price <= maxPrice);
     }

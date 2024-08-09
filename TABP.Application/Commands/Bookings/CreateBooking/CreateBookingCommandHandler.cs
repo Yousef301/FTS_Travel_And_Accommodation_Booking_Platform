@@ -11,17 +11,15 @@ namespace TABP.Application.Commands.Bookings.CreateBooking;
 public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 {
     private readonly IBookingDetailRepository _bookingDetailRepository;
-    private readonly IRoomBookingService _roomBookingService;
     private readonly IBookingRepository _bookingRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateBookingCommandHandler(IBookingDetailRepository bookingDetailRepository,
         IBookingRepository bookingRepository, IUnitOfWork unitOfWork,
-        IRoomBookingService roomBookingService, IRoomRepository roomRepository)
+        IRoomRepository roomRepository)
     {
         _bookingDetailRepository = bookingDetailRepository;
-        _roomBookingService = roomBookingService;
         _bookingRepository = bookingRepository;
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
@@ -125,16 +123,16 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         return unavailableRooms;
     }
 
-    private double CalculateTotalPrice(IEnumerable<Room> rooms)
+    private decimal CalculateTotalPrice(IEnumerable<Room> rooms)
     {
-        double totalPrice = 0;
+        decimal totalPrice = 0;
 
         foreach (var room in rooms)
         {
             if (room.SpecialOffers.Any())
             {
                 var specialOffer = room.SpecialOffers.First();
-                totalPrice += room.Price - room.Price * specialOffer.Discount / 100;
+                totalPrice += room.Price - room.Price * Convert.ToDecimal(specialOffer.Discount) / 100;
             }
             else
             {

@@ -16,8 +16,8 @@ public class GetHotelsForUserQuery : IRequest<PagedList<HotelUserResponse>>
     public int NumberOfChildren { get; init; }
     public int Page { get; init; }
     public int PageSize { get; init; }
-    public double MinPrice { get; init; }
-    public double MaxPrice { get; init; }
+    public decimal MinPrice { get; init; }
+    public decimal MaxPrice { get; init; }
     public double ReviewRating { get; init; }
     public IEnumerable<Guid>? Amenities { get; init; }
 }

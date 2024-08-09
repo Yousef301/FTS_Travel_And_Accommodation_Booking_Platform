@@ -7,8 +7,8 @@ public class HotelsSearchDto : FilterParameters
     public int NumberOfRooms { get; set; } = 1;
     public int NumberOfAdults { get; init; } = 2;
     public int NumberOfChildren { get; init; } = 0;
-    public double MinPrice { get; init; } = 0;
-    public double MaxPrice { get; init; } = 10000;
-    public double ReviewRating { get; init; } = 0;
+    public decimal MinPrice { get; init; } = 0;
+    public decimal MaxPrice { get; init; } = 10000;
+    public decimal ReviewRating { get; init; } = 0;
     public IEnumerable<Guid> Amenities { get; init; } = new List<Guid>();
 }

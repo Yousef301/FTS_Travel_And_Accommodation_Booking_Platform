@@ -11,8 +11,8 @@ public interface IHotelExpressions
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnAdultsAndChildrenExpression(int numberOfAdults,
         int numberOfChildren);
 
-    public Expression<Func<Hotel, bool>> GetHotelsBasedOnPriceRangeExpression(double minPrice,
-        double maxPrice);
+    public Expression<Func<Hotel, bool>> GetHotelsBasedOnPriceRangeExpression(decimal minPrice,
+        decimal maxPrice);
 
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnNumberOfAvailableRoomsAndDatesExpression(
         int numberOfRooms,

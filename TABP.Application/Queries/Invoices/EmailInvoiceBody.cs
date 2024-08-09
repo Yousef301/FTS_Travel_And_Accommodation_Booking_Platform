@@ -8,5 +8,5 @@ public class EmailInvoiceBody
     public string PaymentStatus { get; set; }
     public DateTime PaymentDate { get; set; }
     public DateTime InvoiceDate { get; set; }
-    public double TotalAmount { get; set; }
+    public decimal TotalAmount { get; set; }
 }

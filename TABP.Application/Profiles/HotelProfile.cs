@@ -58,7 +58,8 @@ public class HotelProfile : Profile
                     opt.MapFrom(src =>
                         src.Rooms.First().SpecialOffers.Any(so => so.IsActive)
                             ? src.Rooms.First().Price -
-                              ((src.Rooms.First().SpecialOffers.First(so => so.IsActive).Discount / 100) *
+                              ((Convert.ToDecimal(src.Rooms.First().SpecialOffers
+                                   .First(so => so.IsActive).Discount) / 100) *
                                src.Rooms.First().Price)
                             : src.Rooms.First().Price));
     }

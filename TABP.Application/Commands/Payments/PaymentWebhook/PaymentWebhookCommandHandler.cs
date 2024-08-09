@@ -8,7 +8,6 @@ using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
-using Invoice = Stripe.Invoice;
 
 namespace TABP.Application.Commands.Payments.PaymentWebhook;
 
