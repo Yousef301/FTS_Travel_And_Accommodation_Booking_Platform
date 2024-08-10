@@ -11,13 +11,13 @@ public class S3ImageService : IImageService
 {
     private readonly IAmazonS3 _s3Client;
     private readonly string _bucketName;
-    // private readonly ILogger<ImageService> _logger;
+    private readonly ILogger _logger;
 
     public S3ImageService(IAmazonS3 s3Client, IConfiguration configuration, ILogger<S3ImageService> logger)
     {
         _s3Client = s3Client;
         _bucketName = configuration["AWS:BucketName"] ?? throw new ArgumentNullException(nameof(configuration));
-        // _logger = logger;
+        _logger = logger;
     }
 
     public async Task UploadImagesAsync(List<IFormFile> files, Dictionary<string, object> configurations)
@@ -46,7 +46,7 @@ public class S3ImageService : IImageService
                     }
                     catch (AmazonS3Exception ex)
                     {
-                        // _logger.LogError($"Error uploading {file.FileName} to S3: {ex.Message}", ex);
+                        _logger.LogError($"Error uploading {file.FileName} to S3: {ex.Message}", ex);
                         throw;
                     }
                 }
@@ -72,12 +72,11 @@ public class S3ImageService : IImageService
         }
         catch (AmazonS3Exception ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
         {
-            // _logger.LogWarning($"Image {name} not found in folder {folder}");
             return null;
         }
         catch (AmazonS3Exception ex)
         {
-            // _logger.LogError($"Error retrieving {name} from S3: {ex.Message}", ex);
+            _logger.LogError($"Error retrieving '{path}' from S3: {ex.Message}", ex);
             throw;
         }
     }
@@ -106,7 +105,7 @@ public class S3ImageService : IImageService
         }
         catch (AmazonS3Exception ex)
         {
-            // _logger.LogError($"Error listing images: {ex.Message}", ex);
+            _logger.LogError($"Error listing images: {ex.Message}", ex);
             throw;
         }
     }
@@ -126,7 +125,7 @@ public class S3ImageService : IImageService
         }
         catch (AmazonS3Exception ex)
         {
-            // _logger.LogError($"Error deleting {path} from S3: {ex.Message}", ex);
+            _logger.LogError($"Error deleting {path} from S3: {ex.Message}", ex);
             throw;
         }
     }

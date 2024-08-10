@@ -27,7 +27,7 @@ public class ReviewRepository : IReviewRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Review>> GetHotelReviewsForUserAsync(Guid hotelId, Guid userId)
+    public async Task<IEnumerable<Review>> GetUserHotelsReviewsAsync(Guid hotelId, Guid userId)
     {
         return await _context.Reviews
             .Where(r => r.HotelId == hotelId && r.UserId == userId)
@@ -43,7 +43,8 @@ public class ReviewRepository : IReviewRepository
 
     public async Task<Review?> GetByIdAsync(Guid id)
     {
-        return await _context.Reviews.FindAsync(id);
+        return await _context.Reviews
+            .FirstOrDefaultAsync(r => r.Id == id);
     }
 
     public async Task<Review> CreateAsync(Review review)
@@ -77,11 +78,5 @@ public class ReviewRepository : IReviewRepository
     public async Task<bool> ExistsAsync(Expression<Func<Review, bool>> predicate)
     {
         return await _context.Reviews.AnyAsync(predicate);
-    }
-
-    public async Task<bool> ExistsAsync(Guid hotelId, Guid userId)
-    {
-        return await _context.Reviews
-            .AnyAsync(r => r.HotelId == hotelId && r.UserId == userId);
     }
 }

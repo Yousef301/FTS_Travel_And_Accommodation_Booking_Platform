@@ -13,7 +13,7 @@ using TABP.Web.DTOs.SpecialOffers;
 namespace TABP.Web.Controllers;
 
 [ApiController]
-[Route("api/rooms/{roomId}/special-offers")]
+[Route("api/rooms/{roomId}/offers")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class SpecialOffersController : ControllerBase
 {

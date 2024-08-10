@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Hotels.UpdateHotel;
 
@@ -20,12 +21,8 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
 
     public async Task Handle(UpdateHotelCommand request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.Id);
-
-        if (hotel == null)
-        {
-            throw new Exception("Hotel not found"); // TODO: Create a custom exception
-        }
+        var hotel = await _hotelRepository.GetByIdAsync(request.Id) ??
+                    throw new NotFoundException($"Hotel with id {request.Id} wasn't found.");
 
         var updatedHotelDto = _mapper.Map<HotelUpdate>(hotel);
 

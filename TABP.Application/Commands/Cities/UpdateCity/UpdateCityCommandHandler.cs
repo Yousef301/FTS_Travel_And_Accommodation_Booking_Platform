@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Cities.UpdateCity;
 
@@ -20,12 +21,8 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
 
     public async Task Handle(UpdateCityCommand request, CancellationToken cancellationToken)
     {
-        var city = await _cityRepository.GetByIdAsync(request.Id);
-
-        if (city == null)
-        {
-            throw new Exception("City not found"); // TODO: Create a custom exception
-        }
+        var city = await _cityRepository.GetByIdAsync(request.Id) ??
+                   throw new NotFoundException($"City with id {request.Id} wasn't found.");
 
         var updatedCityDto = _mapper.Map<CityUpdate>(city);
 

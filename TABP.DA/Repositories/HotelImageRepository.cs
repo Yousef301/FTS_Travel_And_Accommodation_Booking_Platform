@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
@@ -14,15 +15,15 @@ public class HotelImageRepository : IImageRepository<HotelImage>
     }
 
 
-    public async Task<HotelImage?> GetByIdAsync(Guid id)
+    public async Task<HotelImage?> GetByIdAsync(Expression<Func<HotelImage, bool>> predicate)
     {
-        return await _context.HotelImages.FindAsync(id);
+        return await _context.HotelImages.FirstOrDefaultAsync(predicate);
     }
 
-    public async Task<string?> GetImagePathAsync(Guid id)
+    public async Task<string?> GetImagePathAsync(Guid id, Guid hotelId)
     {
         return await _context.HotelImages
-            .Where(h => h.Id == id)
+            .Where(h => h.Id == id && h.HotelId == hotelId)
             .Select(h => h.ImagePath)
             .FirstOrDefaultAsync();
     }
@@ -66,5 +67,10 @@ public class HotelImageRepository : IImageRepository<HotelImage>
         }
 
         _context.HotelImages.Remove(hotelImage);
+    }
+
+    public async Task<bool> ExistsAsync(Expression<Func<HotelImage, bool>> predicate)
+    {
+        return await _context.HotelImages.AnyAsync(predicate);
     }
 }

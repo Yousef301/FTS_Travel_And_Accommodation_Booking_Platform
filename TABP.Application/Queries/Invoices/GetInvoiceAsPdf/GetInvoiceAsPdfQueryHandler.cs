@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Queries.Invoices.GetInvoiceAsPdf;
 
@@ -17,12 +18,8 @@ public class GetInvoiceAsPdfQueryHandler : IRequestHandler<GetInvoiceAsPdfQuery,
 
     public async Task<byte[]> Handle(GetInvoiceAsPdfQuery request, CancellationToken cancellationToken)
     {
-        var invoice = await _invoiceRepository.GetByBookingIdAsync(request.BookingId);
-
-        if (invoice == null)
-        {
-            throw new NotImplementedException("Invoice not found...");
-        }
+        var invoice = await _invoiceRepository.GetByBookingIdAsync(request.BookingId) ??
+                      throw new NotFoundException($"Invoice with booking id {request.BookingId} not found.");
 
         var invoicePdf = await _pdfService.GenerateInvoiceAsPdfAsync(new EmailInvoiceBody
         {

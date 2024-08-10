@@ -31,7 +31,8 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
         foreach (var hotelId in hotelsId)
         {
             var hotel = await _hotelRepository.GetByIdAsync(hotelId, true, true);
-            hotels.Add(hotel);
+            
+            if (hotel is not null) hotels.Add(hotel);
         }
 
         return _mapper.Map<IEnumerable<RecentlyVisitedHotelsResponse>>(hotels);

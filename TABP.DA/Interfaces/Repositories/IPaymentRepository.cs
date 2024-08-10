@@ -9,7 +9,6 @@ public interface IPaymentRepository
     Task<IEnumerable<Payment>> GetUserPaymentsAsync(Guid userId);
     Task<Payment?> GetByIdAsync(Guid id);
     Task<Payment> CreateAsync(Payment payment);
-    Task DeleteAsync(Payment payment);
     Task UpdateAsync(Payment payment);
     Task<bool> ExistsAsync(Expression<Func<Payment, bool>> predicate);
 }

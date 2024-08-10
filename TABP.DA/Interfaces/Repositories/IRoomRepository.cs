@@ -13,7 +13,7 @@ public interface IRoomRepository
         Expression<Func<Room, bool>>? predicate = null, bool includeAmenities = false);
 
     Task<IEnumerable<Room>> GetByIdAndHotelIdAsync(Guid hotelId, IEnumerable<Guid> roomIds);
-    Task<Room?> GetByIdAsync(Guid id);
+    Task<Room?> GetByIdAsync(Guid id, Guid hotelId);
     Task<Room> CreateAsync(Room room);
     Task DeleteAsync(Guid id);
     Task UpdateAsync(Room room);

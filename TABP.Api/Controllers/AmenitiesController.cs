@@ -28,7 +28,6 @@ public class AmenitiesController : ControllerBase
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> GetAmenities()
     {
         var amenities = await _mediator.Send(new GetAmenitiesQuery());
@@ -37,7 +36,6 @@ public class AmenitiesController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    [AllowAnonymous]
     public async Task<IActionResult> GetAmenity(Guid id)
     {
         var amenity = await _mediator.Send(new GetAmenityByIdQuery { Id = id });

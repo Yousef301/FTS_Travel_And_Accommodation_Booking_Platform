@@ -2,6 +2,7 @@
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Queries.Images.Hotels.GetHotelImageById;
 
@@ -18,8 +19,11 @@ public class GetHotelImageByIdQueryHandler : IRequestHandler<GetHotelImageByIdQu
 
     public async Task<ImageResponse> Handle(GetHotelImageByIdQuery request, CancellationToken cancellationToken)
     {
-        var hotelImage = await _hotelImageRepository.GetByIdAsync(request.ImageId);
-        var image = await _imageService.GetImageAsync(hotelImage.ImagePath);
+        var hotelImage = await _hotelImageRepository.GetByIdAsync(hi => hi.Id == request.ImageId) ??
+                         throw new NotFoundException($"Hotel image with id {request.ImageId} not found");
+
+        var image = await _imageService.GetImageAsync(hotelImage.ImagePath) ??
+                    throw new NotFoundException($"Hotel image with id {request.ImageId} not found");
 
         return new ImageResponse
         {

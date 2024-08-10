@@ -4,6 +4,7 @@ using TABP.Application.Queries.Cities;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Cities.CreateCity;
 
@@ -23,6 +24,13 @@ public class CreateCityCommandHandler : IRequestHandler<CreateCityCommand, CityR
 
     public async Task<CityResponse> Handle(CreateCityCommand request, CancellationToken cancellationToken)
     {
+        if (await _cityRepository.ExistsAsync(c =>
+                c.Name.ToLower() == request.Name.ToLower() &&
+                c.Country.ToLower() == request.Country.ToLower()))
+        {
+            throw new UniqueConstraintViolationException($"The city is already exist.");
+        }
+
         var city = _mapper.Map<City>(request);
 
         city.Id = new Guid();

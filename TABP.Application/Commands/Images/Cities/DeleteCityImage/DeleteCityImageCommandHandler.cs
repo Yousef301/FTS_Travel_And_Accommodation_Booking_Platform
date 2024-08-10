@@ -3,6 +3,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Images.Cities.DeleteCityImage;
 
@@ -22,7 +23,8 @@ public class DeleteCityImageCommandHandler : IRequestHandler<DeleteCityImageComm
 
     public async Task Handle(DeleteCityImageCommand request, CancellationToken cancellationToken)
     {
-        var cityImagesPath = await _cityImageRepository.GetImagePathAsync(request.ImageId);
+        var cityImagesPath = await _cityImageRepository.GetImagePathAsync(request.ImageId, request.CityId) ??
+                             throw new NotFoundException($"City image with id {request.ImageId} wasn't found");
 
         await _imageService.DeleteImageAsync(cityImagesPath);
 

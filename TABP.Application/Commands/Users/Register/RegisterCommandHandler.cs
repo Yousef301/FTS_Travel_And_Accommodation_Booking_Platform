@@ -6,6 +6,7 @@ using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Users.Register;
 
@@ -30,9 +31,22 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
 
     public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        if (await _userRepository.EmailExist(request.Email))
+        if (await _userRepository.ExistsAsync(user => user.Email == request.Email))
         {
-            throw new EmailAlreadyExist();
+            throw new UniqueConstraintViolationException(
+                "An user with the same email already exists.");
+        }
+
+        if (await _userRepository.ExistsAsync(user => user.PhoneNumber == request.PhoneNumber))
+        {
+            throw new UniqueConstraintViolationException(
+                "Phone number already used.");
+        }
+
+        if (await _credentialRepository.UsernameExistsAsync(request.Username))
+        {
+            throw new UniqueConstraintViolationException(
+                "An user with the same username already exists.");
         }
 
         var user = _mapper.Map<User>(request);

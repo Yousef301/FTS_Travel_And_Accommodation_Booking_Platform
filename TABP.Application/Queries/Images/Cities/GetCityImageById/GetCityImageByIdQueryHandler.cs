@@ -2,6 +2,7 @@
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Queries.Images.Cities.GetCityImageById;
 
@@ -18,8 +19,11 @@ public class GetCityImageByIdQueryHandler : IRequestHandler<GetCityImageByIdQuer
 
     public async Task<ImageResponse> Handle(GetCityImageByIdQuery request, CancellationToken cancellationToken)
     {
-        var cityImage = await _cityImageRepository.GetByIdAsync(request.ImageId);
-        var image = await _imageService.GetImageAsync(cityImage.ImagePath);
+        var cityImage = await _cityImageRepository.GetByIdAsync(ci => ci.Id == request.ImageId) ??
+                        throw new NotFoundException($"City image with id {request.ImageId} not found.");
+
+        var image = await _imageService.GetImageAsync(cityImage.ImagePath) ??
+                    throw new NotFoundException($"City image with id {request.ImageId} not found.");
 
         return new ImageResponse
         {

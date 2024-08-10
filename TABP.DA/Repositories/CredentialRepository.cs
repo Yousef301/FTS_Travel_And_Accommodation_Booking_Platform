@@ -61,4 +61,9 @@ public class CredentialRepository : ICredentialRepository
     {
         return await _context.Credentials.AnyAsync(predicate);
     }
+
+    public Task<bool> UsernameExistsAsync(string username)
+    {
+        return _context.Credentials.AnyAsync(c => c.Username == username);
+    }
 }

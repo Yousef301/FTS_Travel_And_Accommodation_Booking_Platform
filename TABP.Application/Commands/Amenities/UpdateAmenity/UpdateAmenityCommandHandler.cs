@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Amenities.UpdateAmenity;
 
@@ -20,12 +21,8 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
 
     public async Task Handle(UpdateAmenityCommand request, CancellationToken cancellationToken)
     {
-        var amenity = await _amenityRepository.GetByIdAsync(request.Id);
-
-        if (amenity == null)
-        {
-            throw new Exception("Amenity not found"); // TODO: Create a custom exception
-        }
+        var amenity = await _amenityRepository.GetByIdAsync(request.Id) ??
+                      throw new NotFoundException($"Amenity with id {request.Id} not found.");
 
         var updatedAmenityDto = _mapper.Map<AmenityUpdate>(amenity);
 

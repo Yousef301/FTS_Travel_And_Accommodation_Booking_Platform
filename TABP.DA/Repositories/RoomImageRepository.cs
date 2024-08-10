@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
@@ -13,15 +14,15 @@ public class RoomImageRepository : IImageRepository<RoomImage>
         _context = context;
     }
 
-    public async Task<RoomImage?> GetByIdAsync(Guid id)
+    public async Task<RoomImage?> GetByIdAsync(Expression<Func<RoomImage, bool>> predicate)
     {
-        return await _context.RoomImages.FindAsync(id);
+        return await _context.RoomImages.FirstOrDefaultAsync(predicate);
     }
 
-    public async Task<string?> GetImagePathAsync(Guid id)
+    public async Task<string?> GetImagePathAsync(Guid id, Guid roomId)
     {
         return await _context.RoomImages
-            .Where(r => r.Id == id)
+            .Where(r => r.Id == id && r.RoomId == roomId)
             .Select(r => r.ImagePath)
             .FirstOrDefaultAsync();
     }
@@ -65,5 +66,10 @@ public class RoomImageRepository : IImageRepository<RoomImage>
         }
 
         _context.RoomImages.Remove(roomImage);
+    }
+
+    public async Task<bool> ExistsAsync(Expression<Func<RoomImage, bool>> predicate)
+    {
+        return await _context.RoomImages.AnyAsync(predicate);
     }
 }

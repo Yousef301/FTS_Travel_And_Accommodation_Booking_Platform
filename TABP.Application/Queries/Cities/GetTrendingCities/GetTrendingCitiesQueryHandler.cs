@@ -19,6 +19,7 @@ public class GetTrendingCitiesQueryHandler : IRequestHandler<GetTrendingCitiesQu
         CancellationToken cancellationToken)
     {
         var trendingCities = await _cityRepository.GetTrendingDestinations();
+        
         return _mapper.Map<IEnumerable<TrendingCitiesResponse>>(trendingCities);
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using TABP.Application.Queries.Invoices;
 using TABP.Application.Services.Interfaces;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Services.Implementations;
 
@@ -14,45 +15,63 @@ public class SmtpEmailService : IEmailService
 
     public SmtpEmailService(IConfiguration configuration)
     {
-        _mail = configuration["Mail"] ?? throw new ArgumentNullException();
-        _password = configuration["EmailPassword"] ?? throw new ArgumentNullException();
+        _mail = configuration["Mail"] ??
+                throw new ArgumentNullException(nameof(configuration), "Mail configuration is missing.");
+        _password = configuration["EmailPassword"] ??
+                    throw new ArgumentNullException(nameof(configuration), "Email password configuration is missing.");
     }
 
-    public Task SendEmailAsync(string email, string subject, EmailInvoiceBody invoice)
+    public async Task SendEmailAsync(string email, string subject, EmailInvoiceBody invoice)
     {
-        var message = new MailMessage
+        try
         {
-            From = new MailAddress(_mail),
-            Subject = subject,
-            Body = GetEmailBody(invoice),
-            IsBodyHtml = true
-        };
-        message.To.Add(email);
+            var message = new MailMessage
+            {
+                From = new MailAddress(_mail),
+                Subject = subject,
+                Body = GetEmailBody(invoice),
+                IsBodyHtml = true
+            };
+            message.To.Add(email);
 
+            using var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential(_mail, _password),
+                EnableSsl = true
+            };
 
-        var client = new SmtpClient("smtp.gmail.com", 587)
+            await client.SendMailAsync(message);
+        }
+        catch (SmtpException smtpEx)
         {
-            Credentials = new NetworkCredential(_mail, _password),
-            EnableSsl = true
-        };
-
-        return client.SendMailAsync(message);
+            throw new EmailSendingException("Failed to send email due to an SMTP error.", smtpEx);
+        }
+        catch (IOException ioEx)
+        {
+            throw new EmailTemplateException("Failed to send email due to a file read error.", ioEx);
+        }
     }
 
     private string GetEmailBody(EmailInvoiceBody invoice)
     {
-        var templatePath = "wwwroot/InvoiceTemplate.html";
-        var template = File.ReadAllText(templatePath, Encoding.UTF8);
-        var body = template
-            .Replace("@Model.InvoiceNumber", invoice.InvoiceId.ToString())
-            .Replace("@Model.BookingNumber", invoice.BookingId.ToString())
-            .Replace("@Model.PaymentMethod", invoice.PaymentMethod)
-            .Replace("@Model.PaymentStatus", invoice.PaymentStatus)
-            .Replace("@Model.PaymentDate", invoice.PaymentDate.ToString("dd/MM/yyyy"))
-            .Replace("@Model.TotalPrice", invoice.TotalAmount.ToString("C"))
-            .Replace("@Model.InvoiceDate", invoice.InvoiceDate.ToString("dd/MM/yyyy"));
+        try
+        {
+            var templatePath = "wwwroot/InvoiceTemplate.html";
+            var template = File.ReadAllText(templatePath, Encoding.UTF8);
+            var body = template
+                .Replace("@Model.InvoiceNumber", invoice.InvoiceId.ToString())
+                .Replace("@Model.BookingNumber", invoice.BookingId.ToString())
+                .Replace("@Model.PaymentMethod", invoice.PaymentMethod)
+                .Replace("@Model.PaymentStatus", invoice.PaymentStatus)
+                .Replace("@Model.PaymentDate", invoice.PaymentDate.ToString("dd/MM/yyyy"))
+                .Replace("@Model.TotalPrice", invoice.TotalAmount.ToString("C"))
+                .Replace("@Model.InvoiceDate", invoice.InvoiceDate.ToString("dd/MM/yyyy"));
 
-
-        return body;
+            return body;
+        }
+        catch (Exception ex)
+        {
+            throw new EmailTemplateException("Failed to read the email template.", ex);
+        }
     }
 }

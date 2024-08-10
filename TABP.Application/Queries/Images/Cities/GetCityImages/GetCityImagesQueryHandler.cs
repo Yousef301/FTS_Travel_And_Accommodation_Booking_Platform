@@ -20,6 +20,7 @@ public class GetCityImagesQueryHandler : IRequestHandler<GetCityImagesQuery, IEn
         CancellationToken cancellationToken)
     {
         var cityImages = await _cityImageRepository.GetImagesPathAsync(request.CityId);
+
         var images = await _imageService.GetSpecificImagesAsync(cityImages);
 
         return images;

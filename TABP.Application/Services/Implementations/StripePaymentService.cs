@@ -1,5 +1,7 @@
-﻿using Stripe.Checkout;
+﻿using Stripe;
+using Stripe.Checkout;
 using TABP.Application.Services.Interfaces;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Services.Implementations;
 
@@ -8,38 +10,45 @@ public class StripePaymentService : IPaymentService
     public async Task<string> CreateCheckoutSessionAsync(decimal amount, string currency, string successUrl,
         string cancelUrl, string bookingId, string userId, string userEmail)
     {
-        var options = new SessionCreateOptions
+        try
         {
-            PaymentMethodTypes = new List<string> { "card" },
-            LineItems = new List<SessionLineItemOptions>
+            var options = new SessionCreateOptions
             {
-                new SessionLineItemOptions
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = new List<SessionLineItemOptions>
                 {
-                    PriceData = new SessionLineItemPriceDataOptions
+                    new SessionLineItemOptions
                     {
-                        UnitAmount = (long)(amount * 100),
-                        Currency = currency,
-                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        PriceData = new SessionLineItemPriceDataOptions
                         {
-                            Name = "Product Name",
+                            UnitAmount = (long)(amount * 100),
+                            Currency = currency,
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = "Product Name",
+                            },
                         },
+                        Quantity = 1,
                     },
-                    Quantity = 1,
                 },
-            },
-            Mode = "payment",
-            SuccessUrl = successUrl,
-            CancelUrl = cancelUrl,
-            Metadata = new Dictionary<string, string>
-            {
-                { "booking_id", bookingId },
-                { "user_id", userId },
-                { "user_email", userEmail }
-            }
-        };
+                Mode = "payment",
+                SuccessUrl = successUrl,
+                CancelUrl = cancelUrl,
+                Metadata = new Dictionary<string, string>
+                {
+                    { "booking_id", bookingId },
+                    { "user_id", userId },
+                    { "user_email", userEmail }
+                }
+            };
 
-        var service = new SessionService();
-        Session session = await service.CreateAsync(options);
-        return session.Url;
+            var service = new SessionService();
+            Session session = await service.CreateAsync(options);
+            return session.Url;
+        }
+        catch (StripeException ex)
+        {
+            throw new StripePaymentException("Error creating Stripe checkout session", ex);
+        }
     }
 }

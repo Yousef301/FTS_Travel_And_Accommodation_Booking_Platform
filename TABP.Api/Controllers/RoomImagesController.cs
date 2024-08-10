@@ -46,11 +46,12 @@ public class RoomImagesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> UploadImages(Guid roomId,
+    public async Task<IActionResult> UploadImages(Guid roomId, Guid hotelId,
         [FromForm(Name = "Images")] List<IFormFile> files)
     {
         await _mediator.Send(new CreateRoomImageCommand
         {
+            HotelId = hotelId,
             RoomId = roomId,
             Images = files,
         });
@@ -59,10 +60,11 @@ public class RoomImagesController : ControllerBase
     }
 
     [HttpDelete("{imageId:guid}")]
-    public async Task<IActionResult> DeleteImage(Guid imageId)
+    public async Task<IActionResult> DeleteImage(Guid imageId, Guid roomId)
     {
         await _mediator.Send(new DeleteRoomImageCommand
         {
+            RoomId = roomId,
             ImageId = imageId
         });
 

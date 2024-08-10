@@ -3,6 +3,7 @@ using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Reviews.CreateReview;
 
@@ -28,12 +29,13 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand>
     {
         if (!await _bookingRepository.ExistsAsync(request.HotelId, request.UserId))
         {
-            throw new NotSupportedException("User should have a booking for the hotel to be able to review");
+            throw new NoBookingForHotelException("User should have a booking for the hotel to be able to review");
         }
 
-        if (await _reviewRepository.ExistsAsync(request.HotelId, request.UserId))
+        if (await _reviewRepository.ExistsAsync(r => r.HotelId == request.HotelId && r.UserId == request.UserId))
         {
-            throw new NotSupportedException("User has already reviewed this hotel");
+            throw new AlreadyExistsException(
+                "User has already reviewed this hotel, you can update the existed review instead.");
         }
 
         var currentHotelRate = await _hotelRepository.GetHotelRateAsync(request.HotelId);
@@ -61,7 +63,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand>
         catch
         {
             await _unitOfWork.RollbackTransactionAsync();
-            throw new NotSupportedException("An error occurred while creating a review. Please try again.");
+            throw;
         }
     }
 }

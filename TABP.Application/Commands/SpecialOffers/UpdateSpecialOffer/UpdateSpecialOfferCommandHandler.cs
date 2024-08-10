@@ -3,6 +3,7 @@ using MediatR;
 using TABP.Application.Queries.SpecialOffers;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.SpecialOffers.UpdateSpecialOffer;
 
@@ -24,12 +25,8 @@ public class UpdateSpecialOfferCommandHandler : IRequestHandler<UpdateSpecialOff
         CancellationToken cancellationToken)
     {
         var offer = await _specialOfferRepository
-            .GetByRoomIdAndOfferIdAsync(request.Id, request.RoomId);
-
-        if (offer == null)
-        {
-            throw new Exception("Offer not found"); // TODO: Create a custom exception
-        }
+                        .GetByRoomIdAndOfferIdAsync(request.Id, request.RoomId) ??
+                    throw new NotFoundException($"Special offer with id {request.Id} wasn't found.");
 
         var updatedOfferDto = _mapper.Map<SpecialOfferUpdate>(offer);
 

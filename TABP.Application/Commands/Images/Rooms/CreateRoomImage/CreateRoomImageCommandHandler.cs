@@ -3,6 +3,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Images.Rooms.CreateRoomImage;
 
@@ -25,7 +26,9 @@ public class CreateRoomImageCommandHandler : IRequestHandler<CreateRoomImageComm
 
     public async Task Handle(CreateRoomImageCommand request, CancellationToken cancellationToken)
     {
-        var room = await _roomRepository.GetByIdAsync(request.RoomId);
+        var room = await _roomRepository.GetByIdAsync(request.RoomId, request.HotelId) ??
+                   throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");
+
         room.RoomNumber = room.RoomNumber.ToLower();
 
         await _imageService.UploadImagesAsync(request.Images, new Dictionary<string, object>

@@ -5,6 +5,7 @@ using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Bookings.CreateBooking;
 
@@ -12,48 +13,56 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 {
     private readonly IBookingDetailRepository _bookingDetailRepository;
     private readonly IBookingRepository _bookingRepository;
+    private readonly IHotelRepository _hotelRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateBookingCommandHandler(IBookingDetailRepository bookingDetailRepository,
         IBookingRepository bookingRepository, IUnitOfWork unitOfWork,
-        IRoomRepository roomRepository)
+        IRoomRepository roomRepository, IHotelRepository hotelRepository)
     {
         _bookingDetailRepository = bookingDetailRepository;
         _bookingRepository = bookingRepository;
         _roomRepository = roomRepository;
+        _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(CreateBookingCommand request, CancellationToken cancellationToken)
     {
-        var rooms = await _roomRepository.GetByIdAndHotelIdAsync(request.HotelId,
-            request.RoomIds);
-
-        if (rooms.Count() != request.RoomIds.Count())
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
-            throw new ArgumentException("Rooms are not in the same hotel.");
+            throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");
         }
 
-        var results = await ValidateRooms(request.RoomIds,
-            request.CheckInDate, request.CheckOutDate);
+        var rooms = await _roomRepository.GetByIdAndHotelIdAsync(request.HotelId, request.RoomIds);
 
-        if (results.Any())
+        var roomsList = rooms.ToList();
+
+        if (roomsList.Count() != request.RoomIds.Count())
         {
-            throw new ArgumentException(string.Join(Environment.NewLine, results));
+            throw new NotFoundException($"One or more rooms doesn't exist in the hotel with id {request.HotelId}");
+        }
+
+        var results = await ValidateRooms(request.RoomIds, request.CheckInDate, request.CheckOutDate);
+        var resultsList = results.ToList();
+
+        if (resultsList.Count != 0)
+        {
+            throw new RoomsNotAvailableException(resultsList);
         }
 
         if (await _bookingRepository.IsBookingOverlapsAsync(request.HotelId, request.UserId, request.CheckInDate,
                 request.CheckOutDate))
         {
-            throw new ArgumentException("Booking is overlapping with an existing booking.");
+            throw new BookingOverlapException();
         }
 
-        var totalPrice = CalculateTotalPrice(rooms);
+        var totalPrice = CalculateTotalPrice(roomsList);
 
         var paymentMethod = Enum.TryParse<PaymentMethod>(request.PaymentMethod, out var parsedPaymentMethod)
             ? parsedPaymentMethod
-            : throw new ArgumentException("Invalid payment method");
+            : throw new InvalidPaymentMethodException();
 
         var pendingBooking = await _bookingRepository.GetPendingBooking(request.UserId);
 
@@ -79,7 +88,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 
             await _unitOfWork.SaveChangesAsync();
 
-            foreach (var room in rooms)
+            foreach (var room in roomsList)
             {
                 var bookingDetail = new BookingDetail
                 {

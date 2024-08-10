@@ -23,7 +23,6 @@ public static class ApplicationConfiguration
 
         services.AddSingleton<ITokenGeneratorService, JwtTokenGeneratorService>();
         services.AddScoped<IPasswordService, BCryptPasswordService>();
-        services.AddScoped<IRoomBookingService, RoomBookingService>();
         services.AddScoped<IEmailService, SmtpEmailService>();
         services.AddScoped<IImageService, S3ImageService>();
         services.AddScoped<IPdfService, PdfService>();
