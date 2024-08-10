@@ -1,9 +1,11 @@
-﻿using Amazon.S3;
+﻿using System.Linq.Expressions;
+using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TABP.Application.Services.Interfaces;
+using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.Application.Services.Implementations.AWS;
 
@@ -13,14 +15,19 @@ public class S3ImageService : IImageService
     private readonly string _bucketName;
     private readonly ILogger _logger;
 
-    public S3ImageService(IAmazonS3 s3Client, IConfiguration configuration, ILogger<S3ImageService> logger)
+    public S3ImageService(
+        IAmazonS3 s3Client,
+        IConfiguration configuration,
+        ILogger<S3ImageService> logger)
     {
         _s3Client = s3Client;
         _bucketName = configuration["AWS:BucketName"] ?? throw new ArgumentNullException(nameof(configuration));
         _logger = logger;
     }
 
-    public async Task UploadImagesAsync(List<IFormFile> files, Dictionary<string, object> configurations)
+    public async Task UploadImagesAsync(
+        List<IFormFile> files,
+        Dictionary<string, object> configurations)
     {
         foreach (var file in files)
         {
@@ -132,7 +139,6 @@ public class S3ImageService : IImageService
                     { "uploadDate", o.LastModified.ToString("yyyy-MM-ddTHH:mm:ssZ") }
                 });
 
-            // Return either a list of URLs or a list of dictionaries based on the type parameter
             if (typeof(T) == typeof(List<string>))
             {
                 var urls = filteredObjects.Select(d => d["url"]).ToList();
@@ -173,5 +179,23 @@ public class S3ImageService : IImageService
             _logger.LogError($"Error deleting {path} from S3: {ex.Message}", ex);
             throw;
         }
+    }
+
+    public async Task<string> CreateUniquePathAsync<T>(
+        IImageRepository<T> repository,
+        Expression<Func<T, bool>> predicate,
+        string path) where T : class
+    {
+        var counter = 1;
+        var basePath = path;
+        var newPath = path;
+
+        while (await repository.ExistsAsync(predicate))
+        {
+            newPath = $"{basePath} ({counter})";
+            counter++;
+        }
+
+        return newPath;
     }
 }

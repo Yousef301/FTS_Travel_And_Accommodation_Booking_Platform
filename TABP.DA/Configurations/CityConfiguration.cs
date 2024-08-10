@@ -19,5 +19,7 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
             .WithOne(ci => ci.City)
             .IsRequired()
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasIndex(c => new { c.Name, c.Country });
     }
 }

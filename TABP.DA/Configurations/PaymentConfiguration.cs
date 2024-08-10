@@ -17,7 +17,5 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 
         builder.Property(p => p.PaymentStatus)
             .HasConversion(new EnumToStringConverter<PaymentStatus>());
-
-        builder.HasIndex(p => p.PaymentDate);
     }
 }

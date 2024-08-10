@@ -41,6 +41,16 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
         builder.Property(r => r.Price)
             .HasPrecision(10, 2);
 
+        builder.HasIndex(r => new
+        {
+            r.MaxAdults,
+            r.MaxChildren
+        });
+
+        builder.HasIndex(r => r.RoomNumber)
+            .IsUnique();
+
         builder.HasIndex(r => r.RoomType);
+        builder.HasIndex(r => r.Price);
     }
 }

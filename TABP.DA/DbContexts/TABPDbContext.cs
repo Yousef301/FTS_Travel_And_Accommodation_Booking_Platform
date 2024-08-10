@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
-using TABP.DAL.Configurations;
 using TABP.DAL.Entities;
 using TABP.DAL.Models.Procedures;
 
@@ -32,22 +31,7 @@ public class TABPDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new AmenityConfiguration());
-        modelBuilder.ApplyConfiguration(new BookingConfiguration());
-        modelBuilder.ApplyConfiguration(new BookingDetailConfiguration());
-        modelBuilder.ApplyConfiguration(new CityConfiguration());
-        modelBuilder.ApplyConfiguration(new CredentialConfiguration());
-        modelBuilder.ApplyConfiguration(new HotelConfiguration());
-        modelBuilder.ApplyConfiguration(new CityImageConfiguration());
-        modelBuilder.ApplyConfiguration(new RoomImageConfiguration());
-        modelBuilder.ApplyConfiguration(new HotelImageConfiguration());
-        modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
-        modelBuilder.ApplyConfiguration(new PaymentConfiguration());
-        modelBuilder.ApplyConfiguration(new ReviewConfiguration());
-        modelBuilder.ApplyConfiguration(new RoomAmenityConfiguration());
-        modelBuilder.ApplyConfiguration(new RoomConfiguration());
-        modelBuilder.ApplyConfiguration(new SpecialOfferConfiguration());
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
     }
 
     public async Task<IEnumerable<TrendingCities>> GetTrendingCitiesAsync()

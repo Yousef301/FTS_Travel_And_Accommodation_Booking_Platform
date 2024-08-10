@@ -14,7 +14,7 @@ public class TABPDbContextFactory : IDesignTimeDbContextFactory<TABPDbContext>
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<TABPDbContext>();
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("TABPDb");
 
         optionsBuilder.UseSqlServer(connectionString);
 

@@ -39,7 +39,6 @@ public class BookingConfiguration : IEntityTypeConfiguration<Booking>
         builder.Property(b => b.TotalPrice)
             .HasPrecision(10, 2);
 
-        builder.HasIndex(b => b.BookingDate);
         builder.HasIndex(b => new { b.CheckInDate, b.CheckOutDate });
     }
 }

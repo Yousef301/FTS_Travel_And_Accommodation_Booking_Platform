@@ -16,5 +16,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
                 r.HotelId
             })
             .IsUnique();
+
+        builder.HasIndex(r => r.Rate);
     }
 }
