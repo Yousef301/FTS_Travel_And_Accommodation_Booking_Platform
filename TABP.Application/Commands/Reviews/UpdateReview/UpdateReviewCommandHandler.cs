@@ -24,8 +24,13 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 
     public async Task Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
     {
-        var review = await _reviewRepository.GetByIdAsync(request.ReviewId, request.UserId) ??
+        var review = await _reviewRepository.GetByIdAsync(request.ReviewId) ??
                      throw new NotFoundException($"Review with id {request.ReviewId} wasn't found.");
+
+        if (review.UserId != request.UserId)
+        {
+            throw new UnauthorizedAccessException("You can't update this review.");
+        }
 
         var oldReviewRate = review.Rate;
 

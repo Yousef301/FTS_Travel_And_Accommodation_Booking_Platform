@@ -20,6 +20,7 @@ public class GetHotelImagesQueryHandler : IRequestHandler<GetHotelImagesQuery, I
         CancellationToken cancellationToken)
     {
         var hotelImages = await _hotelImageRepository.GetImagesPathAsync(request.HotelId);
+        
         var images = await _imageService.GetSpecificImagesAsync(hotelImages);
 
         return images;

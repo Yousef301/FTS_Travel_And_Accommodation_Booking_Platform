@@ -7,9 +7,9 @@ public interface IReviewRepository
 {
     Task<IEnumerable<Review>> GetAsync();
     Task<IEnumerable<Review>> GetByHotelIdAsync(Guid hotelId);
-    Task<IEnumerable<Review>> GetHotelReviewsForUserAsync(Guid hotelId, Guid userId);
+    Task<IEnumerable<Review>> GetUserHotelsReviewsAsync(Guid hotelId, Guid userId);
     Task<int> GetHotelReviewsCount(Guid hotelId);
-    Task<Review?> GetByIdAsync(Guid id, Guid userId);
+    Task<Review?> GetByIdAsync(Guid id);
     Task<Review> CreateAsync(Review review);
     Task DeleteAsync(Guid id);
     Task UpdateAsync(Review review);

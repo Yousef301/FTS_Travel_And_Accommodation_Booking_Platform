@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Rooms.UpdateRoom;
 
@@ -21,12 +22,8 @@ public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand>
 
     public async Task Handle(UpdateRoomCommand request, CancellationToken cancellationToken)
     {
-        var room = await _roomRepository.GetByIdAsync(request.Id);
-
-        if (room == null)
-        {
-            throw new Exception("Room not found"); // TODO: Create a custom exception
-        }
+        var room = await _roomRepository.GetByIdAsync(request.Id, request.HotelId) ??
+                   throw new NotFoundException($"Room with id {request.Id} wasn't found");
 
         var updatedRoomDto = _mapper.Map<RoomUpdate>(room);
 

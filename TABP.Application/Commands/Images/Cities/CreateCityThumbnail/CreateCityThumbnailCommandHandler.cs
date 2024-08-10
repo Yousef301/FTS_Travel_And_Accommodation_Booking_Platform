@@ -24,7 +24,6 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
         _cityImageRepository = cityImageRepository;
     }
 
-    // TODO: Handle if there is already a thumbnail for the city
     public async Task Handle(CreateCityThumbnailCommand request, CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.CityId) ??
@@ -42,15 +41,28 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
                 { "fileExtension", $"{fileExtension}" },
             });
 
-        var cityThumbnail = new CityImage
-        {
-            Id = new Guid(),
-            CityId = request.CityId,
-            ImagePath = $"cities/{city.Name}_{request.Image.FileName}".Replace(' ', '_'),
-            Thumbnail = true
-        };
 
-        await _cityImageRepository.CreateAsync(cityThumbnail);
-        await _unitOfWork.SaveChangesAsync();
+        var cityThumbnail =
+            await _cityImageRepository.GetByIdAsync(ci => ci.CityId == request.CityId && ci.Thumbnail);
+
+        if (cityThumbnail != null)
+        {
+            cityThumbnail.ImagePath = $"cities/{city.Name}_{request.Image.FileName}".Replace(' ', '_');
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+        else
+        {
+            cityThumbnail = new CityImage
+            {
+                Id = new Guid(),
+                CityId = request.CityId,
+                ImagePath = $"cities/{city.Name}_{request.Image.FileName}".Replace(' ', '_'),
+                Thumbnail = true
+            };
+
+            await _cityImageRepository.CreateAsync(cityThumbnail);
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

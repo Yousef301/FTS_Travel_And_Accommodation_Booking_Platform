@@ -83,9 +83,10 @@ public class RoomRepository : IRoomRepository
         return roomsWithOffers.Select(x => x.Room);
     }
 
-    public async Task<Room?> GetByIdAsync(Guid id)
+    public async Task<Room?> GetByIdAsync(Guid id, Guid hotelId)
     {
-        return await _context.Rooms.FindAsync(id);
+        return await _context.Rooms
+            .SingleOrDefaultAsync(r => r.Id == id && r.HotelId == hotelId);
     }
 
     public async Task<Room> CreateAsync(Room room)

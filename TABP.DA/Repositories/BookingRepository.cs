@@ -66,10 +66,14 @@ public class BookingRepository : IBookingRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<Booking?> GetByIdAsync(Guid id, Guid userId)
+    public async Task<Booking?> GetByIdAsync(Guid id, bool includePayment = false)
     {
-        return await _context.Bookings
-            .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
+        return includePayment
+            ? await _context.Bookings
+                .Include(b => b.Payment)
+                .FirstOrDefaultAsync(b => b.Id == id)
+            : await _context.Bookings
+                .FirstOrDefaultAsync(b => b.Id == id);
     }
 
     public async Task<Booking?> GetPendingBooking(Guid userId)

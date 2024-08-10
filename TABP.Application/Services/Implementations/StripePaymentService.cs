@@ -1,6 +1,7 @@
 ﻿using Stripe;
 using Stripe.Checkout;
 using TABP.Application.Services.Interfaces;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Services.Implementations;
 
@@ -47,7 +48,7 @@ public class StripePaymentService : IPaymentService
         }
         catch (StripeException ex)
         {
-            throw new ApplicationException("Error creating Stripe checkout session", ex);
+            throw new StripePaymentException("Error creating Stripe checkout session", ex);
         }
     }
 }

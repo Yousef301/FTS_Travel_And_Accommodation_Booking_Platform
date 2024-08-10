@@ -20,7 +20,7 @@ public class GetUserHotelReviewsQueryHandler : IRequestHandler<GetUserHotelRevie
         CancellationToken cancellationToken)
     {
         var reviews = await _reviewRepository
-            .GetHotelReviewsForUserAsync(request.HotelId, request.UserId);
+            .GetUserHotelsReviewsAsync(request.HotelId, request.UserId);
 
         return _mapper.Map<IEnumerable<ReviewResponse>>(reviews);
     }

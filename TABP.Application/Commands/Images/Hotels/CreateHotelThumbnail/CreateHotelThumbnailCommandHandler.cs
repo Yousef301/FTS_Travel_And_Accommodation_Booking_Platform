@@ -24,7 +24,6 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
         _hotelImageRepository = hotelImageRepository;
     }
 
-    // TODO: Handle if there is already a thumbnail for the hotel
     public async Task Handle(CreateHotelThumbnailCommand request, CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.HotelId) ??
@@ -42,15 +41,27 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
                 { "fileExtension", $"{fileExtension}" },
             });
 
-        var hotelThumbnail = new HotelImage
-        {
-            Id = new Guid(),
-            HotelId = request.HotelId,
-            ImagePath = $"hotels/{hotel.Name}_{request.Image.FileName}".Replace(' ', '_'),
-            Thumbnail = true
-        };
+        var hotelThumbnail =
+            await _hotelImageRepository.GetByIdAsync(hi => hi.HotelId == request.HotelId && hi.Thumbnail);
 
-        await _hotelImageRepository.CreateAsync(hotelThumbnail);
-        await _unitOfWork.SaveChangesAsync();
+        if (hotelThumbnail != null)
+        {
+            hotelThumbnail.ImagePath = $"hotels/{hotel.Name}_{request.Image.FileName}".Replace(' ', '_');
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+        else
+        {
+            hotelThumbnail = new HotelImage
+            {
+                Id = new Guid(),
+                HotelId = request.HotelId,
+                ImagePath = $"hotels/{hotel.Name}_{request.Image.FileName}".Replace(' ', '_'),
+                Thumbnail = true
+            };
+
+            await _hotelImageRepository.CreateAsync(hotelThumbnail);
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

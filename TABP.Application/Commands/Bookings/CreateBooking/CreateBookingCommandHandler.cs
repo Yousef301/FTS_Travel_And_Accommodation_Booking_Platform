@@ -37,16 +37,19 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 
         var rooms = await _roomRepository.GetByIdAndHotelIdAsync(request.HotelId, request.RoomIds);
 
-        if (rooms.Count() != request.RoomIds.Count())
+        var roomsList = rooms.ToList();
+
+        if (roomsList.Count() != request.RoomIds.Count())
         {
             throw new NotFoundException($"One or more rooms doesn't exist in the hotel with id {request.HotelId}");
         }
 
         var results = await ValidateRooms(request.RoomIds, request.CheckInDate, request.CheckOutDate);
+        var resultsList = results.ToList();
 
-        if (results.Any())
+        if (resultsList.Count != 0)
         {
-            throw new ArgumentException(string.Join(Environment.NewLine, results));
+            throw new RoomsNotAvailableException(resultsList);
         }
 
         if (await _bookingRepository.IsBookingOverlapsAsync(request.HotelId, request.UserId, request.CheckInDate,
@@ -55,7 +58,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
             throw new BookingOverlapException();
         }
 
-        var totalPrice = CalculateTotalPrice(rooms);
+        var totalPrice = CalculateTotalPrice(roomsList);
 
         var paymentMethod = Enum.TryParse<PaymentMethod>(request.PaymentMethod, out var parsedPaymentMethod)
             ? parsedPaymentMethod
@@ -85,7 +88,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 
             await _unitOfWork.SaveChangesAsync();
 
-            foreach (var room in rooms)
+            foreach (var room in roomsList)
             {
                 var bookingDetail = new BookingDetail
                 {

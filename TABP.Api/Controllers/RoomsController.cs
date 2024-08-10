@@ -72,10 +72,11 @@ public class RoomsController : ControllerBase
     }
 
     [HttpDelete("{roomId:guid}")]
-    public async Task<IActionResult> DeleteRoom(Guid roomId)
+    public async Task<IActionResult> DeleteRoom(Guid roomId, Guid hotelId)
     {
         await _mediator.Send(new DeleteRoomCommand
         {
+            HotelId = hotelId,
             Id = roomId
         });
 
@@ -83,13 +84,14 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> UpdateRoom(Guid id,
+    public async Task<IActionResult> UpdateRoom(Guid id, Guid hotelId,
         [FromBody] JsonPatchDocument<UpdateRoomDto> roomUpdateDto)
     {
         var roomDocument = _mapper.Map<JsonPatchDocument<RoomUpdate>>(roomUpdateDto);
 
         await _mediator.Send(new UpdateRoomCommand()
         {
+            HotelId = hotelId,
             Id = id,
             RoomDocument = roomDocument
         });

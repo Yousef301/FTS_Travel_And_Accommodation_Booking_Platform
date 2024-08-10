@@ -22,8 +22,13 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
 
     public async Task Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
     {
-        var review = await _reviewRepository.GetByIdAsync(request.ReviewId, request.UserId) ??
+        var review = await _reviewRepository.GetByIdAsync(request.ReviewId) ??
                      throw new NotFoundException($"Review with id {request.ReviewId} wasn't found.");
+
+        if (review.UserId != request.UserId)
+        {
+            throw new UnauthorizedAccessException("You can't delete this review.");
+        }
 
         var currentHotelRate = await _hotelRepository.GetHotelRateAsync(request.HotelId);
         var hotelReviewsCount = await _reviewRepository.GetHotelReviewsCount(request.HotelId);

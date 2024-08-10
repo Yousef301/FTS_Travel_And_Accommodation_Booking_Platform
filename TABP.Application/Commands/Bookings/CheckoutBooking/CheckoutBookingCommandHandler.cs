@@ -23,8 +23,13 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
 
     public async Task<string> Handle(CheckoutBookingCommand request, CancellationToken cancellationToken)
     {
-        var booking = await _bookingRepository.GetByIdAsync(request.BookingId, request.UserId) ??
+        var booking = await _bookingRepository.GetByIdAsync(request.BookingId) ??
                       throw new NotFoundException($"Booking with id {request.BookingId} wasn't found");
+
+        if (booking.UserId != request.UserId)
+        {
+            throw new UnauthorizedAccessException("You are not allowed to checkout this booking");
+        }
 
         if (booking.BookingStatus != BookingStatus.Pending)
         {

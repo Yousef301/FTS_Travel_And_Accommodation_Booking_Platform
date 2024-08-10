@@ -14,9 +14,9 @@ public class RoomImageRepository : IImageRepository<RoomImage>
         _context = context;
     }
 
-    public async Task<RoomImage?> GetByIdAsync(Guid id)
+    public async Task<RoomImage?> GetByIdAsync(Expression<Func<RoomImage, bool>> predicate)
     {
-        return await _context.RoomImages.FindAsync(id);
+        return await _context.RoomImages.FirstOrDefaultAsync(predicate);
     }
 
     public async Task<string?> GetImagePathAsync(Guid id, Guid roomId)

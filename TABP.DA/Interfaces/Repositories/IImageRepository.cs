@@ -4,7 +4,7 @@ namespace TABP.DAL.Interfaces.Repositories;
 
 public interface IImageRepository<T> where T : class
 {
-    Task<T?> GetByIdAsync(Guid id);
+    Task<T?> GetByIdAsync(Expression<Func<T, bool>> predicate);
     Task<string?> GetImagePathAsync(Guid imageId, Guid cityId);
     Task<IEnumerable<string>> GetImagesPathAsync(Guid id);
     Task<string?> GetThumbnailPathAsync(Guid id);

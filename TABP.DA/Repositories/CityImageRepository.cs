@@ -19,9 +19,9 @@ public class CityImageRepository : IImageRepository<CityImage>
         return await _context.CityImages.ToListAsync();
     }
 
-    public async Task<CityImage?> GetByIdAsync(Guid id)
+    public async Task<CityImage?> GetByIdAsync(Expression<Func<CityImage, bool>> predicate)
     {
-        return await _context.CityImages.FindAsync(id);
+        return await _context.CityImages.FirstOrDefaultAsync(predicate);
     }
 
     public async Task<string?> GetImagePathAsync(Guid imageId, Guid cityId)
@@ -40,14 +40,13 @@ public class CityImageRepository : IImageRepository<CityImage>
             .ToListAsync();
     }
 
-    public async Task<string?> GetThumbnailPathAsync(Guid id)
+    public async Task<string?> GetThumbnailPathAsync(Guid cityId)
     {
         return await _context.CityImages
-            .Where(h => h.CityId == id && h.Thumbnail)
+            .Where(h => h.CityId == cityId && h.Thumbnail)
             .Select(h => h.ImagePath)
             .FirstOrDefaultAsync();
     }
-
 
     public async Task<CityImage> CreateAsync(CityImage cityImage)
     {

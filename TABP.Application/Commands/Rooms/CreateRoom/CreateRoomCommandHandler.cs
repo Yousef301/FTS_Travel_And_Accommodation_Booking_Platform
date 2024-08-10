@@ -4,26 +4,34 @@ using TABP.Application.Queries.Rooms;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Rooms.CreateRoom;
 
+// TODO: Continue here
+
 public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomResponse>
 {
+    private readonly IHotelRepository _hotelRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
     public CreateRoomCommandHandler(IRoomRepository roomRepository, IUnitOfWork unitOfWork,
-        IMapper mapper)
+        IMapper mapper, IHotelRepository hotelRepository)
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _hotelRepository = hotelRepository;
     }
 
 
     public async Task<RoomResponse> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
     {
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
+            throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");
+
         var room = _mapper.Map<Room>(request);
 
         room.Id = new Guid();
