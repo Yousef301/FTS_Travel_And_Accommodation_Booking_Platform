@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
@@ -14,22 +15,12 @@ public class RoomAmenityRepository : IRoomAmenityRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<RoomAmenity>> GetAsync()
-    {
-        return await _context.RoomAmenities.ToListAsync();
-    }
-
     public async Task<IEnumerable<RoomAmenity>> GetRoomAmenitiesAsync(Guid roomId)
     {
         return await _context.RoomAmenities
             .Where(ra => ra.RoomId == roomId)
             .Include(ra => ra.Amenity)
             .ToListAsync();
-    }
-
-    public async Task<RoomAmenity?> GetByIdAsync(Guid id)
-    {
-        return await _context.RoomAmenities.FindAsync(id);
     }
 
     public async Task<RoomAmenity> CreateAsync(RoomAmenity roomAmenity)
@@ -50,14 +41,6 @@ public class RoomAmenityRepository : IRoomAmenityRepository
         }
 
         _context.RoomAmenities.Remove(roomAmenity);
-    }
-
-    public async Task UpdateAsync(RoomAmenity roomAmenity)
-    {
-        if (!await _context.RoomAmenities.AnyAsync(ra => ra.Id == roomAmenity.Id))
-            return;
-
-        _context.RoomAmenities.Update(roomAmenity);
     }
 
     public async Task<bool> ExistsAsync(Expression<Func<RoomAmenity, bool>> predicate)

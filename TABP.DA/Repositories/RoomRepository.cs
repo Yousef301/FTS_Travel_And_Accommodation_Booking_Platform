@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
@@ -14,11 +15,6 @@ public class RoomRepository : IRoomRepository
     public RoomRepository(TABPDbContext context)
     {
         _context = context;
-    }
-
-    public async Task<IEnumerable<Room>> GetAsync()
-    {
-        return await _context.Rooms.ToListAsync();
     }
 
     public async Task<PagedList<Room>> GetByHotelIdPagedAsync(Guid hotelId, Filters<Room> filters)

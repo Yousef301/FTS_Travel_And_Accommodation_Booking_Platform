@@ -4,7 +4,7 @@ using TABP.DAL.Configurations;
 using TABP.DAL.Entities;
 using TABP.DAL.Models.Procedures;
 
-namespace TABP.DAL;
+namespace TABP.DAL.DbContexts;
 
 public class TABPDbContext : DbContext
 {
@@ -25,22 +25,9 @@ public class TABPDbContext : DbContext
     public DbSet<SpecialOffer> SpecialOffers { get; set; }
     public DbSet<User> Users { get; set; }
 
-    public TABPDbContext()
-    {
-    }
-
     public TABPDbContext(DbContextOptions<TABPDbContext> options)
         : base(options)
     {
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer(
-                "Server=localhost;Database=TABP;Trusted_Connection=True;TrustServerCertificate=True;");
-        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

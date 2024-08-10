@@ -5,7 +5,6 @@ namespace TABP.DAL.Interfaces.Repositories;
 
 public interface IReviewRepository
 {
-    Task<IEnumerable<Review>> GetAsync();
     Task<IEnumerable<Review>> GetByHotelIdAsync(Guid hotelId);
     Task<IEnumerable<Review>> GetUserHotelsReviewsAsync(Guid hotelId, Guid userId);
     Task<int> GetHotelReviewsCount(Guid hotelId);

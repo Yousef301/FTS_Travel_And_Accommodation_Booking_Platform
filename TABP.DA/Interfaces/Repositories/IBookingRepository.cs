@@ -6,7 +6,6 @@ namespace TABP.DAL.Interfaces.Repositories;
 
 public interface IBookingRepository
 {
-    Task<IEnumerable<Booking>> GetAsync();
     Task<IEnumerable<BookingDto>> GetUserBookingsAsync(Guid userId);
     Task<IEnumerable<Guid>> GetRecentlyBookedHotelsIdByUserAsync(Guid userId, int count = 5);
     Task<BookingDto?> GetDetailedByIdAsync(Guid id, Guid userId);

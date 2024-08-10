@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
@@ -12,11 +13,6 @@ public class ReviewRepository : IReviewRepository
     public ReviewRepository(TABPDbContext context)
     {
         _context = context;
-    }
-
-    public async Task<IEnumerable<Review>> GetAsync()
-    {
-        return await _context.Reviews.ToListAsync();
     }
 
     public async Task<IEnumerable<Review>> GetByHotelIdAsync(Guid hotelId)

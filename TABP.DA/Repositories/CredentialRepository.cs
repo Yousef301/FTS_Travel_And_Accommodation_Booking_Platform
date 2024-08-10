@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
@@ -12,16 +13,6 @@ public class CredentialRepository : ICredentialRepository
     public CredentialRepository(TABPDbContext context)
     {
         _context = context;
-    }
-
-    public async Task<IEnumerable<Credential>> GetAsync()
-    {
-        return await _context.Credentials.ToListAsync();
-    }
-
-    public async Task<Credential?> GetByIdAsync(Guid id)
-    {
-        return await _context.Credentials.FindAsync(id);
     }
 
     public async Task<Credential?> GetByUsername(string username)
@@ -37,24 +28,6 @@ public class CredentialRepository : ICredentialRepository
             .AddAsync(credential);
 
         return createdCredential.Entity;
-    }
-
-    public async Task DeleteAsync(Credential credential)
-    {
-        if (!await _context.Credentials.AnyAsync(c => c.Id == credential.Id))
-        {
-            return;
-        }
-
-        _context.Credentials.Remove(credential);
-    }
-
-    public async Task UpdateAsync(Credential credential)
-    {
-        if (!await _context.Credentials.AnyAsync(c => c.Id == credential.Id))
-            return;
-
-        _context.Credentials.Update(credential);
     }
 
     public async Task<bool> ExistsAsync(Expression<Func<Credential, bool>> predicate)

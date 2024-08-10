@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
@@ -12,11 +13,6 @@ public class SpecialOfferRepository : ISpecialOfferRepository
     public SpecialOfferRepository(TABPDbContext context)
     {
         _context = context;
-    }
-
-    public async Task<IEnumerable<SpecialOffer>> GetAsync()
-    {
-        return await _context.SpecialOffers.ToListAsync();
     }
 
     public async Task<IEnumerable<SpecialOffer>> GetExpiredOffersAsync()

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.DAL.Models;
@@ -14,11 +15,6 @@ public class BookingRepository : IBookingRepository
     public BookingRepository(TABPDbContext context)
     {
         _context = context;
-    }
-
-    public async Task<IEnumerable<Booking>> GetAsync()
-    {
-        return await _context.Bookings.ToListAsync();
     }
 
     public async Task<IEnumerable<BookingDto>> GetUserBookingsAsync(Guid userId)
