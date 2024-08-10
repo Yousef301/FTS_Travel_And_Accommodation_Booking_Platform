@@ -12,4 +12,5 @@ public interface ICredentialRepository
     Task DeleteAsync(Credential credential);
     Task UpdateAsync(Credential credential);
     Task<bool> ExistsAsync(Expression<Func<Credential, bool>> predicate);
+    Task<bool> UsernameExistsAsync(string username);
 }

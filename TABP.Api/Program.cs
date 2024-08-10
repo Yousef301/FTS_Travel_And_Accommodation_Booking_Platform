@@ -1,16 +1,17 @@
-using System.Reflection;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TABP.Application;
 using TABP.Application.Services.Implementations;
 using TABP.Application.Services.Interfaces;
+using TABP.Web.Middlewares;
 using TABP.Web.Services.Implementations;
 using TABP.Web.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("appsettings.json").AddEnvironmentVariables();
-
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContext, UserContext>();
@@ -23,6 +24,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddApplicationInfrastructure(builder.Configuration);
 
@@ -81,6 +86,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<GlobalExceptionHandler>();
 
 app.UseHttpsRedirection();
 app.MapControllers();

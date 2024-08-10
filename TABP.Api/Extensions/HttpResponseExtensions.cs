@@ -3,7 +3,7 @@ using TABP.Domain.Models;
 
 namespace TABP.Web.Extensions;
 
-public static class HttpResponseExtension
+public static class HttpResponseExtensions
 {
     public static void AddPaginationMetadata(this HttpResponse response, PaginationMetadata paginationMetadata,
         HttpRequest request)

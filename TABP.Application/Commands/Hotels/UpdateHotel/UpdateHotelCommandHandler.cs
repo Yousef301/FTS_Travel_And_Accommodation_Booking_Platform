@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Hotels.UpdateHotel;
 
@@ -24,7 +25,7 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
 
         if (hotel == null)
         {
-            throw new Exception("Hotel not found"); // TODO: Create a custom exception
+            throw new NotFoundException($"Hotel with id {request.Id} not found.");
         }
 
         var updatedHotelDto = _mapper.Map<HotelUpdate>(hotel);

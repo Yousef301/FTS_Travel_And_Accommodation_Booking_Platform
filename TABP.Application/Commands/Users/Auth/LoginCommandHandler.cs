@@ -21,13 +21,12 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _credentialRepository.GetByUsername(request.Username) ??
-                   throw new InvalidCredentialException();
+        var user = await _credentialRepository.GetByUsername(request.Username);
 
-        if (!_passwordService.ValidatePassword(request.Password, user.HashedPassword))
-            throw new InvalidCredentialException();
+        if (user is null || !_passwordService.ValidatePassword(request.Password, user.HashedPassword))
+            throw new InvalidCredentialException("Invalid username or password.");
 
-        return new LoginResponse()
+        return new LoginResponse
         {
             Token = _tokenGeneratorService.GenerateToken(user.User, request.Username)
         };

@@ -50,11 +50,6 @@ public class UserRepository : IUserRepository
         _context.Users.Update(user);
     }
 
-    public async Task<bool> EmailExist(string email)
-    {
-        return await _context.Users.AnyAsync(u => u.Email == email);
-    }
-
     public async Task<bool> ExistsAsync(Expression<Func<User, bool>> predicate)
     {
         return await _context.Users.AnyAsync(predicate);

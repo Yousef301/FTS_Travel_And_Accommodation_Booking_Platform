@@ -31,7 +31,8 @@ public class GetHotelsForUserQueryHandler : IRequestHandler<GetHotelsForUserQuer
             Page = request.Page,
             PageSize = request.PageSize,
             FilterExpression = GetSearchExpression(request),
-            SortExpression = _hotelExpressions.GetSortExpression(request.SortBy)
+            SortExpression = _hotelExpressions.GetSortExpression(request.SortBy),
+            SortOrder = request.SortOrder
         }, true, true);
 
         return _mapper.Map<PagedList<HotelUserResponse>>(hotels);

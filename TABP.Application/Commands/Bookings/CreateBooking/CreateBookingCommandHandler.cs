@@ -5,6 +5,7 @@ using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Bookings.CreateBooking;
 
@@ -12,21 +13,28 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 {
     private readonly IBookingDetailRepository _bookingDetailRepository;
     private readonly IBookingRepository _bookingRepository;
+    private readonly IHotelRepository _hotelRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateBookingCommandHandler(IBookingDetailRepository bookingDetailRepository,
         IBookingRepository bookingRepository, IUnitOfWork unitOfWork,
-        IRoomRepository roomRepository)
+        IRoomRepository roomRepository, IHotelRepository hotelRepository)
     {
         _bookingDetailRepository = bookingDetailRepository;
         _bookingRepository = bookingRepository;
         _roomRepository = roomRepository;
+        _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(CreateBookingCommand request, CancellationToken cancellationToken)
     {
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
+        {
+            throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found.");
+        }
+
         var rooms = await _roomRepository.GetByIdAndHotelIdAsync(request.HotelId,
             request.RoomIds);
 
@@ -53,7 +61,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 
         var paymentMethod = Enum.TryParse<PaymentMethod>(request.PaymentMethod, out var parsedPaymentMethod)
             ? parsedPaymentMethod
-            : throw new ArgumentException("Invalid payment method");
+            : throw new ArgumentException("Payment method is not valid.");
 
         var pendingBooking = await _bookingRepository.GetPendingBooking(request.UserId);
 
