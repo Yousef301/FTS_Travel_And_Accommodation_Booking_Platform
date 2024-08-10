@@ -46,7 +46,8 @@ public class BookingsController : ControllerBase
     {
         var booking = await _mediator.Send(new GetBookingByIdQuery
         {
-            BookingId = bookingId
+            BookingId = bookingId,
+            UserId = _userContext.Id
         });
 
         return Ok(booking);
@@ -57,6 +58,7 @@ public class BookingsController : ControllerBase
     {
         await _mediator.Send(new CancelBookingCommand
         {
+            UserId = _userContext.Id,
             BookingId = bookingId
         });
 

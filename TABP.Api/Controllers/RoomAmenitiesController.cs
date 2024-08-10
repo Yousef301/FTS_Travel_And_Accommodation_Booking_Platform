@@ -48,10 +48,11 @@ public class RoomAmenitiesController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteRoomAmenity(Guid id)
+    public async Task<IActionResult> DeleteRoomAmenity(Guid id, Guid roomId)
     {
         await _mediator.Send(new DeleteRoomAmenityCommand
         {
+            RoomId = roomId,
             Id = id
         });
 

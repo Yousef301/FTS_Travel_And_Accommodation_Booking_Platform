@@ -3,6 +3,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Images.Hotels.DeleteHotelImage;
 
@@ -22,7 +23,8 @@ public class DeleteHotelImageCommandHandler : IRequestHandler<DeleteHotelImageCo
 
     public async Task Handle(DeleteHotelImageCommand request, CancellationToken cancellationToken)
     {
-        var hotelImagePath = await _hotelImageRepository.GetImagePathAsync(request.ImageId);
+        var hotelImagePath = await _hotelImageRepository.GetImagePathAsync(request.ImageId, request.HotelId) ??
+                             throw new NotFoundException($"Hotel image with id {request.ImageId} wasn't found");
 
         await _imageService.DeleteImageAsync(hotelImagePath);
 

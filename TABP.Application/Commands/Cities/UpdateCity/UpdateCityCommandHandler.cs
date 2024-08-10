@@ -21,12 +21,8 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
 
     public async Task Handle(UpdateCityCommand request, CancellationToken cancellationToken)
     {
-        var city = await _cityRepository.GetByIdAsync(request.Id);
-
-        if (city == null)
-        {
-            throw new NotFoundException($"City with id {request.Id} wasn't found.");
-        }
+        var city = await _cityRepository.GetByIdAsync(request.Id) ??
+                   throw new NotFoundException($"City with id {request.Id} wasn't found.");
 
         var updatedCityDto = _mapper.Map<CityUpdate>(city);
 

@@ -4,6 +4,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Images.Hotels.CreateHotelThumbnail;
 
@@ -26,7 +27,9 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
     // TODO: Handle if there is already a thumbnail for the hotel
     public async Task Handle(CreateHotelThumbnailCommand request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.HotelId);
+        var hotel = await _hotelRepository.GetByIdAsync(request.HotelId) ??
+                    throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");
+
         hotel.Name = hotel.Name.ToLower();
 
         var fileExtension = Path.GetExtension(request.Image.FileName);

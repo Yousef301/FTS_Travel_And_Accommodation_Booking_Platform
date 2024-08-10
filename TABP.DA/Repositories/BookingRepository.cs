@@ -47,10 +47,10 @@ public class BookingRepository : IBookingRepository
             .ToListAsync();
     }
 
-    public async Task<BookingDto?> GetDetailedByIdAsync(Guid id)
+    public async Task<BookingDto?> GetDetailedByIdAsync(Guid id, Guid userId)
     {
         return await _context.Bookings
-            .Where(b => b.Id == id)
+            .Where(b => b.Id == id && b.UserId == userId)
             .Select(b => new BookingDto
             {
                 Id = b.Id,
@@ -66,10 +66,10 @@ public class BookingRepository : IBookingRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<Booking?> GetByIdAsync(Guid id)
+    public async Task<Booking?> GetByIdAsync(Guid id, Guid userId)
     {
         return await _context.Bookings
-            .FirstOrDefaultAsync(b => b.Id == id);
+            .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
     }
 
     public async Task<Booking?> GetPendingBooking(Guid userId)

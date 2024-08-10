@@ -4,6 +4,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Images.Cities.CreateCityThumbnail;
 
@@ -22,11 +23,13 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
         _cityRepository = cityRepository;
         _cityImageRepository = cityImageRepository;
     }
-    
+
     // TODO: Handle if there is already a thumbnail for the city
     public async Task Handle(CreateCityThumbnailCommand request, CancellationToken cancellationToken)
     {
-        var city = await _cityRepository.GetByIdAsync(request.CityId);
+        var city = await _cityRepository.GetByIdAsync(request.CityId) ??
+                   throw new NotFoundException($"City with id {request.CityId} wasn't found.");
+
         city.Name = city.Name.ToLower();
 
         var fileExtension = Path.GetExtension(request.Image.FileName);

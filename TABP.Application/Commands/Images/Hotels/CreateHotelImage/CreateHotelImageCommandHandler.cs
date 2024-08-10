@@ -3,6 +3,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Images.Hotels.CreateHotelImage;
 
@@ -24,7 +25,9 @@ public class CreateHotelImageCommandHandler : IRequestHandler<CreateHotelImageCo
 
     public async Task Handle(CreateHotelImageCommand request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.HotelId);
+        var hotel = await _hotelRepository.GetByIdAsync(request.HotelId) ??
+                    throw new NotFoundException($"Hotel with ID {request.HotelId} wasn't found");
+
         hotel.Name = hotel.Name.ToLower();
 
         await _imageService.UploadImagesAsync(request.Images, new Dictionary<string, object>

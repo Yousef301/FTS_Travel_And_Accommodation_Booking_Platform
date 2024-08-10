@@ -87,10 +87,11 @@ public class CityImagesController : ControllerBase
     }
 
     [HttpDelete("{imageId:guid}")]
-    public async Task<IActionResult> DeleteImage(Guid imageId)
+    public async Task<IActionResult> DeleteImage(Guid imageId, Guid cityId)
     {
         await _mediator.Send(new DeleteCityImageCommand
         {
+            CityId = cityId,
             ImageId = imageId
         });
 

@@ -3,6 +3,7 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Images.Cities.CreateCityImage;
 
@@ -24,7 +25,9 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
 
     public async Task Handle(CreateCityImageCommand request, CancellationToken cancellationToken)
     {
-        var city = await _cityRepository.GetByIdAsync(request.CityId);
+        var city = await _cityRepository.GetByIdAsync(request.CityId) ??
+                   throw new NotFoundException($"City with id {request.CityId} wasn't found");
+
         city.Name = city.Name.ToLower();
 
         await _imageService.UploadImagesAsync(request.Images, new Dictionary<string, object>

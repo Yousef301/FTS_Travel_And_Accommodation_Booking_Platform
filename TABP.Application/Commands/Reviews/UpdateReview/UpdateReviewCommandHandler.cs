@@ -2,21 +2,20 @@
 using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Reviews.UpdateReview;
 
 public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 {
-    private readonly IBookingRepository _bookingRepository;
     private readonly IReviewRepository _reviewRepository;
     private readonly IHotelRepository _hotelRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UpdateReviewCommandHandler(IBookingRepository bookingRepository, IReviewRepository reviewRepository,
+    public UpdateReviewCommandHandler(IReviewRepository reviewRepository,
         IHotelRepository hotelRepository, IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _bookingRepository = bookingRepository;
         _reviewRepository = reviewRepository;
         _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
@@ -25,12 +24,8 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 
     public async Task Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
     {
-        var review = await _reviewRepository.GetByIdAsync(request.ReviewId);
-
-        if (!(review.UserId == request.UserId))
-        {
-            throw new NotSupportedException("You are not allowed to update this review.");
-        }
+        var review = await _reviewRepository.GetByIdAsync(request.ReviewId, request.UserId) ??
+                     throw new NotFoundException($"Review with id {request.ReviewId} wasn't found.");
 
         var oldReviewRate = review.Rate;
 

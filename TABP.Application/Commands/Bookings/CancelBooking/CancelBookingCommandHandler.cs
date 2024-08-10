@@ -2,6 +2,7 @@
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Bookings.CancelBooking;
 
@@ -18,16 +19,12 @@ public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand>
 
     public async Task Handle(CancelBookingCommand request, CancellationToken cancellationToken)
     {
-        var booking = await _bookingRepository.GetByIdAsync(request.BookingId);
-
-        if (booking == null)
-        {
-            throw new NotSupportedException("Booking not found");
-        }
+        var booking = await _bookingRepository.GetByIdAsync(request.BookingId, request.UserId)
+                      ?? throw new NotFoundException($"Booking with id {request.BookingId} wasn't found");
 
         if (booking.BookingStatus != BookingStatus.Confirmed)
         {
-            throw new NotSupportedException("Booking cannot be cancelled");
+            throw new BookingStatusException("Booking cannot be cancelled");
         }
 
         booking.BookingStatus = BookingStatus.Cancelled;

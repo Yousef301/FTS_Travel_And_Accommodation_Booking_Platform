@@ -24,10 +24,10 @@ public class CityImageRepository : IImageRepository<CityImage>
         return await _context.CityImages.FindAsync(id);
     }
 
-    public async Task<string?> GetImagePathAsync(Guid id)
+    public async Task<string?> GetImagePathAsync(Guid imageId, Guid cityId)
     {
         return await _context.CityImages
-            .Where(ci => ci.Id == id)
+            .Where(ci => ci.Id == imageId && ci.CityId == cityId)
             .Select(ci => ci.ImagePath)
             .FirstOrDefaultAsync();
     }

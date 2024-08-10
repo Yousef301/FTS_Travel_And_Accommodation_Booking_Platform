@@ -21,12 +21,8 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
 
     public async Task Handle(UpdateHotelCommand request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.Id);
-
-        if (hotel == null)
-        {
-            throw new NotFoundException($"Hotel with id {request.Id} not found.");
-        }
+        var hotel = await _hotelRepository.GetByIdAsync(request.Id) ??
+                    throw new NotFoundException($"Hotel with id {request.Id} wasn't found.");
 
         var updatedHotelDto = _mapper.Map<HotelUpdate>(hotel);
 

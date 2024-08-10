@@ -32,19 +32,17 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
-            throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found.");
+            throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");
         }
 
-        var rooms = await _roomRepository.GetByIdAndHotelIdAsync(request.HotelId,
-            request.RoomIds);
+        var rooms = await _roomRepository.GetByIdAndHotelIdAsync(request.HotelId, request.RoomIds);
 
         if (rooms.Count() != request.RoomIds.Count())
         {
-            throw new ArgumentException("Rooms are not in the same hotel.");
+            throw new NotFoundException($"One or more rooms doesn't exist in the hotel with id {request.HotelId}");
         }
 
-        var results = await ValidateRooms(request.RoomIds,
-            request.CheckInDate, request.CheckOutDate);
+        var results = await ValidateRooms(request.RoomIds, request.CheckInDate, request.CheckOutDate);
 
         if (results.Any())
         {
@@ -54,14 +52,14 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         if (await _bookingRepository.IsBookingOverlapsAsync(request.HotelId, request.UserId, request.CheckInDate,
                 request.CheckOutDate))
         {
-            throw new ArgumentException("Booking is overlapping with an existing booking.");
+            throw new BookingOverlapException();
         }
 
         var totalPrice = CalculateTotalPrice(rooms);
 
         var paymentMethod = Enum.TryParse<PaymentMethod>(request.PaymentMethod, out var parsedPaymentMethod)
             ? parsedPaymentMethod
-            : throw new ArgumentException("Payment method is not valid.");
+            : throw new InvalidPaymentMethodException();
 
         var pendingBooking = await _bookingRepository.GetPendingBooking(request.UserId);
 

@@ -8,6 +8,7 @@ using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Payments.PaymentWebhook;
 
@@ -54,7 +55,8 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
                 var userId = new Guid(session.Metadata["user_id"]);
                 var email = session.Metadata["user_email"];
 
-                var booking = await _bookingRepository.GetByIdAsync(bookingId);
+                var booking = await _bookingRepository.GetByIdAsync(bookingId, userId) ??
+                              throw new NotFoundException($"Booking with id {bookingId} wasn't found.");
 
                 var bookingDetails = await _bookingDetailRepository
                     .GetByBookingIdAsync(bookingId);
@@ -119,16 +121,20 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
 
                     await _unitOfWork.CommitTransactionAsync();
                 }
-                catch
+                catch (Exception ex)
                 {
                     await _unitOfWork.RollbackTransactionAsync();
-                    throw;
+                    throw new InvalidOperationException("An error occurred while processing the payment.", ex);
                 }
             }
         }
         catch (StripeException e)
         {
-            throw new ArgumentException(e.Message);
+            throw new ArgumentException("Stripe error occurred: " + e.Message, e);
+        }
+        catch (Exception e)
+        {
+            throw new ApplicationException("An unexpected error occurred.", e);
         }
     }
 }
