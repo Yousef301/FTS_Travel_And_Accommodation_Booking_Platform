@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
+using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Models;
@@ -10,12 +12,14 @@ namespace TABP.Application.Queries.Cities.GetCitiesForAdmin;
 public class GetCitiesForAdminQueryHandler : IRequestHandler<GetCitiesForAdminQuery, PagedList<CityAdminResponse>>
 {
     private readonly ICityRepository _cityRepository;
+    private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
-    public GetCitiesForAdminQueryHandler(ICityRepository cityRepository, IMapper mapper)
+    public GetCitiesForAdminQueryHandler(ICityRepository cityRepository, IMapper mapper, IImageService imageService)
     {
         _cityRepository = cityRepository;
         _mapper = mapper;
+        _imageService = imageService;
     }
 
     public async Task<PagedList<CityAdminResponse>> Handle(GetCitiesForAdminQuery request,
@@ -28,9 +32,26 @@ public class GetCitiesForAdminQueryHandler : IRequestHandler<GetCitiesForAdminQu
             SortOrder = request.SortOrder,
             Page = request.Page,
             PageSize = request.PageSize
-        }, includeHotels: true);
+        }, includeHotels: true, true);
 
-        return _mapper.Map<PagedList<CityAdminResponse>>(cities);
+        var mappedCities = _mapper.Map<PagedList<CityAdminResponse>>(cities);
+
+        var thumbnailPaths = mappedCities.Items
+            .Where(city => city.ThumbnailUrl != null)
+            .Select(city => city.ThumbnailUrl)
+            .Distinct()
+            .ToList();
+
+        if (thumbnailPaths.Count == 0) return mappedCities;
+
+        var imageUrlsObject = await _imageService.GetImagesUrlsAsync<List<string>>(thumbnailPaths);
+
+        if (imageUrlsObject is List<string> imageUrls)
+        {
+            MapThumbnailUrls(mappedCities.Items, imageUrls);
+        }
+
+        return mappedCities;
     }
 
     private Expression<Func<City, bool>> GetCityBasedOnNameOrCountryExpression(string searchString)
@@ -50,5 +71,19 @@ public class GetCitiesForAdminQueryHandler : IRequestHandler<GetCitiesForAdminQu
             "country" => c => c.Country,
             _ => c => c.Name
         };
+    }
+
+    private void MapThumbnailUrls(List<CityAdminResponse> cities, List<string> imageUrls)
+    {
+        foreach (var city in cities)
+        {
+            if (city.ThumbnailUrl.IsNullOrEmpty()) continue;
+            var matchingUrl = imageUrls.FirstOrDefault(url => url.Contains(city.ThumbnailUrl));
+
+            if (matchingUrl != null)
+            {
+                city.ThumbnailUrl = matchingUrl;
+            }
+        }
     }
 }

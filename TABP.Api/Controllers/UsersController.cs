@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TABP.Application.Queries.Users.GetRecentlyVisitedHotels;
+using TABP.Application.Queries.Hotels.GetRecentlyVisitedHotels;
 using TABP.Domain.Enums;
 using TABP.Web.Services.Interfaces;
 

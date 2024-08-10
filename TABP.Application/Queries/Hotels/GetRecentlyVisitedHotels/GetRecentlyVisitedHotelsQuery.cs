@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace TABP.Application.Queries.Users.GetRecentlyVisitedHotels;
+namespace TABP.Application.Queries.Hotels.GetRecentlyVisitedHotels;
 
 public class GetRecentlyVisitedHotelsQuery : IRequest<IEnumerable<RecentlyVisitedHotelsResponse>>
 {

@@ -81,7 +81,38 @@ public class S3ImageService : IImageService
         }
     }
 
-    public async Task<IEnumerable<Dictionary<string, string>>> GetSpecificImagesAsync(IEnumerable<string> specificPaths)
+    public async Task<string> GetImageUrlAsync(string imageKey)
+    {
+        var listRequest = new ListObjectsV2Request
+        {
+            BucketName = _bucketName,
+        };
+
+        try
+        {
+            var listResponse = await _s3Client.ListObjectsV2Async(listRequest);
+
+            var baseUrl = $"https://{_bucketName}.s3.amazonaws.com/";
+
+            var imageObject = listResponse.S3Objects
+                .FirstOrDefault(o => o.Key == imageKey);
+
+            if (imageObject == null)
+            {
+                return string.Empty;
+            }
+
+            return baseUrl + imageObject.Key;
+        }
+        catch (AmazonS3Exception ex)
+        {
+            _logger.LogError($"Error getting image URL: {ex.Message}", ex);
+            throw;
+        }
+    }
+
+
+    public async Task<object> GetImagesUrlsAsync<T>(IEnumerable<string> specificPaths)
     {
         var listRequest = new ListObjectsV2Request
         {
@@ -101,7 +132,20 @@ public class S3ImageService : IImageService
                     { "uploadDate", o.LastModified.ToString("yyyy-MM-ddTHH:mm:ssZ") }
                 });
 
-            return filteredObjects.ToList();
+            // Return either a list of URLs or a list of dictionaries based on the type parameter
+            if (typeof(T) == typeof(List<string>))
+            {
+                var urls = filteredObjects.Select(d => d["url"]).ToList();
+                return urls;
+            }
+            else if (typeof(T) == typeof(IEnumerable<Dictionary<string, string>>))
+            {
+                return filteredObjects;
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported type parameter.");
+            }
         }
         catch (AmazonS3Exception ex)
         {
@@ -109,6 +153,7 @@ public class S3ImageService : IImageService
             throw;
         }
     }
+
 
     public async Task<bool> DeleteImageAsync(string path)
     {

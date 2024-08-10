@@ -3,7 +3,6 @@ using TABP.Application.Commands.Hotels.CreateHotel;
 using TABP.Application.Commands.Hotels.UpdateHotel;
 using TABP.Application.Queries.Hotels;
 using TABP.DAL.Entities;
-using TABP.Application.Queries.Users;
 using TABP.Domain.Models;
 
 namespace TABP.Application.Profiles;
@@ -21,7 +20,10 @@ public class HotelProfile : Profile
                     opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.NumberOfRooms,
                 opt =>
-                    opt.MapFrom(src => src.Rooms.Count));
+                    opt.MapFrom(src => src.Rooms.Count))
+            .ForMember(dest => dest.ThumbnailUrl,
+                opt =>
+                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
 
         CreateMap<Hotel, HotelUserResponse>()
             .ForMember(dest => dest.City,
@@ -29,7 +31,10 @@ public class HotelProfile : Profile
                     opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.Price,
                 opt =>
-                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)));
+                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)))
+            .ForMember(dest => dest.ThumbnailUrl,
+                opt =>
+                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
 
         CreateMap<PagedList<Hotel>, PagedList<HotelAdminResponse>>()
             .ForMember(dest => dest.Items,
@@ -47,12 +52,18 @@ public class HotelProfile : Profile
                     opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.Price,
                 opt =>
-                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)));
+                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)))
+            .ForMember(dest => dest.ThumbnailUrl,
+                opt =>
+                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
 
         CreateMap<Hotel, HotelWithFeaturedDealResponse>()
             .ForMember(dest => dest.OriginalPrice,
                 opt =>
                     opt.MapFrom(src => src.Rooms.First().Price))
+            .ForMember(dest => dest.ThumbnailUrl,
+                opt =>
+                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath))
             .ForMember(dest => dest.DiscountedPrice,
                 opt =>
                     opt.MapFrom(src =>

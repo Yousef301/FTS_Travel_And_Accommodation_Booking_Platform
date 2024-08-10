@@ -2,34 +2,44 @@
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using TABP.Application.Services.Interfaces;
-using TABP.DAL.Interfaces;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 
-namespace TABP.Application.Queries.Hotels.GetHotelsWithFeaturedDeals;
+namespace TABP.Application.Queries.Hotels.GetRecentlyVisitedHotels;
 
-public class
-    GetHotelsWithFeaturedDealsQueryHandler : IRequestHandler<GetHotelsWithFeaturedDealsQuery,
-    IEnumerable<HotelWithFeaturedDealResponse>>
+public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyVisitedHotelsQuery,
+    IEnumerable<RecentlyVisitedHotelsResponse>>
 {
+    private readonly IBookingRepository _bookingRepository;
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
-    public GetHotelsWithFeaturedDealsQueryHandler(IHotelRepository hotelRepository, IMapper mapper,
-        IImageService imageService)
+    public GetRecentlyVisitedHotelsQueryHandler(IBookingRepository bookingRepository,
+        IHotelRepository hotelRepository, IMapper mapper)
     {
+        _bookingRepository = bookingRepository;
         _hotelRepository = hotelRepository;
         _mapper = mapper;
-        _imageService = imageService;
     }
 
-    public async Task<IEnumerable<HotelWithFeaturedDealResponse>> Handle(GetHotelsWithFeaturedDealsQuery request,
+    public async Task<IEnumerable<RecentlyVisitedHotelsResponse>> Handle(GetRecentlyVisitedHotelsQuery request,
         CancellationToken cancellationToken)
     {
-        var hotels = await _hotelRepository.GetHotelsWithDealsAsync(request.Count);
+        var hotels = new List<Hotel>();
 
-        var mappedHotels = _mapper
-            .Map<List<HotelWithFeaturedDealResponse>>(hotels);
+        var hotelsId = await _bookingRepository
+            .GetRecentlyBookedHotelsIdByUserAsync(request.UserId, request.Count);
+
+        foreach (var hotelId in hotelsId)
+        {
+            var hotel = await _hotelRepository.GetByIdAsync(hotelId, true, true, true);
+
+            if (hotel is not null) hotels.Add(hotel);
+        }
+
+
+        var mappedHotels = _mapper.Map<List<RecentlyVisitedHotelsResponse>>(hotels);
 
         var thumbnailPaths = mappedHotels
             .Where(hotel => hotel.ThumbnailUrl != null)
@@ -38,7 +48,7 @@ public class
             .ToList();
 
         if (thumbnailPaths.Count == 0) return mappedHotels;
-
+        
         var imageUrlsObject = await _imageService.GetImagesUrlsAsync<List<string>>(thumbnailPaths);
 
         if (imageUrlsObject is List<string> imageUrls)
@@ -49,7 +59,7 @@ public class
         return mappedHotels;
     }
 
-    private void MapThumbnailUrls(List<HotelWithFeaturedDealResponse> hotels, List<string> imageUrls)
+    private void MapThumbnailUrls(List<RecentlyVisitedHotelsResponse> hotels, List<string> imageUrls)
     {
         foreach (var hotel in hotels)
         {

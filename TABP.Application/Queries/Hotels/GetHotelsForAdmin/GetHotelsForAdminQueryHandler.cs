@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 using TABP.Application.Helpers.Interfaces;
+using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Models;
@@ -11,14 +13,16 @@ public class GetHotelsForAdminQueryHandler : IRequestHandler<GetHotelsForAdminQu
 {
     private readonly IHotelExpressions _hotelExpressions;
     private readonly IHotelRepository _hotelRepository;
+    private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
     public GetHotelsForAdminQueryHandler(IHotelRepository hotelRepository, IMapper mapper,
-        IHotelExpressions hotelExpressions)
+        IHotelExpressions hotelExpressions, IImageService imageService)
     {
         _hotelRepository = hotelRepository;
         _mapper = mapper;
         _hotelExpressions = hotelExpressions;
+        _imageService = imageService;
     }
 
     public async Task<PagedList<HotelAdminResponse>> Handle(GetHotelsForAdminQuery request,
@@ -31,8 +35,39 @@ public class GetHotelsForAdminQueryHandler : IRequestHandler<GetHotelsForAdminQu
             SortOrder = request.SortOrder,
             Page = request.Page,
             PageSize = request.PageSize
-        }, true, true);
+        }, true, true, true);
 
-        return _mapper.Map<PagedList<HotelAdminResponse>>(hotels);
+        var mappedHotels = _mapper.Map<PagedList<HotelAdminResponse>>(hotels);
+
+        var thumbnailPaths = mappedHotels.Items
+            .Where(hotel => hotel.ThumbnailUrl != null)
+            .Select(hotel => hotel.ThumbnailUrl)
+            .Distinct()
+            .ToList();
+
+        if (thumbnailPaths.Count == 0) return mappedHotels;
+
+        var imageUrlsObject = await _imageService.GetImagesUrlsAsync<List<string>>(thumbnailPaths);
+
+        if (imageUrlsObject is List<string> imageUrls)
+        {
+            MapThumbnailUrls(mappedHotels.Items, imageUrls);
+        }
+
+        return mappedHotels;
+    }
+
+    private void MapThumbnailUrls(List<HotelAdminResponse> hotels, List<string> imageUrls)
+    {
+        foreach (var hotel in hotels)
+        {
+            if (hotel.ThumbnailUrl.IsNullOrEmpty()) continue;
+            var matchingUrl = imageUrls.FirstOrDefault(url => url.Contains(hotel.ThumbnailUrl));
+
+            if (matchingUrl != null)
+            {
+                hotel.ThumbnailUrl = matchingUrl;
+            }
+        }
     }
 }

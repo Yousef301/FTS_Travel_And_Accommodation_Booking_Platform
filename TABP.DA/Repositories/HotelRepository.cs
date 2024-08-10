@@ -17,7 +17,7 @@ public class HotelRepository : IHotelRepository
     }
 
     public async Task<PagedList<Hotel>> GetAsync(Filters<Hotel> filters, bool includeCity = false,
-        bool includeRooms = false)
+        bool includeRooms = false, bool includeThumbnail = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
 
@@ -37,6 +37,12 @@ public class HotelRepository : IHotelRepository
             hotelsQuery = hotelsQuery.Include(h => h.Rooms);
         }
 
+        if (includeThumbnail)
+        {
+            hotelsQuery = hotelsQuery.Include(c =>
+                c.Images.Where(i => i.Thumbnail));
+        }
+
         var hotels = await PagedList<Hotel>.CreateAsync(
             hotelsQuery,
             filters.Page,
@@ -47,7 +53,7 @@ public class HotelRepository : IHotelRepository
     }
 
     public async Task<PagedList<Hotel>> GetFilteredHotelsAsync(Filters<Hotel> filters, bool includeCity = false,
-        bool includeRooms = false)
+        bool includeRooms = false, bool includeThumbnail = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
 
@@ -61,6 +67,12 @@ public class HotelRepository : IHotelRepository
         if (includeRooms)
         {
             hotelsQuery = hotelsQuery.Include(h => h.Rooms);
+        }
+
+        if (includeThumbnail)
+        {
+            hotelsQuery = hotelsQuery.Include(c =>
+                c.Images.Where(i => i.Thumbnail));
         }
 
         hotelsQuery = filters.SortOrder == SortOrder.DESC
@@ -97,7 +109,8 @@ public class HotelRepository : IHotelRepository
                     .Where(r => r.SpecialOffers.Any(so => so.IsActive))
                     .OrderByDescending(r => r.SpecialOffers.Max(so => so.Discount))
                     .Take(1)
-                    .ToList()
+                    .ToList(),
+                Images = h.Images.Where(hi => hi.Thumbnail).ToList()
             })
             .Take(count)
             .ToListAsync();
@@ -105,7 +118,8 @@ public class HotelRepository : IHotelRepository
         return hotels;
     }
 
-    public async Task<Hotel?> GetByIdAsync(Guid id, bool includeCity = false, bool includeRooms = false)
+    public async Task<Hotel?> GetByIdAsync(Guid id, bool includeCity = false, bool includeRooms = false
+        , bool includeThumbnail = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
 
@@ -117,6 +131,12 @@ public class HotelRepository : IHotelRepository
         if (includeRooms)
         {
             hotelsQuery = hotelsQuery.Include(h => h.Rooms);
+        }
+
+        if (includeThumbnail)
+        {
+            hotelsQuery = hotelsQuery.Include(c =>
+                c.Images.Where(i => i.Thumbnail));
         }
 
         return await hotelsQuery.FirstOrDefaultAsync(h => h.Id == id);

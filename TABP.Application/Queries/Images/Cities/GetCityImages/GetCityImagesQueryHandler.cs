@@ -21,8 +21,13 @@ public class GetCityImagesQueryHandler : IRequestHandler<GetCityImagesQuery, IEn
     {
         var cityImages = await _cityImageRepository.GetImagesPathAsync(request.CityId);
 
-        var images = await _imageService.GetSpecificImagesAsync(cityImages);
+        var imagesObject = await _imageService.GetImagesUrlsAsync<IEnumerable<Dictionary<string, string>>>(cityImages);
 
-        return images;
+        if (imagesObject is IEnumerable<Dictionary<string, string>> images)
+        {
+            return images;
+        }
+
+        return new List<Dictionary<string, string>>();
     }
 }

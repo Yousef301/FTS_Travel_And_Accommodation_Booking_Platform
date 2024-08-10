@@ -17,7 +17,10 @@ public class CityProfile : Profile
         CreateMap<City, CityAdminResponse>()
             .ForMember(dest => dest.NumberOfHotels,
                 opt =>
-                    opt.MapFrom(src => src.Hotels.Count));
+                    opt.MapFrom(src => src.Hotels.Count))
+            .ForMember(dest => dest.ThumbnailUrl,
+                opt =>
+                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
         CreateMap<PagedList<City>, PagedList<CityAdminResponse>>();
         CreateMap<City, CityUpdate>();
         CreateMap<CityUpdate, City>();

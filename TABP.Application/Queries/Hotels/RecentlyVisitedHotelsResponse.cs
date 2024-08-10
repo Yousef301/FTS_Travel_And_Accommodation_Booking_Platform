@@ -1,4 +1,4 @@
-﻿namespace TABP.Application.Queries.Users;
+﻿namespace TABP.Application.Queries.Hotels;
 
 public class RecentlyVisitedHotelsResponse
 {
@@ -7,4 +7,5 @@ public class RecentlyVisitedHotelsResponse
     public string City { get; set; }
     public double Rating { get; set; }
     public double Price { get; set; }
+    public string ThumbnailUrl { get; set; }
 }

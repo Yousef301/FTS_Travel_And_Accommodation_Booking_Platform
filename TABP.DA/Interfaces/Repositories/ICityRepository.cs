@@ -7,7 +7,7 @@ namespace TABP.DAL.Interfaces.Repositories;
 
 public interface ICityRepository
 {
-    Task<PagedList<City>> GetAsync(Filters<City> filters, bool includeHotels = false);
+    Task<PagedList<City>> GetAsync(Filters<City> filters, bool includeHotels = false, bool includeThumbnail = false);
     Task<IEnumerable<TrendingCities>> GetTrendingDestinations();
     Task<City?> GetByIdAsync(Guid id);
     Task<City> CreateAsync(City city);

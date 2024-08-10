@@ -19,10 +19,15 @@ public class GetRoomImagesQueryHandler : IRequestHandler<GetRoomImagesQuery, IEn
     public async Task<IEnumerable<Dictionary<string, string>>> Handle(GetRoomImagesQuery request,
         CancellationToken cancellationToken)
     {
-        var hotelImages = await _roomImageRepository.GetImagesPathAsync(request.RoomId);
-        
-        var images = await _imageService.GetSpecificImagesAsync(hotelImages);
+        var roomImages = await _roomImageRepository.GetImagesPathAsync(request.RoomId);
 
-        return images;
+        var imagesObject = await _imageService.GetImagesUrlsAsync<IEnumerable<Dictionary<string, string>>>(roomImages);
+
+        if (imagesObject is IEnumerable<Dictionary<string, string>> images)
+        {
+            return images;
+        }
+
+        return new List<Dictionary<string, string>>();
     }
 }

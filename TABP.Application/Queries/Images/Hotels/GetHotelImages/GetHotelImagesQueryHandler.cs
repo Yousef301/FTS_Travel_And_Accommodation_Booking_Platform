@@ -21,8 +21,13 @@ public class GetHotelImagesQueryHandler : IRequestHandler<GetHotelImagesQuery, I
     {
         var hotelImages = await _hotelImageRepository.GetImagesPathAsync(request.HotelId);
         
-        var images = await _imageService.GetSpecificImagesAsync(hotelImages);
+        var imagesObject = await _imageService.GetImagesUrlsAsync<IEnumerable<Dictionary<string, string>>>(hotelImages);
 
-        return images;
+        if (imagesObject is IEnumerable<Dictionary<string, string>> images)
+        {
+            return images;
+        }
+
+        return new List<Dictionary<string, string>>();
     }
 }
