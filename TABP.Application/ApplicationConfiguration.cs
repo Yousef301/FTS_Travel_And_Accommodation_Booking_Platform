@@ -17,9 +17,11 @@ public static class ApplicationConfiguration
     public static IServiceCollection AddApplicationInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddDataAccessInfrastructure(configuration);
+
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        services.AddDALInfrastructure(configuration);
 
         services.AddSingleton<ITokenGeneratorService, JwtTokenGeneratorService>();
         services.AddScoped<IPasswordService, BCryptPasswordService>();

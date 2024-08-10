@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Exceptions;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;

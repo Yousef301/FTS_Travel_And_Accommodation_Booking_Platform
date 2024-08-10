@@ -9,9 +9,9 @@ using TABP.DAL.Repositories;
 
 namespace TABP.DAL;
 
-public static class DALServicesConfiguration
+public static class DataAccessConfiguration
 {
-    public static IServiceCollection AddDALInfrastructure(this IServiceCollection services,
+    public static IServiceCollection AddDataAccessInfrastructure(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext(configuration)
