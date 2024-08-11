@@ -1,6 +1,6 @@
 ﻿namespace TABP.Domain.Exceptions;
 
-public class EmailTemplateException : Exception
+public class EmailTemplateException : InternalServerErrorException
 {
     public EmailTemplateException(string message) : base(message)
     {

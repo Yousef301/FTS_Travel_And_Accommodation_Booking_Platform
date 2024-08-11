@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,20 +9,19 @@ using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/user")]
+[Route("api/v{v:apiVersion}/user")]
 [Authorize(Roles = nameof(Role.Customer))]
 public class UsersController : ControllerBase
 {
     private readonly IUserContext _userContext;
     private readonly IMediator _mediator;
-    private readonly IMapper _mapper;
 
-    public UsersController(IUserContext userContext, IMediator mediator, IMapper mapper)
+    public UsersController(IUserContext userContext, IMediator mediator)
     {
         _userContext = userContext;
         _mediator = mediator;
-        _mapper = mapper;
     }
 
     [HttpGet("recently-visited")]

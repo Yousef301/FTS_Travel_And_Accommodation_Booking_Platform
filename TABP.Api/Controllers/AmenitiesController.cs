@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -13,8 +14,9 @@ using TABP.Web.DTOs.Amenities;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/amenities")]
+[Route("api/v{v:apiVersion}/amenities")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class AmenitiesController : ControllerBase
 {

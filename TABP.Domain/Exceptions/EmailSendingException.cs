@@ -1,6 +1,6 @@
 ﻿namespace TABP.Domain.Exceptions;
 
-public class EmailSendingException : Exception
+public class EmailSendingException : InternalServerErrorException
 {
     public EmailSendingException(string message) : base(message)
     {

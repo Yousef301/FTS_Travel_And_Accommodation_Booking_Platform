@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +11,9 @@ using TABP.Web.DTOs.RoomAmenities;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/hotels/{hotelId:guid}/rooms/{roomId:guid}/amenities")]
+[Route("api/v{v:apiVersion}/hotels/{hotelId:guid}/rooms/{roomId:guid}/amenities")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class RoomAmenitiesController : ControllerBase
 {
@@ -25,6 +27,7 @@ public class RoomAmenitiesController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetRoomAmenities(Guid roomId)
     {
         var amenities = await _mediator.Send(new GetRoomAmenitiesQuery

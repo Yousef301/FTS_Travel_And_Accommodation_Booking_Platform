@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Users.Auth;
@@ -7,8 +8,9 @@ using TABP.Web.DTOs.Auth;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/auth")]
+[Route("api/v{v:apiVersion}/auth")]
 public class AuthController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -16,8 +17,9 @@ using TABP.Web.Extensions;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/cities")]
+[Route("api/v{v:apiVersion}/cities")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class CitiesController : ControllerBase
 {

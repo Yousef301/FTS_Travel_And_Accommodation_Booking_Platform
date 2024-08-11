@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Queries.Invoices.GetInvoiceAsPdf;
@@ -7,18 +8,17 @@ using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/user/bookings")]
+[Route("api/v{v:apiVersion}/user/bookings")]
 [Authorize(Roles = nameof(Role.Customer))]
 public class InvoicesController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IUserContext _userContext;
 
-    public InvoicesController(IUserContext userContext, IMediator mediator)
+    public InvoicesController(IMediator mediator)
     {
         _mediator = mediator;
-        _userContext = userContext;
     }
 
     [HttpGet("{bookingId:guid}/invoice")]

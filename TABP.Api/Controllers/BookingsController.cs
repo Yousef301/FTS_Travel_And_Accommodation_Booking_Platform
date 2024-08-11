@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,9 @@ using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/user/bookings")]
+[Route("api/v{v:apiVersion}/user/bookings")]
 [Authorize(Roles = nameof(Role.Customer))]
 public class BookingsController : ControllerBase
 {

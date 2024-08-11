@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Images.Cities.CreateCityImage;
@@ -9,11 +10,11 @@ using TABP.Application.Queries.Images.Cities.GetCityImages;
 using TABP.Application.Queries.Images.Cities.GetCityThumbnail;
 using TABP.Domain.Enums;
 
-
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/cities/{cityId}/images")]
+[Route("api/v{v:apiVersion}/cities/{cityId}/images")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class CityImagesController : ControllerBase
 {

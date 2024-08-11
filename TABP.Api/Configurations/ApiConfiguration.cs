@@ -1,12 +1,18 @@
-﻿using FluentValidation;
+﻿using System.Reflection;
+using Asp.Versioning;
+using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using TABP.Application;
+using TABP.Web.Filters;
 using TABP.Web.Services.Implementations;
 using TABP.Web.Services.Interfaces;
 
-namespace TABP.Web;
+namespace TABP.Web.Configurations;
 
 public static class ApiConfiguration
 {
@@ -17,19 +23,26 @@ public static class ApiConfiguration
             .AddSwaggerConfigurations()
             .AddAuthenticationConfigurations(configuration)
             .AddFluentValidationConfigurations()
-            .AutoMapperConfigurations();
+            .AddAutoMapperConfigurations()
+            .AddApiVersioningConfigurations();
 
         services.AddScoped<IUserContext, UserContext>();
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 
         return services;
     }
 
     private static IServiceCollection AddSwaggerConfigurations(this IServiceCollection services)
     {
-        services.AddSwaggerGen();
-
         services.AddSwaggerGen(opts =>
         {
+            var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlCommentsFullPath = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+
+            opts.IncludeXmlComments(xmlCommentsFullPath);
+
+            opts.OperationFilter<SwaggerDefaultValues>();
+
             opts.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
@@ -39,6 +52,7 @@ public static class ApiConfiguration
                 BearerFormat = "JWT",
                 Scheme = "bearer"
             });
+
             opts.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -91,9 +105,39 @@ public static class ApiConfiguration
         return services;
     }
 
-    private static IServiceCollection AutoMapperConfigurations(this IServiceCollection services)
+    private static IServiceCollection AddAutoMapperConfigurations(this IServiceCollection services)
     {
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        return services;
+    }
+
+    private static IServiceCollection AddLoggerConfigurations(this IServiceCollection services)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.Console()
+            .WriteTo.File("logs/database_info.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+        return services;
+    }
+
+    private static IServiceCollection AddApiVersioningConfigurations(this IServiceCollection services)
+    {
+        services.AddApiVersioning(opts =>
+        {
+            opts.DefaultApiVersion = new ApiVersion(1.0);
+            opts.ReportApiVersions = true;
+            opts.AssumeDefaultVersionWhenUnspecified = true;
+            opts.ApiVersionReader = ApiVersionReader.Combine(
+                new UrlSegmentApiVersionReader(),
+                new HeaderApiVersionReader("X-Api-Version"));
+        }).AddApiExplorer(opts =>
+        {
+            opts.GroupNameFormat = "'v'V";
+            opts.SubstituteApiVersionInUrl = true;
+        });
 
         return services;
     }

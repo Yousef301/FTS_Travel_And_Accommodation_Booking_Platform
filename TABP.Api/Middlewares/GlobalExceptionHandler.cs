@@ -1,11 +1,12 @@
 ﻿using FluentValidation;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Web.Middlewares;
 
 public class GlobalExceptionHandler
 {
     private readonly RequestDelegate _next;
-    private readonly ILogger<GlobalExceptionHandler> _logger;
+    private readonly ILogger _logger;
 
     public GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptionHandler> logger)
     {
@@ -21,7 +22,6 @@ public class GlobalExceptionHandler
         }
         catch (Exception ex)
         {
-            // Log the exception with a trace ID
             var traceId = context.TraceIdentifier;
             _logger.LogError(ex, "An unhandled exception occurred. Trace ID: {TraceId}", traceId);
 
@@ -37,8 +37,12 @@ public class GlobalExceptionHandler
         {
             ValidationException => StatusCodes.Status400BadRequest,
             ArgumentException => StatusCodes.Status400BadRequest,
-            KeyNotFoundException => StatusCodes.Status404NotFound,
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+            NotFoundException => StatusCodes.Status404NotFound,
+            ConflictException => StatusCodes.Status409Conflict,
+            BadRequestException => StatusCodes.Status400BadRequest,
+            InternalServerErrorException => StatusCodes.Status500InternalServerError,
+            PaymentRequiredException => StatusCodes.Status402PaymentRequired,
             _ => StatusCodes.Status500InternalServerError,
         };
 

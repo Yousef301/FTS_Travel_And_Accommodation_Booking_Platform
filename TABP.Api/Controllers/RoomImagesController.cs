@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Asp.Versioning;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Images.Rooms.CreateRoomImage;
@@ -9,8 +10,9 @@ using TABP.Domain.Enums;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/hotels/{hotelId:guid}/rooms/{roomId:guid}/images")]
+[Route("api/v{v:apiVersion}/hotels/{hotelId:guid}/rooms/{roomId:guid}/images")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class RoomImagesController : ControllerBase
 {

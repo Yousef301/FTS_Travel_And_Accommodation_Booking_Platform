@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,8 +19,9 @@ using TABP.Web.Extensions;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/hotels")]
+[Route("api/v{v:apiVersion}/hotels")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class HotelsController : ControllerBase
 {

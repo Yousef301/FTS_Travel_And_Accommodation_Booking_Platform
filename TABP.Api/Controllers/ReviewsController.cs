@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -14,8 +15,9 @@ using TABP.Web.Services.Interfaces;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/hotels/{hotelId}/reviews")]
+[Route("api/v{v:apiVersion}/hotels/{hotelId}/reviews")]
 [Authorize(Roles = nameof(Role.Customer))]
 public class ReviewsController : ControllerBase
 {

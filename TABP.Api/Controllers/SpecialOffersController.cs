@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -12,8 +13,9 @@ using TABP.Web.DTOs.SpecialOffers;
 
 namespace TABP.Web.Controllers;
 
+[ApiVersion(1.0)]
 [ApiController]
-[Route("api/rooms/{roomId}/offers")]
+[Route("api/v{v:apiVersion}/rooms/{roomId}/offers")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class SpecialOffersController : ControllerBase
 {

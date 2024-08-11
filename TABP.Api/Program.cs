@@ -1,4 +1,4 @@
-using TABP.Web;
+using TABP.Web.Configurations;
 using TABP.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +22,17 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(opts =>
+    {
+        var descriptions = app.DescribeApiVersions();
+
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = description.GroupName.ToUpperInvariant();
+            opts.SwaggerEndpoint(url, name);
+        }
+    });
 }
 
 app.UseMiddleware<GlobalExceptionHandler>();

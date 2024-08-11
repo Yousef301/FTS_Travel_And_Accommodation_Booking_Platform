@@ -1,6 +1,6 @@
 ﻿namespace TABP.Domain.Exceptions;
 
-public class RoomsNotAvailableException : Exception
+public class RoomsNotAvailableException : ConflictException
 {
     public RoomsNotAvailableException(IEnumerable<string> unavailableRooms)
         : base(CreateMessage(unavailableRooms))

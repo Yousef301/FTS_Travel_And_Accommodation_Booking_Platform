@@ -1,6 +1,6 @@
 ﻿namespace TABP.Domain.Exceptions;
 
-public class StripePaymentException : Exception
+public class StripePaymentException : PaymentRequiredException
 {
     public StripePaymentException(string message) : base(message)
     {
