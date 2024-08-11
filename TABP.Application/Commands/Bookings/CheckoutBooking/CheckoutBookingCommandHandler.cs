@@ -33,7 +33,7 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
 
         if (booking.BookingStatus != BookingStatus.Pending)
         {
-            throw new BookingStatusException();
+            throw new BookingStatusException("Booking cannot be checked out");
         }
 
         var successUrl = _configuration["Payment:SuccessUrl"] + $"{booking.Id}/invoice";

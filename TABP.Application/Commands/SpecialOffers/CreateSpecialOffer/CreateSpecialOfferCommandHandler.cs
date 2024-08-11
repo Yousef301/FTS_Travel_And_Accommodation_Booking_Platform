@@ -8,7 +8,7 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.SpecialOffers.CreateSpecialOffer;
 
-public class CreateSpecialOfferCommandHandler : IRequestHandler<CreateSpecialOfferCommand, SpecialOfferResponse>
+public class CreateSpecialOfferCommandHandler : IRequestHandler<CreateSpecialOfferCommand>
 {
     private readonly ISpecialOfferRepository _specialOfferRepository;
     private readonly IRoomRepository _roomRepository;
@@ -24,7 +24,7 @@ public class CreateSpecialOfferCommandHandler : IRequestHandler<CreateSpecialOff
         _roomRepository = roomRepository;
     }
 
-    public async Task<SpecialOfferResponse> Handle(CreateSpecialOfferCommand request,
+    public async Task Handle(CreateSpecialOfferCommand request,
         CancellationToken cancellationToken)
     {
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
@@ -37,10 +37,8 @@ public class CreateSpecialOfferCommandHandler : IRequestHandler<CreateSpecialOff
 
         specialOffer.Id = Guid.NewGuid();
 
-        var createdOffer = await _specialOfferRepository.CreateAsync(specialOffer);
+        await _specialOfferRepository.CreateAsync(specialOffer);
 
         await _unitOfWork.SaveChangesAsync();
-
-        return _mapper.Map<SpecialOfferResponse>(createdOffer);
     }
 }

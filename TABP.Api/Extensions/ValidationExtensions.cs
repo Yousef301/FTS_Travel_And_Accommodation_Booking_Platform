@@ -4,7 +4,7 @@ namespace TABP.Web.Extensions;
 
 public static class ValidationExtensions
 {
-    public static IRuleBuilderOptions<T, object> ValidName<T>(this IRuleBuilder<T, string> ruleBuilder, int minLength,
+    public static IRuleBuilderOptions<T, object> ValidString<T>(this IRuleBuilder<T, string> ruleBuilder, int minLength,
         int maxLength, string propertyName)
     {
         return ruleBuilder
@@ -49,7 +49,7 @@ public static class ValidationExtensions
                 $" characters and contain only letters and numbers.");
     }
 
-    public static IRuleBuilderOptions<T, object> ValidName<T>(this IRuleBuilder<T, object> ruleBuilder, int minLength,
+    public static IRuleBuilderOptions<T, object> ValidString<T>(this IRuleBuilder<T, object> ruleBuilder, int minLength,
         int maxLength, string propertyName)
     {
         return ruleBuilder

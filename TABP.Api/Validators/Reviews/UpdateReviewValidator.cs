@@ -24,7 +24,7 @@ public class UpdateReviewValidator : AbstractValidator<JsonPatchDocument<UpdateR
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Comment is required")
-                    .ValidName(3, 120, "Name");
+                    .ValidString(3, 120, "Name");
             });
 
             When(x => x.path.EndsWith("/Rate", StringComparison.OrdinalIgnoreCase), () =>

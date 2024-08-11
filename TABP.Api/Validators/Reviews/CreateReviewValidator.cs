@@ -10,7 +10,7 @@ public class CreateReviewValidator : AbstractValidator<CreateReviewDto>
     {
         RuleFor(x => x.Comment)
             .NotEmpty().WithMessage("Comment is required")
-            .ValidName(3, 120, "Comment");
+            .ValidString(3, 120, "Comment");
 
         RuleFor(x => x.Rate)
             .NotEmpty().WithMessage("Rate is required")

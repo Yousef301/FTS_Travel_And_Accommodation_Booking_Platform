@@ -25,7 +25,7 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Room Number is required")
-                    .ValidName(1, 8, "RoomNumber");
+                    .ValidString(1, 8, "RoomNumber");
             });
 
             When(x => x.path.EndsWith("/MaxChildren", StringComparison.OrdinalIgnoreCase), () =>
@@ -68,7 +68,7 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Description is required")
-                    .ValidName(10, 150, "Description");
+                    .ValidString(10, 150, "Description");
             });
         }
     }

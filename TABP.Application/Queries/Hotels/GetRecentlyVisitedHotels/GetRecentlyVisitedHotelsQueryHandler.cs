@@ -26,6 +26,12 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
     public async Task<IEnumerable<RecentlyVisitedHotelsResponse>> Handle(GetRecentlyVisitedHotelsQuery request,
         CancellationToken cancellationToken)
     {
+        if (request.Count is <= 0 or > 5)
+        {
+            throw new ArgumentOutOfRangeException(nameof(request.Count),
+                "The count must be between 1 and 5 inclusive.");
+        }
+
         var hotels = new List<Hotel>();
 
         var hotelsId = await _bookingRepository
@@ -48,7 +54,7 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
             .ToList();
 
         if (thumbnailPaths.Count == 0) return mappedHotels;
-        
+
         var imageUrlsObject = await _imageService.GetImagesUrlsAsync<List<string>>(thumbnailPaths);
 
         if (imageUrlsObject is List<string> imageUrls)

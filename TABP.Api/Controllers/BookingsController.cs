@@ -9,7 +9,6 @@ using TABP.Application.Commands.Bookings.CreateBooking;
 using TABP.Application.Queries.Bookings.GetBookingById;
 using TABP.Application.Queries.Bookings.GetBookings;
 using TABP.Domain.Enums;
-using TABP.Web.DTOs;
 using TABP.Web.DTOs.Bookings;
 using TABP.Web.Services.Interfaces;
 
@@ -32,6 +31,13 @@ public class BookingsController : ControllerBase
         _userContext = userContext;
     }
 
+    /// <summary>
+    /// Retrieves a list of bookings for the currently authenticated user.
+    /// </summary>
+    /// <returns>A list of bookings for the user.</returns>
+    /// <response code="200">Returns a list of bookings for the authenticated user.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="500">If an internal server error occurs while retrieving bookings.</response>
     [HttpGet]
     public async Task<IActionResult> GetBookings()
     {
@@ -43,6 +49,16 @@ public class BookingsController : ControllerBase
         return Ok(bookings);
     }
 
+    /// <summary>
+    /// Retrieves a specific booking by its ID for the currently authenticated user.
+    /// </summary>
+    /// <param name="bookingId">The unique identifier of the booking to be retrieved.</param>
+    /// <returns>The details of the requested booking.</returns>
+    /// <response code="200">Returns the details of the requested booking.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to access the booking.</response>
+    /// <response code="404">The booking with the specified ID was not found.</response>
+    /// <response code="500">If an internal server error occurs while retrieving the booking.</response>
     [HttpGet("{bookingId:guid}")]
     public async Task<IActionResult> GetBooking(Guid bookingId)
     {
@@ -55,6 +71,17 @@ public class BookingsController : ControllerBase
         return Ok(booking);
     }
 
+    /// <summary>
+    /// Cancels a specific booking by its ID for the currently authenticated user.
+    /// </summary>
+    /// <param name="bookingId">The unique identifier of the booking to be canceled.</param>
+    /// <response code="200">The booking was successfully canceled.</response>
+    /// <response code="204">The booking was successfully canceled and no additional content is returned.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to cancel the booking.</response>
+    /// <response code="404">The booking with the specified ID was not found.</response>
+    /// <response code="409">The booking is already canceled or cannot be canceled.</response>
+    /// <response code="500">If an internal server error occurs while canceling the booking.</response>
     [HttpPatch("{bookingId:guid}/cancel")]
     public async Task<IActionResult> CancelBooking(Guid bookingId)
     {
@@ -67,6 +94,15 @@ public class BookingsController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Creates a new booking for the currently authenticated user.
+    /// </summary>
+    /// <param name="request">The details required to create a new booking.</param>
+    /// <response code="201">The booking was successfully created.</response>
+    /// <response code="400">If the request contains invalid data or is missing required fields.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to create a booking.</response>
+    /// <response code="500">If an internal server error occurs while creating the booking.</response>
     [HttpPost]
     public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDto request)
     {
@@ -78,6 +114,17 @@ public class BookingsController : ControllerBase
         return Created();
     }
 
+    /// <summary>
+    /// Initiates the checkout process for a specific booking by its ID for the currently authenticated user.
+    /// </summary>
+    /// <param name="bookingId">The unique identifier of the booking to check out.</param>
+    /// <returns>The URL for completing the checkout process.</returns>
+    /// <response code="200">Returns the URL for completing the checkout process.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to perform the checkout.</response>
+    /// <response code="404">The booking with the specified ID was not found.</response>
+    /// <response code="409">The booking cannot be checked out due to a conflict (booking already processed).</response>
+    /// <response code="500">If an internal server error occurs while processing the checkout.</response>
     [HttpPost("{bookingId:guid}/checkout")]
     public async Task<IActionResult> CheckoutBooking(Guid bookingId)
     {

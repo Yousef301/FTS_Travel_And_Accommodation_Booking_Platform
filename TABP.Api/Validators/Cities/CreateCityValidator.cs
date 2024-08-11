@@ -10,14 +10,14 @@ public class CreateCityValidator : AbstractValidator<CreateCityDto>
     {
         RuleFor(city => city.Name)
             .NotEmpty().WithMessage("City name is required.")
-            .ValidName(2, 50, "City name");
+            .ValidString(2, 50, "City name");
 
         RuleFor(city => city.Country)
             .NotEmpty().WithMessage("Country is required.")
-            .ValidName(2, 50, "Country name");
+            .ValidString(2, 50, "Country name");
 
         RuleFor(city => city.PostOffice)
             .NotEmpty().WithMessage("Postal code is required.")
-            .ValidName(3, 30, "Postal Code");
+            .ValidString(3, 30, "Postal Code");
     }
 }

@@ -21,6 +21,14 @@ public class InvoicesController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Retrieves the invoice for a specific booking as a PDF file.
+    /// </summary>
+    /// <param name="bookingId">The ID of the booking for which to retrieve the invoice.</param>
+    /// <returns>The invoice as PDF file for the specified booking ID.</returns>
+    /// <response code="200">The invoice PDF was successfully retrieved and is returned as a file.</response>
+    /// <response code="404">If no invoice is found for the specified booking ID.</response>
+    /// <response code="500">If an internal server error occurs while generating or retrieving the invoice.</response>
     [HttpGet("{bookingId:guid}/invoice")]
     public async Task<IActionResult> GetInvoiceAsPdf(Guid bookingId)
     {

@@ -4,6 +4,8 @@ using TABP.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+
 builder.Configuration
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables();

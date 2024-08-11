@@ -24,21 +24,21 @@ public class UpdateCityValidator : AbstractValidator<JsonPatchDocument<UpdateCit
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("City name is required")
-                    .ValidName(2, 50, "Name");
+                    .ValidString(2, 50, "Name");
             });
 
             When(x => x.path.EndsWith("/Country", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Country name is required")
-                    .ValidName(2, 50, "Country");
+                    .ValidString(2, 50, "Country");
             });
             
             When(x => x.path.EndsWith("/PostOffice", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Post Office is required")
-                    .ValidName(3, 30, "Post Office");
+                    .ValidString(3, 30, "Post Office");
 
             });
         }

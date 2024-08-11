@@ -43,10 +43,10 @@ public class BookingRepository : IBookingRepository
             .ToListAsync();
     }
 
-    public async Task<BookingDto?> GetDetailedByIdAsync(Guid id, Guid userId)
+    public async Task<BookingDto?> GetDetailedByIdAsync(Guid id)
     {
         return await _context.Bookings
-            .Where(b => b.Id == id && b.UserId == userId)
+            .Where(b => b.Id == id)
             .Select(b => new BookingDto
             {
                 Id = b.Id,
@@ -108,12 +108,7 @@ public class BookingRepository : IBookingRepository
     {
         return await _context.Bookings.AnyAsync(predicate);
     }
-
-    public async Task<bool> ExistsAsync(Guid hotelId, Guid userId)
-    {
-        return await _context.Bookings.AnyAsync(b => b.HotelId == hotelId && b.UserId == userId);
-    }
-
+    
     public async Task<bool> IsBookingOverlapsAsync(Guid hotelId, Guid userId, DateOnly checkInDate,
         DateOnly checkOutDate)
     {

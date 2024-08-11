@@ -24,7 +24,7 @@ public class UpdateAmenityValidator : AbstractValidator<JsonPatchDocument<Update
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Name is required")
-                    .ValidName(2, 50, "Name");
+                    .ValidString(2, 50, "Name");
             });
         }
     }

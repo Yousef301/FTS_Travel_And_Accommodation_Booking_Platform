@@ -11,7 +11,7 @@ public class CreateRoomValidator : AbstractValidator<CreateRoomDto>
     {
         RuleFor(x => x.RoomNumber)
             .NotEmpty().WithMessage("Room number is required")
-            .ValidName(1, 8, "Room number");
+            .ValidString(1, 8, "Room number");
 
         RuleFor(x => x.MaxChildren)
             .NotEmpty().WithMessage("Max children is required")
@@ -31,6 +31,6 @@ public class CreateRoomValidator : AbstractValidator<CreateRoomDto>
 
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage("Description is required")
-            .ValidName(10, 150, "Description");
+            .ValidString(10, 150, "Description");
     }
 }

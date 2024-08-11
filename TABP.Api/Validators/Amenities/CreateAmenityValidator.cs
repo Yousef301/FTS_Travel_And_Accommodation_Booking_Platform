@@ -10,6 +10,6 @@ public class CreateAmenityValidator : AbstractValidator<CreateAmenityDto>
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Amenity name is required")
-            .ValidName(2, 30, "Amenity name");
+            .ValidString(2, 30, "Amenity name");
     }
 }

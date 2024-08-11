@@ -26,6 +26,12 @@ public class
     public async Task<IEnumerable<HotelWithFeaturedDealResponse>> Handle(GetHotelsWithFeaturedDealsQuery request,
         CancellationToken cancellationToken)
     {
+        if (request.Count is <= 0 or > 5)
+        {
+            throw new ArgumentOutOfRangeException(nameof(request.Count),
+                "The count must be between 1 and 5 inclusive.");
+        }
+
         var hotels = await _hotelRepository.GetHotelsWithDealsAsync(request.Count);
 
         var mappedHotels = _mapper

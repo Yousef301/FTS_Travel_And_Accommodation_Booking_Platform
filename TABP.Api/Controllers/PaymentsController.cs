@@ -24,6 +24,14 @@ public class PaymentsController : ControllerBase
         _userContext = userContext;
     }
 
+    /// <summary>
+    /// Retrieves a list of payments for the currently authenticated user.
+    /// </summary>
+    /// <returns>A list of payments for the authenticated user.</returns>
+    /// <response code="200">Returns the list of payments for the authenticated user.</response>
+    /// <response code="401">If the user is not authenticated.</response>
+    /// <response code="403">User does not have permission.</response>
+    /// <response code="500">If an internal server error occurs while retrieving the payments.</response>
     [HttpGet]
     public async Task<IActionResult> GetPayments()
     {
@@ -35,6 +43,16 @@ public class PaymentsController : ControllerBase
         return Ok(payments);
     }
 
+    /// <summary>
+    /// Handles Stripe webhook events.
+    /// </summary>
+    /// <remarks>
+    /// This endpoint processes incoming webhook events from Stripe. It reads the raw event data from the request
+    /// body and the Stripe signature from the headers, then processes the event accordingly.
+    /// </remarks>
+    /// <response code="200">Indicates that the webhook was processed successfully.</response>
+    /// <response code="400">If the webhook request is malformed or invalid data is provided.</response>
+    /// <response code="500">If an internal server error occurs while processing the webhook.</response>
     [HttpPost("webhook")]
     [AllowAnonymous]
     public async Task<IActionResult> StripeWebhook()

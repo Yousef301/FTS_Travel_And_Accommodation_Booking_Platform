@@ -30,28 +30,28 @@ public class UpdateHotelValidator : AbstractValidator<JsonPatchDocument<UpdateHo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Country name is required")
-                    .ValidName(3, 50, "Name");
+                    .ValidString(3, 50, "Name");
             });
 
             When(x => x.path.EndsWith("/Owner", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Post Office is required")
-                    .ValidName(3, 50, "Owner");
+                    .ValidString(3, 50, "Owner");
             });
 
             When(x => x.path.EndsWith("/Address", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Address is required")
-                    .ValidName(3, 50, "Address");
+                    .ValidString(3, 50, "Address");
             });
 
             When(x => x.path.EndsWith("/Description", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Description is required")
-                    .ValidName(10, 150, "Description");
+                    .ValidString(10, 150, "Description");
             });
         }
     }

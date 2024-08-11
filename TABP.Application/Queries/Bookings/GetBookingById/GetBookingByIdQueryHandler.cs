@@ -18,8 +18,13 @@ public class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, B
 
     public async Task<BookingResponse> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
     {
-        var booking = await _bookingRepository.GetDetailedByIdAsync(request.BookingId, request.UserId) ??
+        var booking = await _bookingRepository.GetDetailedByIdAsync(request.BookingId) ??
                       throw new NotFoundException($"Booking with id {request.BookingId} wasn't found.");
+
+        if (booking.UserId != request.UserId)
+        {
+            throw new UnauthorizedAccessException("You don't have permission to access this booking.");
+        }
 
         return _mapper.Map<BookingResponse>(booking);
     }

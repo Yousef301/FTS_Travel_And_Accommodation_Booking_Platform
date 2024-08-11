@@ -32,6 +32,12 @@ public class CitiesController : ControllerBase
         _mapper = mapper;
     }
 
+    /// <summary>
+    /// Retrieves a list of trending cities.
+    /// </summary>
+    /// <returns>A list of trending cities.</returns>
+    /// <response code="200">Returns a list of trending cities.</response>
+    /// <response code="500">If an internal server error occurs while retrieving the trending cities.</response>
     [HttpGet("trending")]
     [AllowAnonymous]
     public async Task<IActionResult> GetTrendingCities()
@@ -42,6 +48,16 @@ public class CitiesController : ControllerBase
         return Ok(trendingCities);
     }
 
+    /// <summary>
+    /// Retrieves a list of cities for admin users with optional filtering and pagination.
+    /// </summary>
+    /// <param name="filterParameters">The parameters used to filter and paginate the list of cities.</param>
+    /// <returns>A paginated list of cities.</returns>
+    /// <response code="200">Returns a paginated list of cities.</response>
+    /// <response code="400">If the provided filter parameters are invalid.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to access this resource.</response>
+    /// <response code="500">If an internal server error occurs while retrieving the cities.</response>
     [HttpGet]
     public async Task<IActionResult> GetCitiesForAdmin([FromQuery] FilterParameters filterParameters)
     {
@@ -57,6 +73,16 @@ public class CitiesController : ControllerBase
         return Ok(cities.Items);
     }
 
+    /// <summary>
+    /// Creates a new city.
+    /// </summary>
+    /// <param name="cityCreateDto">The details required to create a new city.</param>
+    /// <response code="201">The city was successfully created.</response>
+    /// <response code="400">If the request contains invalid data or is missing required fields.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to create a city.</response>
+    /// <response code="409">If a city with the same name and country already exists.</response>
+    /// <response code="500">If an internal server error occurs while creating the city.</response>
     [HttpPost]
     public async Task<IActionResult> CreateCity([FromBody] CreateCityDto cityCreateDto)
     {
@@ -67,6 +93,16 @@ public class CitiesController : ControllerBase
         return Created();
     }
 
+    /// <summary>
+    /// Deletes a city by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the city to delete.</param>
+    /// <response code="204">The city was successfully deleted.</response>
+    /// <response code="400">If the provided ID is not valid or malformed.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to delete the city.</response>
+    /// <response code="404">The city with the specified ID was not found.</response>
+    /// <response code="500">If an internal server error occurs while deleting the city.</response>
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteCity(Guid id)
     {
@@ -75,6 +111,17 @@ public class CitiesController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Updates an existing city by its unique identifier.
+    /// </summary>
+    /// <param name="id">The unique identifier of the city to update.</param>
+    /// <param name="cityUpdateDto">The patch document containing the updates to apply to the city.</param>
+    /// <response code="200">The city was successfully updated.</response>
+    /// <response code="400">If the request contains invalid data or is missing required fields.</response>
+    /// <response code="401">User is not authenticated.</response>
+    /// <response code="403">User does not have permission to update the city.</response>
+    /// <response code="404">The city with the specified ID was not found.</response>
+    /// <response code="500">If an internal server error occurs while updating the city.</response>
     [HttpPatch("{id:guid}")]
     public async Task<IActionResult> UpdateCity(Guid id,
         [FromBody] JsonPatchDocument<UpdateCityDto> cityUpdateDto)

@@ -10,11 +10,11 @@ public class RegisterValidator : AbstractValidator<RegisterRequest>
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("First name is required.")
-            .ValidName(3, 50, "First name");
+            .ValidString(3, 50, "First name");
 
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("Last name is required.")
-            .ValidName(3, 50, "Last name");
+            .ValidString(3, 50, "Last name");
 
         RuleFor(x => x.Username)
             .NotEmpty().WithMessage("Username is required.")
@@ -34,7 +34,7 @@ public class RegisterValidator : AbstractValidator<RegisterRequest>
 
         RuleFor(x => x.Address)
             .NotEmpty().WithMessage("Address is required.")
-            .ValidName(3, 100, "Address");
+            .ValidString(3, 100, "Address");
 
         RuleFor(x => x.BirthDate)
             .NotEmpty().WithMessage("Birth date is required.")

@@ -9,15 +9,12 @@ namespace TABP.Application.Commands.Bookings.CancelBooking;
 public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand>
 {
     private readonly IBookingRepository _bookingRepository;
-    private readonly IPaymentRepository _paymentRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CancelBookingCommandHandler(IBookingRepository bookingRepository, IUnitOfWork unitOfWork,
-        IPaymentRepository paymentRepository)
+    public CancelBookingCommandHandler(IBookingRepository bookingRepository, IUnitOfWork unitOfWork)
     {
         _bookingRepository = bookingRepository;
         _unitOfWork = unitOfWork;
-        _paymentRepository = paymentRepository;
     }
 
     public async Task Handle(CancelBookingCommand request, CancellationToken cancellationToken)

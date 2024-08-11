@@ -8,7 +8,7 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Amenities.CreateAmenity;
 
-public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand, AmenityResponse>
+public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand>
 {
     private readonly IAmenityRepository _amenityRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -21,7 +21,7 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
         _mapper = mapper;
     }
 
-    public async Task<AmenityResponse> Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
     {
         if (await _amenityRepository.ExistsAsync(a => a.Name.ToLower() == request.Name.ToLower()))
             throw new UniqueConstraintViolationException("An amenity with the same name already exists.");
@@ -30,10 +30,8 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
 
         amenity.Id = Guid.NewGuid();
 
-        var createdAmenity = await _amenityRepository.CreateAsync(amenity);
+        await _amenityRepository.CreateAsync(amenity);
 
         await _unitOfWork.SaveChangesAsync();
-
-        return _mapper.Map<AmenityResponse>(createdAmenity);
     }
 }

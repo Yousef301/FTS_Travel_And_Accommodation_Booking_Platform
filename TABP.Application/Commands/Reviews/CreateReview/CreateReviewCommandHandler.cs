@@ -27,7 +27,7 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand>
 
     public async Task Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        if (!await _bookingRepository.ExistsAsync(request.HotelId, request.UserId))
+        if (!await _bookingRepository.ExistsAsync(b => b.UserId == request.UserId && b.HotelId == request.HotelId))
         {
             throw new NoBookingForHotelException("User should have a booking for the hotel to be able to review");
         }

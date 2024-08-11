@@ -1,6 +1,7 @@
 ﻿using System.Security.Authentication;
 using FluentValidation;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using TABP.Domain.Exceptions;
 
 namespace TABP.Web.Middlewares;
@@ -29,7 +30,6 @@ public class GlobalExceptionHandler
                 "An unhandled exception occurred. Trace ID: {TraceId}, Request Path: {RequestPath}, Method: {Method}",
                 traceId, context.Request.Path, context.Request.Method);
 
-
             await HandleExceptionAsync(context, ex, traceId);
         }
     }
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler
         {
             ValidationException => StatusCodes.Status400BadRequest,
             ArgumentException => StatusCodes.Status400BadRequest,
-            UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+            UnauthorizedAccessException => StatusCodes.Status403Forbidden,
             NotFoundException => StatusCodes.Status404NotFound,
             ConflictException => StatusCodes.Status409Conflict,
             BadRequestException => StatusCodes.Status400BadRequest,
