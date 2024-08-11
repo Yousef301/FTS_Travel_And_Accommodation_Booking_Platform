@@ -2,9 +2,11 @@
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TABP.Application.Commands.Users.Auth;
 using TABP.Application.Commands.Users.Register;
 using TABP.Web.DTOs.Auth;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace TABP.Web.Controllers;
 
@@ -29,6 +31,8 @@ public class AuthController : ControllerBase
         var loginCommand = _mapper.Map<LoginCommand>(request);
 
         var response = await _mediator.Send(loginCommand);
+
+        Log.Information("User {Username} logged in", request.Username);
 
         return Ok(response.Token);
     }

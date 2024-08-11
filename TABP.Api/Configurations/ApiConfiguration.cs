@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Amazon.CloudWatchLogs;
 using Asp.Versioning;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -6,6 +7,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.AwsCloudWatch;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using TABP.Application;
 using TABP.Web.Filters;
@@ -20,6 +23,7 @@ public static class ApiConfiguration
         IConfiguration configuration)
     {
         services.AddApplicationInfrastructure(configuration)
+            .AddSerilogConfigurations()
             .AddSwaggerConfigurations()
             .AddAuthenticationConfigurations(configuration)
             .AddFluentValidationConfigurations()
@@ -112,17 +116,6 @@ public static class ApiConfiguration
         return services;
     }
 
-    private static IServiceCollection AddLoggerConfigurations(this IServiceCollection services)
-    {
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.Console()
-            .WriteTo.File("logs/database_info.txt", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-
-        return services;
-    }
-
     private static IServiceCollection AddApiVersioningConfigurations(this IServiceCollection services)
     {
         services.AddApiVersioning(opts =>
@@ -138,6 +131,38 @@ public static class ApiConfiguration
             opts.GroupNameFormat = "'v'V";
             opts.SubstituteApiVersionInUrl = true;
         });
+
+        return services;
+    }
+
+    private static IServiceCollection AddSerilogConfigurations(this IServiceCollection services)
+    {
+        var cloudWatchSinkOptions = new CloudWatchSinkOptions
+        {
+            LogGroupName = "fts-project-log-group",
+            LogStreamNameProvider = new DefaultLogStreamProvider(),
+            TextFormatter = new Serilog.Formatting.Json.JsonFormatter(),
+            MinimumLogEventLevel = LogEventLevel.Information,
+            BatchSizeLimit = 100,
+            QueueSizeLimit = 10000,
+            RetryAttempts = 5,
+            Period = TimeSpan.FromSeconds(10),
+            CreateLogGroup = true,
+            LogGroupRetentionPolicy = LogGroupRetentionPolicy.OneMonth,
+        };
+
+        var cloudWatchClient = new AmazonCloudWatchLogsClient();
+
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .MinimumLevel.Override("System", LogEventLevel.Warning)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.AmazonCloudWatch(cloudWatchSinkOptions, cloudWatchClient)
+            .CreateLogger();
+
+        services.AddSingleton(Log.Logger);
 
         return services;
     }

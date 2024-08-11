@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using System.Security.Authentication;
+using FluentValidation;
+using Microsoft.Data.SqlClient;
 using TABP.Domain.Exceptions;
 
 namespace TABP.Web.Middlewares;
@@ -23,7 +25,10 @@ public class GlobalExceptionHandler
         catch (Exception ex)
         {
             var traceId = context.TraceIdentifier;
-            _logger.LogError(ex, "An unhandled exception occurred. Trace ID: {TraceId}", traceId);
+            _logger.LogError(ex,
+                "An unhandled exception occurred. Trace ID: {TraceId}, Request Path: {RequestPath}, Method: {Method}",
+                traceId, context.Request.Path, context.Request.Method);
+
 
             await HandleExceptionAsync(context, ex, traceId);
         }
@@ -31,9 +36,7 @@ public class GlobalExceptionHandler
 
     private static Task HandleExceptionAsync(HttpContext context, Exception exception, string traceId)
     {
-        context.Response.ContentType = "application/json";
-
-        context.Response.StatusCode = exception switch
+        var statusCode = exception switch
         {
             ValidationException => StatusCodes.Status400BadRequest,
             ArgumentException => StatusCodes.Status400BadRequest,
@@ -43,8 +46,13 @@ public class GlobalExceptionHandler
             BadRequestException => StatusCodes.Status400BadRequest,
             InternalServerErrorException => StatusCodes.Status500InternalServerError,
             PaymentRequiredException => StatusCodes.Status402PaymentRequired,
+            InvalidCredentialException => StatusCodes.Status401Unauthorized,
+            SqlException => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError,
         };
+
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = statusCode;
 
         var response = new
         {

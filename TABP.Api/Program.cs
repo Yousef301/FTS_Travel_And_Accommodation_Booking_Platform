@@ -1,3 +1,4 @@
+using Serilog;
 using TABP.Web.Configurations;
 using TABP.Web.Middlewares;
 
@@ -7,17 +8,23 @@ builder.Configuration
     .AddJsonFile("appsettings.json")
     .AddEnvironmentVariables();
 
+builder.Services.AddApiInfrastructure(builder.Configuration);
+
+builder.Host.UseSerilog();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddApiInfrastructure(builder.Configuration);
+Log.Information($"Application started at {DateTime.Now}");
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+
+app.Lifetime.ApplicationStarted.Register(() => { Log.Information($"Application started at {DateTime.Now}"); });
 
 if (app.Environment.IsDevelopment())
 {
@@ -37,7 +44,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<GlobalExceptionHandler>();
 
+app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 app.MapControllers();
+
+app.Lifetime.ApplicationStopped.Register(() => { Log.Information($"Application stopped at {DateTime.Now}"); });
 
 app.Run();
