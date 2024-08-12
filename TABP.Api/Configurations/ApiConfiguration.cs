@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.AwsCloudWatch;
+using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using TABP.Application;
 using TABP.Web.Filters;
@@ -28,7 +29,8 @@ public static class ApiConfiguration
             .AddAuthenticationConfigurations(configuration)
             .AddFluentValidationConfigurations()
             .AddAutoMapperConfigurations()
-            .AddApiVersioningConfigurations();
+            .AddApiVersioningConfigurations()
+            .AddRedisConfigurations(configuration);
 
         services.AddScoped<IUserContext, UserContext>();
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -163,6 +165,24 @@ public static class ApiConfiguration
             .CreateLogger();
 
         services.AddSingleton(Log.Logger);
+
+        return services;
+    }
+
+    private static IServiceCollection AddRedisConfigurations(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.ConfigurationOptions = new ConfigurationOptions
+            {
+                EndPoints = { configuration["Redis:Configuration"] },
+                Password = configuration["RedisPassword"],
+                ConnectTimeout = 10000,
+                AbortOnConnectFail = false
+            };
+            options.InstanceName = "pluto-cache";
+        });
 
         return services;
     }

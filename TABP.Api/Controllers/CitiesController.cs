@@ -1,12 +1,15 @@
-﻿using Asp.Versioning;
+﻿using System.Text.Json;
+using Asp.Versioning;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using TABP.Application.Commands.Cities.CreateCity;
 using TABP.Application.Commands.Cities.DeleteCity;
 using TABP.Application.Commands.Cities.UpdateCity;
+using TABP.Application.Queries.Cities;
 using TABP.Application.Queries.Cities.GetCitiesForAdmin;
 using TABP.Application.Queries.Cities.GetTrendingCities;
 using TABP.Domain.Enums;
@@ -23,13 +26,17 @@ namespace TABP.Web.Controllers;
 [Authorize(Roles = nameof(Role.Admin))]
 public class CitiesController : ControllerBase
 {
+    private const string CacheKey = "TrendingCities";
+
+    private readonly IDistributedCache _distributedCache;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public CitiesController(IMediator mediator, IMapper mapper)
+    public CitiesController(IMediator mediator, IMapper mapper, IDistributedCache distributedCache)
     {
         _mediator = mediator;
         _mapper = mapper;
+        _distributedCache = distributedCache;
     }
 
     /// <summary>
@@ -42,10 +49,25 @@ public class CitiesController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetTrendingCities()
     {
-        var trendingCities = await _mediator.Send(
-            new GetTrendingCitiesQuery());
+        var cachedCities = await _distributedCache.GetStringAsync(CacheKey);
 
-        return Ok(trendingCities);
+        if (string.IsNullOrEmpty(cachedCities))
+        {
+            var trendingCities = await _mediator.Send(
+                new GetTrendingCitiesQuery());
+
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
+            };
+
+            await _distributedCache.SetStringAsync(CacheKey, JsonSerializer.Serialize(trendingCities), cacheOptions);
+            return Ok(trendingCities);
+        }
+
+        var cities = JsonSerializer.Deserialize<List<TrendingCitiesResponse>>(cachedCities);
+
+        return Ok(cities);
     }
 
     /// <summary>
