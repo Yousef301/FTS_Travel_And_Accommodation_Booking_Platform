@@ -31,7 +31,7 @@ public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand>
 
         _mapper.Map(updatedRoomDto, room);
 
-        await _roomRepository.UpdateAsync(room);
+        _roomRepository.Update(room);
 
         await _unitOfWork.SaveChangesAsync();
     }

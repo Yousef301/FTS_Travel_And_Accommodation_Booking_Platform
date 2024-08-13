@@ -30,7 +30,7 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
 
         _mapper.Map(updatedHotelDto, hotel);
 
-        await _hotelRepository.UpdateAsync(hotel);
+        _hotelRepository.Update(hotel);
 
         await _unitOfWork.SaveChangesAsync();
     }

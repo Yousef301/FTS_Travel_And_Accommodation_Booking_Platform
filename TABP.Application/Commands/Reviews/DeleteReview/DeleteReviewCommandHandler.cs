@@ -39,7 +39,7 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
 
         try
         {
-            await _reviewRepository.DeleteAsync(request.ReviewId);
+            _reviewRepository.Delete(review);
 
             await _unitOfWork.SaveChangesAsync();
 

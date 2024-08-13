@@ -18,7 +18,9 @@ public class CityRepository : ICityRepository
         _context = context;
     }
 
-    public async Task<PagedList<City>> GetAsync(Filters<City> filters, bool includeHotels = false,
+    public async Task<PagedList<City>> GetAsync(
+        Filters<City> filters,
+        bool includeHotels = false,
         bool includeThumbnail = false)
     {
         var citiesQuery = _context.Cities.AsQueryable();
@@ -66,23 +68,13 @@ public class CityRepository : ICityRepository
         return createdCity.Entity;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public void Delete(City city)
     {
-        var city = await _context.Cities.FindAsync(id);
-
-        if (city == null)
-        {
-            return;
-        }
-
         _context.Cities.Remove(city);
     }
 
-    public async Task UpdateAsync(City city)
+    public void Update(City city)
     {
-        if (!await _context.Cities.AnyAsync(c => c.Id == city.Id))
-            return;
-
         _context.Cities.Update(city);
     }
 

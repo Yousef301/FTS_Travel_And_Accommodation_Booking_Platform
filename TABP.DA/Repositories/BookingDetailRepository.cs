@@ -15,14 +15,22 @@ public class BookingDetailRepository : IBookingDetailRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<BookingDetail>> GetByBookingIdAsync(Guid bookingId)
+    public async Task<IEnumerable<BookingDetail>> GetByBookingIdAsync(
+        Guid bookingId,
+        bool includeRoom = false)
     {
-        return await _context.BookingDetails
-            .Where(bd => bd.BookingId == bookingId)
-            .Include(bd => bd.Room)
-            .ToListAsync();
+        var query = _context.BookingDetails
+            .AsNoTracking()
+            .Where(bd => bd.BookingId == bookingId);
+
+        if (includeRoom)
+        {
+            query = query.Include(bd => bd.Room);
+        }
+
+        return await query.ToListAsync();
     }
-    
+
     public async Task<BookingDetail> CreateAsync(BookingDetail bookingDetail)
     {
         var createdBookingDetail = await _context.BookingDetails
@@ -30,14 +38,17 @@ public class BookingDetailRepository : IBookingDetailRepository
 
         return createdBookingDetail.Entity;
     }
-    
+
 
     public async Task<bool> ExistsAsync(Expression<Func<BookingDetail, bool>> predicate)
     {
         return await _context.BookingDetails.AnyAsync(predicate);
     }
 
-    public async Task<bool> IsRoomAvailableAsync(Guid roomId, DateOnly startDate, DateOnly endDate)
+    public async Task<bool> IsRoomAvailableAsync(
+        Guid roomId,
+        DateOnly startDate,
+        DateOnly endDate)
     {
         return !await _context.BookingDetails
             .Where(bd => bd.RoomId == roomId)

@@ -20,8 +20,8 @@ public interface IHotelRepository
 
     Task<double> GetHotelRateAsync(Guid id);
     Task<Hotel> CreateAsync(Hotel hotel);
-    Task DeleteAsync(Guid id);
-    Task UpdateAsync(Hotel hotel);
+    void Delete(Hotel hotel);
+    void Update(Hotel hotel);
     Task UpdateRateAsync(Guid id, double rate);
     Task<bool> ExistsAsync(Expression<Func<Hotel, bool>> predicate);
 }

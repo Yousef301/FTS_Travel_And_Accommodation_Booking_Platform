@@ -17,12 +17,15 @@ public class AmenityRepository : IAmenityRepository
 
     public async Task<IEnumerable<Amenity>> GetAsync()
     {
-        return await _context.Amenities.ToListAsync();
+        return await _context.Amenities
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Amenity?> GetByIdAsync(Guid id)
     {
-        return await _context.Amenities.FindAsync(id);
+        return await _context.Amenities
+            .FindAsync(id);
     }
 
     public async Task<Amenity> CreateAsync(Amenity amenity)
@@ -33,23 +36,13 @@ public class AmenityRepository : IAmenityRepository
         return createdAmenity.Entity;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public void Delete(Amenity amenity)
     {
-        var amenity = await _context.Amenities.FindAsync(id);
-
-        if (amenity == null)
-        {
-            return;
-        }
-
         _context.Amenities.Remove(amenity);
     }
 
-    public async Task UpdateAsync(Amenity amenity)
+    public void Update(Amenity amenity)
     {
-        if (!await _context.Amenities.AnyAsync(a => a.Id == amenity.Id))
-            return;
-
         _context.Amenities.Update(amenity);
     }
 

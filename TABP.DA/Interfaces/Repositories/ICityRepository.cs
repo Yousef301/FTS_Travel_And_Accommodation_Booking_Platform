@@ -11,7 +11,7 @@ public interface ICityRepository
     Task<IEnumerable<TrendingCities>> GetTrendingDestinations();
     Task<City?> GetByIdAsync(Guid id);
     Task<City> CreateAsync(City city);
-    Task DeleteAsync(Guid id);
-    Task UpdateAsync(City city);
+    void Delete(City city);
+    void Update(City city);
     Task<bool> ExistsAsync(Expression<Func<City, bool>> predicate);
 }

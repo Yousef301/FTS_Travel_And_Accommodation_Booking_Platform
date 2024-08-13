@@ -39,9 +39,15 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
 
         var roomsList = rooms.ToList();
 
-        if (roomsList.Count() != request.RoomIds.Count())
+        if (roomsList.Count != request.RoomIds.Count())
         {
             throw new NotFoundException($"One or more rooms doesn't exist in the hotel with id {request.HotelId}");
+        }
+
+        if (await _bookingRepository.IsBookingOverlapsAsync(request.HotelId, request.UserId, request.CheckInDate,
+                request.CheckOutDate))
+        {
+            throw new BookingOverlapException();
         }
 
         var results = await ValidateRooms(request.RoomIds, request.CheckInDate, request.CheckOutDate);
@@ -50,12 +56,6 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         if (resultsList.Count != 0)
         {
             throw new RoomsNotAvailableException(resultsList);
-        }
-
-        if (await _bookingRepository.IsBookingOverlapsAsync(request.HotelId, request.UserId, request.CheckInDate,
-                request.CheckOutDate))
-        {
-            throw new BookingOverlapException();
         }
 
         var totalPrice = CalculateTotalPrice(roomsList);
@@ -101,7 +101,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
             }
 
             if (pendingBooking != null)
-                await _bookingRepository.DeleteAsync(pendingBooking);
+                _bookingRepository.Delete(pendingBooking);
 
             await _unitOfWork.SaveChangesAsync();
 

@@ -21,6 +21,7 @@ public static class ApplicationConfiguration
 
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddSingleton<ITokenGeneratorService, JwtTokenGeneratorService>();

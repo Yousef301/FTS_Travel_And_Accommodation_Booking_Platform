@@ -11,9 +11,4 @@ public interface IImageService
     Task<string> GetImageUrlAsync(string imageKey);
     Task<object> GetImagesUrlsAsync<T>(IEnumerable<string> specificPaths);
     Task<bool> DeleteImageAsync(string path);
-
-    Task<string> CreateUniquePathAsync<T>(
-        IImageRepository<T> repository,
-        Expression<Func<T, bool>> predicate,
-        string path) where T : class;
 }

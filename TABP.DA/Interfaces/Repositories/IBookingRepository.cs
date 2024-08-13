@@ -12,8 +12,8 @@ public interface IBookingRepository
     Task<Booking?> GetByIdAsync(Guid id, bool includePayment = false);
     Task<Booking?> GetPendingBooking(Guid userId);
     Task<Booking> CreateAsync(Booking booking);
-    Task DeleteAsync(Booking booking);
-    Task UpdateAsync(Booking booking);
+    void Delete(Booking booking);
+    void Update(Booking booking);
     Task<bool> ExistsAsync(Expression<Func<Booking, bool>> predicate);
     Task<bool> IsBookingOverlapsAsync(Guid hotelId, Guid userId, DateOnly checkInDate, DateOnly checkOutDate);
 }

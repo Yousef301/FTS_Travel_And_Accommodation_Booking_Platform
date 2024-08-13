@@ -18,12 +18,10 @@ public class DeleteAmenityCommandHandler : IRequestHandler<DeleteAmenityCommand>
 
     public async Task Handle(DeleteAmenityCommand request, CancellationToken cancellationToken)
     {
-        if (!await _amenityRepository.ExistsAsync(a => a.Id == request.Id))
-        {
-            throw new NotFoundException($"Amenity with id {request.Id} not found");
-        }
+        var amenity = await _amenityRepository.GetByIdAsync(request.Id) ??
+                      throw new NotFoundException($"Amenity with id {request.Id} not found");
 
-        await _amenityRepository.DeleteAsync(request.Id);
+        _amenityRepository.Delete(amenity);
 
         await _unitOfWork.SaveChangesAsync();
     }

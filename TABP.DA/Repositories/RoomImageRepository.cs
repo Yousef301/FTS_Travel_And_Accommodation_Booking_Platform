@@ -17,7 +17,7 @@ public class RoomImageRepository : IImageRepository<RoomImage>
 
     public async Task<RoomImage?> GetByIdAsync(Expression<Func<RoomImage, bool>> predicate)
     {
-        return await _context.RoomImages.FirstOrDefaultAsync(predicate);
+        return await _context.RoomImages.SingleOrDefaultAsync(predicate);
     }
 
     public async Task<string?> GetImagePathAsync(Guid id, Guid roomId)
@@ -25,12 +25,13 @@ public class RoomImageRepository : IImageRepository<RoomImage>
         return await _context.RoomImages
             .Where(r => r.Id == id && r.RoomId == roomId)
             .Select(r => r.ImagePath)
-            .FirstOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<IEnumerable<string>> GetImagesPathAsync(Guid id)
     {
         return await _context.RoomImages
+            .AsNoTracking()
             .Where(r => r.RoomId == id)
             .Select(r => r.ImagePath)
             .ToListAsync();
@@ -41,7 +42,7 @@ public class RoomImageRepository : IImageRepository<RoomImage>
         return await _context.RoomImages
             .Where(r => r.RoomId == id && r.Thumbnail)
             .Select(r => r.ImagePath)
-            .FirstOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<RoomImage> CreateAsync(RoomImage roomImage)

@@ -6,6 +6,8 @@ using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.DAL.Repositories;
 
+// Continue from TABP.DAL/Repositories/RoomRepository.cs
+
 public class SpecialOfferRepository : ISpecialOfferRepository
 {
     private readonly TABPDbContext _context;
@@ -13,6 +15,12 @@ public class SpecialOfferRepository : ISpecialOfferRepository
     public SpecialOfferRepository(TABPDbContext context)
     {
         _context = context;
+    }
+
+    public Task<SpecialOffer?> GetByIdAsync(Guid id)
+    {
+        return _context.SpecialOffers
+            .SingleOrDefaultAsync(so => so.Id == id);
     }
 
     public async Task<IEnumerable<SpecialOffer>> GetExpiredOffersAsync()
@@ -25,6 +33,7 @@ public class SpecialOfferRepository : ISpecialOfferRepository
     public async Task<IEnumerable<SpecialOffer>> GetRoomOffersAsync(Guid roomId)
     {
         return await _context.SpecialOffers
+            .AsQueryable()
             .Where(so => so.RoomId == roomId)
             .ToListAsync();
     }
@@ -32,12 +41,7 @@ public class SpecialOfferRepository : ISpecialOfferRepository
     public async Task<SpecialOffer?> GetByRoomIdAndOfferIdAsync(Guid id, Guid roomId)
     {
         return await _context.SpecialOffers
-            .FirstOrDefaultAsync(so => so.Id == id && so.RoomId == roomId);
-    }
-
-    public async Task<SpecialOffer?> GetByIdAsync(Guid id)
-    {
-        return await _context.SpecialOffers.FindAsync(id);
+            .SingleOrDefaultAsync(so => so.Id == id && so.RoomId == roomId);
     }
 
     public async Task<SpecialOffer> CreateAsync(SpecialOffer specialOffer)
@@ -48,34 +52,13 @@ public class SpecialOfferRepository : ISpecialOfferRepository
         return createdSpecialOffer.Entity;
     }
 
-    public async Task DeleteAsync(Guid id, Guid roomId)
+    public void Delete(SpecialOffer specialOffer)
     {
-        var specialOffer = await _context.SpecialOffers
-            .FirstOrDefaultAsync(so => so.Id == id && so.RoomId == roomId);
-
-        if (specialOffer is null)
-        {
-            return;
-        }
-
         _context.SpecialOffers.Remove(specialOffer);
     }
 
-    public async Task DeleteAsync(SpecialOffer specialOffer)
+    public void Update(SpecialOffer specialOffer)
     {
-        if (!await _context.SpecialOffers.AnyAsync(so => so.Id == specialOffer.Id))
-        {
-            return;
-        }
-
-        _context.SpecialOffers.Remove(specialOffer);
-    }
-
-    public async Task UpdateAsync(SpecialOffer specialOffer)
-    {
-        if (!await _context.SpecialOffers.AnyAsync(so => so.Id == specialOffer.Id))
-            return;
-
         _context.SpecialOffers.Update(specialOffer);
     }
 

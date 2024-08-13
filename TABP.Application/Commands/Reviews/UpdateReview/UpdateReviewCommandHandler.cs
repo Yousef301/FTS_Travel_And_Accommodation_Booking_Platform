@@ -44,7 +44,7 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 
         if (!IsReviewRateChanged(oldReviewRate, newReviewRate))
         {
-            await _reviewRepository.UpdateAsync(review);
+            _reviewRepository.Update(review);
 
             await _unitOfWork.SaveChangesAsync();
 
@@ -58,7 +58,7 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
 
         try
         {
-            await _reviewRepository.UpdateAsync(review);
+            _reviewRepository.Update(review);
 
             await _unitOfWork.SaveChangesAsync();
 

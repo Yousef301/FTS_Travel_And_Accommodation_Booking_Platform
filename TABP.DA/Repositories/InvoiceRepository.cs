@@ -18,9 +18,10 @@ public class InvoiceRepository : IInvoiceRepository
     public async Task<Invoice?> GetByBookingIdAsync(Guid id)
     {
         return await _context.Invoices
+            .AsNoTracking()
             .Where(i => i.BookingId == id)
             .Include(i => i.Booking)
-            .FirstOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<Invoice> CreateAsync(Invoice invoice)

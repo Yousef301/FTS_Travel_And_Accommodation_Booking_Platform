@@ -37,7 +37,7 @@ public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand>
         booking.PaymentStatus = PaymentStatus.Refunded;
         booking.Payment.PaymentStatus = PaymentStatus.Refunded;
 
-        await _bookingRepository.UpdateAsync(booking);
+        _bookingRepository.Update(booking);
         await _unitOfWork.SaveChangesAsync();
     }
 }

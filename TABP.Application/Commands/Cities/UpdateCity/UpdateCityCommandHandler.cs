@@ -30,7 +30,7 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
 
         _mapper.Map(updatedCityDto, city);
 
-        await _cityRepository.UpdateAsync(city);
+        _cityRepository.Update(city);
 
         await _unitOfWork.SaveChangesAsync();
     }

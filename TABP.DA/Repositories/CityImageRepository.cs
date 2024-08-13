@@ -22,20 +22,24 @@ public class CityImageRepository : IImageRepository<CityImage>
 
     public async Task<CityImage?> GetByIdAsync(Expression<Func<CityImage, bool>> predicate)
     {
-        return await _context.CityImages.FirstOrDefaultAsync(predicate);
+        return await _context.CityImages
+            .SingleOrDefaultAsync(predicate);
     }
 
-    public async Task<string?> GetImagePathAsync(Guid imageId, Guid cityId)
+    public async Task<string?> GetImagePathAsync(
+        Guid imageId,
+        Guid cityId)
     {
         return await _context.CityImages
             .Where(ci => ci.Id == imageId && ci.CityId == cityId)
             .Select(ci => ci.ImagePath)
-            .FirstOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<IEnumerable<string>> GetImagesPathAsync(Guid id)
     {
         return await _context.CityImages
+            .AsNoTracking()
             .Where(ci => ci.CityId == id)
             .Select(ci => ci.ImagePath)
             .ToListAsync();
@@ -46,7 +50,7 @@ public class CityImageRepository : IImageRepository<CityImage>
         return await _context.CityImages
             .Where(h => h.CityId == cityId && h.Thumbnail)
             .Select(h => h.ImagePath)
-            .FirstOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<CityImage> CreateAsync(CityImage cityImage)
@@ -72,14 +76,6 @@ public class CityImageRepository : IImageRepository<CityImage>
         }
 
         _context.CityImages.Remove(cityImage);
-    }
-
-    public async Task UpdateAsync(CityImage cityImage)
-    {
-        if (!await _context.CityImages.AnyAsync(ci => ci.Id == cityImage.Id))
-            return;
-
-        _context.CityImages.Update(cityImage);
     }
 
     public async Task<bool> ExistsAsync(Expression<Func<CityImage, bool>> predicate)

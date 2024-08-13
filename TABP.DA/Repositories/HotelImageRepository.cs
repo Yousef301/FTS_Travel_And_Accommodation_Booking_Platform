@@ -18,20 +18,24 @@ public class HotelImageRepository : IImageRepository<HotelImage>
 
     public async Task<HotelImage?> GetByIdAsync(Expression<Func<HotelImage, bool>> predicate)
     {
-        return await _context.HotelImages.FirstOrDefaultAsync(predicate);
+        return await _context.HotelImages
+            .SingleOrDefaultAsync(predicate);
     }
 
-    public async Task<string?> GetImagePathAsync(Guid id, Guid hotelId)
+    public async Task<string?> GetImagePathAsync(
+        Guid id,
+        Guid hotelId)
     {
         return await _context.HotelImages
             .Where(h => h.Id == id && h.HotelId == hotelId)
             .Select(h => h.ImagePath)
-            .FirstOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<IEnumerable<string>> GetImagesPathAsync(Guid id)
     {
         return await _context.HotelImages
+            .AsNoTracking()
             .Where(h => h.HotelId == id)
             .Select(h => h.ImagePath)
             .ToListAsync();
@@ -42,7 +46,7 @@ public class HotelImageRepository : IImageRepository<HotelImage>
         return await _context.HotelImages
             .Where(h => h.HotelId == id && h.Thumbnail)
             .Select(h => h.ImagePath)
-            .FirstOrDefaultAsync();
+            .SingleOrDefaultAsync();
     }
 
     public async Task<HotelImage> CreateAsync(HotelImage hotelImage)

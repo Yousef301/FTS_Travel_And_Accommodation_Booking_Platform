@@ -8,7 +8,6 @@ public static class ValidationExtensions
         int maxLength, string propertyName)
     {
         return ruleBuilder
-            .Matches("^[a-zA-Z]*$")
             .Length(minLength, maxLength)
             .WithMessage(
                 $"{propertyName} must be between {minLength} and {maxLength} characters long and contain only letters.");

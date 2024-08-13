@@ -64,7 +64,7 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
                 }
 
                 var bookingDetails = await _bookingDetailRepository
-                    .GetByBookingIdAsync(bookingId);
+                    .GetByBookingIdAsync(bookingId, true);
 
                 await _unitOfWork.BeginTransactionAsync();
 
@@ -96,7 +96,7 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
                     booking.PaymentStatus = PaymentStatus.Succeeded;
                     booking.BookingStatus = BookingStatus.Confirmed;
 
-                    await _bookingRepository.UpdateAsync(booking);
+                    _bookingRepository.Update(booking);
 
                     await _unitOfWork.SaveChangesAsync();
 

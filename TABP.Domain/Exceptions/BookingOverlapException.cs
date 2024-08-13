@@ -3,7 +3,7 @@
 public class BookingOverlapException : ConflictException
 {
     public BookingOverlapException()
-        : base("Booking is overlapping with an existing booking.")
+        : base("Booking is overlaps with an existing booking.")
     {
     }
 }

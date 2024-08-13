@@ -159,8 +159,7 @@ public class S3ImageService : IImageService
             throw;
         }
     }
-
-
+    
     public async Task<bool> DeleteImageAsync(string path)
     {
         var deleteRequest = new DeleteObjectRequest
@@ -179,23 +178,5 @@ public class S3ImageService : IImageService
             _logger.LogError($"Error deleting {path} from S3: {ex.Message}", ex);
             throw;
         }
-    }
-
-    public async Task<string> CreateUniquePathAsync<T>(
-        IImageRepository<T> repository,
-        Expression<Func<T, bool>> predicate,
-        string path) where T : class
-    {
-        var counter = 1;
-        var basePath = path;
-        var newPath = path;
-
-        while (await repository.ExistsAsync(predicate))
-        {
-            newPath = $"{basePath} ({counter})";
-            counter++;
-        }
-
-        return newPath;
     }
 }

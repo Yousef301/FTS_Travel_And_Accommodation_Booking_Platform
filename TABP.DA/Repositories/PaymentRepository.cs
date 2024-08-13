@@ -18,6 +18,7 @@ public class PaymentRepository : IPaymentRepository
     public async Task<IEnumerable<Payment>> GetUserPaymentsAsync(Guid userId)
     {
         return await _context.Payments
+            .AsNoTracking()
             .Where(p => p.UserId == userId)
             .ToListAsync();
     }

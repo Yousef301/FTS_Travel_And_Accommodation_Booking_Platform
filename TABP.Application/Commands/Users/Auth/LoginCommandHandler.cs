@@ -2,6 +2,7 @@
 using MediatR;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Users.Auth;
 
@@ -21,9 +22,10 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await _credentialRepository.GetByUsername(request.Username);
+        var user = await _credentialRepository.GetByUsername(request.Username) ??
+                   throw new NotFoundException($"User with username {request.Username} wasn't found.");
 
-        if (user is null || !_passwordService.ValidatePassword(request.Password, user.HashedPassword))
+        if (!_passwordService.ValidatePassword(request.Password, user.HashedPassword))
             throw new InvalidCredentialException("Invalid username or password.");
 
         return new LoginResponse

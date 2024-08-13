@@ -34,7 +34,7 @@ public class UpdateSpecialOfferCommandHandler : IRequestHandler<UpdateSpecialOff
 
         _mapper.Map(updatedOfferDto, offer);
 
-        await _specialOfferRepository.UpdateAsync(offer);
+        _specialOfferRepository.Update(offer);
 
         await _unitOfWork.SaveChangesAsync();
 

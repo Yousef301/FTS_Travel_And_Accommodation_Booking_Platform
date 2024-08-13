@@ -18,6 +18,7 @@ public class RoomAmenityRepository : IRoomAmenityRepository
     public async Task<IEnumerable<RoomAmenity>> GetRoomAmenitiesAsync(Guid roomId)
     {
         return await _context.RoomAmenities
+            .AsNoTracking()
             .Where(ra => ra.RoomId == roomId)
             .Include(ra => ra.Amenity)
             .ToListAsync();

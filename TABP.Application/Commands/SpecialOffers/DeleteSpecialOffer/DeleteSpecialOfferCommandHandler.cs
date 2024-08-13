@@ -24,7 +24,11 @@ public class DeleteSpecialOfferCommandHandler : IRequestHandler<DeleteSpecialOff
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
             throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");
 
-        await _specialOfferRepository.DeleteAsync(request.Id, request.RoomId);
+        var specialOffer = await _specialOfferRepository.GetByIdAsync(request.Id) ??
+                           throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");
+
+
+        _specialOfferRepository.Delete(specialOffer);
 
         await _unitOfWork.SaveChangesAsync();
     }

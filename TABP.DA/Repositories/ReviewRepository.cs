@@ -18,6 +18,7 @@ public class ReviewRepository : IReviewRepository
     public async Task<IEnumerable<Review>> GetByHotelIdAsync(Guid hotelId)
     {
         return await _context.Reviews
+            .AsNoTracking()
             .Where(r => r.HotelId == hotelId)
             .Include(r => r.User)
             .ToListAsync();
@@ -26,6 +27,7 @@ public class ReviewRepository : IReviewRepository
     public async Task<IEnumerable<Review>> GetUserHotelsReviewsAsync(Guid hotelId, Guid userId)
     {
         return await _context.Reviews
+            .AsNoTracking()
             .Where(r => r.HotelId == hotelId && r.UserId == userId)
             .Include(r => r.User)
             .ToListAsync();
@@ -40,7 +42,7 @@ public class ReviewRepository : IReviewRepository
     public async Task<Review?> GetByIdAsync(Guid id)
     {
         return await _context.Reviews
-            .FirstOrDefaultAsync(r => r.Id == id);
+            .SingleOrDefaultAsync(r => r.Id == id);
     }
 
     public async Task<Review> CreateAsync(Review review)
@@ -51,23 +53,13 @@ public class ReviewRepository : IReviewRepository
         return createdReview.Entity;
     }
 
-    public async Task DeleteAsync(Guid id)
+    public void Delete(Review review)
     {
-        var review = await _context.Reviews.FindAsync(id);
-
-        if (review == null)
-        {
-            return;
-        }
-
         _context.Reviews.Remove(review);
     }
 
-    public async Task UpdateAsync(Review review)
+    public void Update(Review review)
     {
-        if (!await _context.Reviews.AnyAsync(r => r.Id == review.Id))
-            return;
-
         _context.Reviews.Update(review);
     }
 

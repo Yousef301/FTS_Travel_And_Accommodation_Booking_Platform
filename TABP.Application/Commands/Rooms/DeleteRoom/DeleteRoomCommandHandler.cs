@@ -26,12 +26,10 @@ public class DeleteRoomCommandHandler : IRequestHandler<DeleteRoomCommand>
             throw new NotFoundException($"Hotel with id {request.Id} wasn't found");
         }
 
-        if (!await _roomRepository.ExistsAsync(r => r.Id == request.Id))
-        {
-            throw new NotFoundException($"Room with id {request.Id} wasn't found");
-        }
+        var room = await _roomRepository.GetByIdAsync(request.Id, request.HotelId) ??
+                   throw new NotFoundException($"Room with id {request.Id} wasn't found");
 
-        await _roomRepository.DeleteAsync(request.Id);
+        _roomRepository.Delete(room);
 
         await _unitOfWork.SaveChangesAsync();
     }

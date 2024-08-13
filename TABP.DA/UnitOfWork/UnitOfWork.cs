@@ -35,26 +35,6 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task<int> SaveChangesAsync()
     {
-        UpdateAuditEntities();
-
         return await _context.SaveChangesAsync();
-    }
-
-    private void UpdateAuditEntities()
-    {
-        _context.ChangeTracker.DetectChanges();
-
-        foreach (var entry in _context.ChangeTracker.Entries<IAuditableEntity>())
-        {
-            switch (entry.State)
-            {
-                case EntityState.Added:
-                    entry.Entity.CreatedAt = DateTime.Now;
-                    break;
-                case EntityState.Modified:
-                    entry.Entity.ModifiedAt = DateTime.Now;
-                    break;
-            }
-        }
     }
 }

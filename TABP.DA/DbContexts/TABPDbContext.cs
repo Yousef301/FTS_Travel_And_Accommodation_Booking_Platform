@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
 using TABP.DAL.Entities;
+using TABP.DAL.Interceptors;
 using TABP.DAL.Models.Procedures;
 
 namespace TABP.DAL.DbContexts;
@@ -28,6 +29,9 @@ public class TABPDbContext : DbContext
         : base(options)
     {
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.AddInterceptors(new UpdateAuditableInterceptor());
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

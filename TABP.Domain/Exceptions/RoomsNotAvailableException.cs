@@ -9,6 +9,6 @@ public class RoomsNotAvailableException : ConflictException
 
     private static string CreateMessage(IEnumerable<string> unavailableRooms)
     {
-        return "The following rooms are not available:\n" + string.Join(Environment.NewLine, unavailableRooms);
+        return "The following rooms are not available:\n" + string.Join("\n", unavailableRooms);
     }
 }

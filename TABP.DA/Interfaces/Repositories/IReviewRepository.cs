@@ -10,7 +10,7 @@ public interface IReviewRepository
     Task<int> GetHotelReviewsCount(Guid hotelId);
     Task<Review?> GetByIdAsync(Guid id);
     Task<Review> CreateAsync(Review review);
-    Task DeleteAsync(Guid id);
-    Task UpdateAsync(Review review);
+    void Delete(Review review);
+    void Update(Review review);
     Task<bool> ExistsAsync(Expression<Func<Review, bool>> predicate);
 }

@@ -30,7 +30,7 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
 
         _mapper.Map(updatedAmenityDto, amenity);
 
-        await _amenityRepository.UpdateAsync(amenity);
+        _amenityRepository.Update(amenity);
 
         await _unitOfWork.SaveChangesAsync();
     }

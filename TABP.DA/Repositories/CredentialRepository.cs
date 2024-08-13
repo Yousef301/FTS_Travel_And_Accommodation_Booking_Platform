@@ -18,8 +18,9 @@ public class CredentialRepository : ICredentialRepository
     public async Task<Credential?> GetByUsername(string username)
     {
         return await _context.Credentials
+            .AsNoTracking()
             .Include(u => u.User)
-            .FirstOrDefaultAsync(c => c.Username == username);
+            .SingleOrDefaultAsync(c => c.Username == username);
     }
 
     public async Task<Credential> CreateAsync(Credential credential)
