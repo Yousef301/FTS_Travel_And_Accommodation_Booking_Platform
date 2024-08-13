@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using TABP.Application.Services.Interfaces;
+﻿using TABP.Application.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations;
 

@@ -6,8 +6,6 @@ using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.DAL.Repositories;
 
-// Continue from TABP.DAL/Repositories/RoomRepository.cs
-
 public class SpecialOfferRepository : ISpecialOfferRepository
 {
     private readonly TABPDbContext _context;
