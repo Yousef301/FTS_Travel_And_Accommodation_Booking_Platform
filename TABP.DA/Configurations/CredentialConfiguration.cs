@@ -20,7 +20,7 @@ public class CredentialConfiguration : IEntityTypeConfiguration<Credential>
                 UserId = new Guid("d9b4bcca-9d5b-4f3d-bf89-7a367becfbd2"),
                 Username = "Admin1",
                 HashedPassword = "$2a$11$.0I3bFzDhORA0SMV8eNIieR1qJoGVWXkQkFbSVqqS6nuBOvBsdrwO",
-                CreatedAt = DateTime.Now
+                CreatedAt = new DateTime(2024, 8, 14)
             },
             new Credential()
             {
@@ -28,7 +28,7 @@ public class CredentialConfiguration : IEntityTypeConfiguration<Credential>
                 UserId = new Guid("e7b7c08e-4c3a-41f5-9a9d-8571b2e4a5f4"),
                 Username = "Customer1",
                 HashedPassword = "$2a$11$tJjrJ/X9lTu5Vxc7T5Rv1uoNxG0QQa0wFhPEYEtvRPraUku1y8WNm",
-                CreatedAt = DateTime.Now
+                CreatedAt = new DateTime(2024, 8, 14)
             }
         ]);
     }

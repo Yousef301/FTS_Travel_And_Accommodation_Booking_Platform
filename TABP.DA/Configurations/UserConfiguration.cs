@@ -35,7 +35,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Role)
             .HasConversion(new EnumToStringConverter<Role>());
 
-        builder.HasData([
+        builder.HasData(
             new User
             {
                 Id = new Guid("d9b4bcca-9d5b-4f3d-bf89-7a367becfbd2"),
@@ -46,7 +46,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 Address = "Admin Address",
                 BirthDate = new DateOnly(2001, 9, 22),
                 Role = Role.Admin,
-                CreatedAt = DateTime.Now
+                CreatedAt = new DateTime(2024, 8, 14)
             },
             new User
             {
@@ -58,8 +58,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 Address = "Customer Address",
                 BirthDate = new DateOnly(1996, 2, 4),
                 Role = Role.Customer,
-                CreatedAt = DateTime.Now
+                CreatedAt = new DateTime(2024, 8, 14)
             }
-        ]);
+        );
     }
 }
