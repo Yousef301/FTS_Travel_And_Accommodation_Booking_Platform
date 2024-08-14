@@ -10,7 +10,7 @@ namespace TABP.Web.Controllers;
 
 [ApiVersion(1.0)]
 [ApiController]
-[Route("api/v{v:apiVersion}/user/bookings")]
+[Route("api/v{v:apiVersion}/user/bookings/{bookingId:guid}")]
 [Authorize(Roles = nameof(Role.Customer))]
 public class InvoicesController : ControllerBase
 {
@@ -29,7 +29,7 @@ public class InvoicesController : ControllerBase
     /// <response code="200">The invoice PDF was successfully retrieved and is returned as a file.</response>
     /// <response code="404">If no invoice is found for the specified booking ID.</response>
     /// <response code="500">If an internal server error occurs while generating or retrieving the invoice.</response>
-    [HttpGet("{bookingId:guid}/invoice")]
+    [HttpGet("invoice")]
     public async Task<IActionResult> GetInvoiceAsPdf(Guid bookingId)
     {
         var invoice = await _mediator.Send(new GetInvoiceAsPdfQuery
