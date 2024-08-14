@@ -13,7 +13,7 @@ namespace TABP.Web.Controllers;
 
 [ApiVersion(1.0)]
 [ApiController]
-[Route("api/v{v:apiVersion}/hotels/{hotelId:guid}/rooms/{roomId:guid}/amenities")]
+[Route("api/v{v:apiVersion}/rooms/{roomId:guid}/amenities")]
 [Authorize(Roles = nameof(Role.Admin))]
 public class RoomAmenitiesController : ControllerBase
 {

@@ -10,17 +10,17 @@ namespace TABP.Application.Commands.RoomAmenities.CreateRoomAmenity;
 public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenityCommand>
 {
     private readonly IRoomAmenityRepository _roomAmenityRepository;
+    private readonly IAmenityRepository _amenityRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
 
     public CreateRoomAmenityCommandHandler(IRoomAmenityRepository roomAmenityRepository, IUnitOfWork unitOfWork,
-        IMapper mapper, IRoomRepository roomRepository)
+        IRoomRepository roomRepository, IAmenityRepository amenityRepository)
     {
         _roomAmenityRepository = roomAmenityRepository;
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
         _roomRepository = roomRepository;
+        _amenityRepository = amenityRepository;
     }
 
     public async Task Handle(CreateRoomAmenityCommand request, CancellationToken cancellationToken)
@@ -28,9 +28,25 @@ public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenity
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
             throw new NotFoundException($"Room with id {request.RoomId} wasn't found");
 
-        var roomAmenity = _mapper.Map<RoomAmenity>(request);
 
-        await _roomAmenityRepository.CreateAsync(roomAmenity);
+        var roomAmenities = new List<RoomAmenity>();
+
+        foreach (var amenity in request.AmenitiesIds)
+        {
+            if (!await _amenityRepository.ExistsAsync(a => a.Id == amenity))
+                throw new NotFoundException($"Amenity with id {amenity} wasn't found");
+
+            var createdRoomAmenity = new RoomAmenity
+            {
+                Id = new Guid(),
+                RoomId = request.RoomId,
+                AmenityId = amenity
+            };
+
+            roomAmenities.Add(createdRoomAmenity);
+        }
+
+        _roomAmenityRepository.AddRange(roomAmenities);
 
         await _unitOfWork.SaveChangesAsync();
     }

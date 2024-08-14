@@ -14,12 +14,11 @@ public class CreateRoomValidator : AbstractValidator<CreateRoomDto>
             .ValidString(1, 8, "Room number");
 
         RuleFor(x => x.MaxChildren)
-            .NotEmpty().WithMessage("Max children is required")
             .InclusiveBetween(0, 10).WithMessage("Max children must be between 0 and 10");
 
         RuleFor(x => x.MaxAdults)
             .NotEmpty().WithMessage("Max adults is required")
-            .InclusiveBetween(1, 10).WithMessage("Max adults must be between 0 and 10");
+            .InclusiveBetween(1, 10).WithMessage("Max adults must be between 1 and 10");
 
         RuleFor(x => x.Price)
             .NotEmpty().WithMessage("Price is required")

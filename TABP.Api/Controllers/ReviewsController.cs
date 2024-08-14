@@ -63,7 +63,7 @@ public class ReviewsController : ControllerBase
     /// <response code="403">If the user doesn't have permission.</response>
     /// <response code="404">If the user has not written any reviews for the specified hotel.</response>
     /// <response code="500">If an internal server error occurs while retrieving the reviews.</response>
-    [HttpGet("user-reviews")]
+    [HttpGet("user-review")]
     public async Task<ActionResult> GetUserHotelReviews(Guid hotelId)
     {
         var userReviews = await _mediator.Send(new GetUserHotelReviewsQuery
@@ -136,7 +136,7 @@ public class ReviewsController : ControllerBase
     /// <response code="404">If the review is not found.</response>
     /// <response code="500">If an internal server error occurs while updating the review.</response>
     [HttpPatch("{reviewId:guid}")]
-    public async Task<IActionResult> UpdateAmenity(Guid hotelId, Guid reviewId,
+    public async Task<IActionResult> UpdateReview(Guid hotelId, Guid reviewId,
         [FromBody] JsonPatchDocument<UpdateReviewDto> reviewUpdateDto)
     {
         var reviewDocument = _mapper.Map<JsonPatchDocument<ReviewUpdate>>(reviewUpdateDto);

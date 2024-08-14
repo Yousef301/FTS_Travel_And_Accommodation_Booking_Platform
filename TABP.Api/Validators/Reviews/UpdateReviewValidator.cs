@@ -31,7 +31,7 @@ public class UpdateReviewValidator : AbstractValidator<JsonPatchDocument<UpdateR
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Rate is required")
-                    .Must(value => value is >= 0 and <= 10)
+                    .Must(value => Convert.ToDecimal(value) >= 0 && Convert.ToDecimal(value) <= 10)
                     .WithMessage("Rate must be between 0 and 10")
                     .WithName("Rate");
             });

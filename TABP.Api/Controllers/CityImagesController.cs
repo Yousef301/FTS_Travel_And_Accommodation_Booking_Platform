@@ -16,7 +16,7 @@ namespace TABP.Web.Controllers;
 [ApiController]
 [Route("api/v{v:apiVersion}/cities/{cityId}/images")]
 [Authorize(Roles = nameof(Role.Admin))]
-public class CityImagesController : ControllerBase
+public class  CityImagesController : ControllerBase
 {
     private readonly IMediator _mediator;
 

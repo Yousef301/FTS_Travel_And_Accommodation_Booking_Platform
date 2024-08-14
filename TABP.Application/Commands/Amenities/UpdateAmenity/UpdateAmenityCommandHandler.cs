@@ -30,6 +30,9 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
 
         _mapper.Map(updatedAmenityDto, amenity);
 
+        if (await _amenityRepository.ExistsAsync(a => a.Name.ToLower() == amenity.Name.ToLower()))
+            throw new UniqueConstraintViolationException("An amenity with the same name already exists.");
+
         _amenityRepository.Update(amenity);
 
         await _unitOfWork.SaveChangesAsync();

@@ -29,7 +29,10 @@ public class BookingRepository : IBookingRepository
                 BookingDate = b.BookingDate,
                 CheckInDate = b.CheckInDate,
                 CheckOutDate = b.CheckOutDate,
-                TotalPrice = b.TotalPrice
+                TotalPrice = b.TotalPrice,
+                BookingStatus = b.BookingStatus,
+                PaymentStatus = b.PaymentStatus,
+                PaymentMethod = b.PaymentMethod
             })
             .ToListAsync();
     }
@@ -62,7 +65,8 @@ public class BookingRepository : IBookingRepository
                 BookingStatus = b.BookingStatus,
                 PaymentMethod = b.PaymentMethod,
                 PaymentStatus = b.PaymentStatus,
-                TotalPrice = b.TotalPrice
+                TotalPrice = b.TotalPrice,
+                UserId = b.UserId
             })
             .SingleOrDefaultAsync();
     }

@@ -7,7 +7,7 @@ public class CreateRoomAmenityValidator : AbstractValidator<CreateRoomAmenityDto
 {
     public CreateRoomAmenityValidator()
     {
-        RuleFor(x => x.AmenityId)
-            .NotEmpty().WithMessage("Amenity Id is required.");
+        RuleFor(x => x.AmenitiesIds)
+            .NotEmpty().WithMessage("Amenity list should contain at least one amenity ID.");
     }
 }

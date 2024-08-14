@@ -32,6 +32,10 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
             throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");
 
+        if (await _roomRepository.ExistsAsync(r => r.RoomNumber == request.RoomNumber && r.HotelId == request.HotelId))
+            throw new UniqueConstraintViolationException(
+                $"Room with number {request.RoomNumber} already exists in this hotel");
+
         var room = _mapper.Map<Room>(request);
 
         room.Id = new Guid();

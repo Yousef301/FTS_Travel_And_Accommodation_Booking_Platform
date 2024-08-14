@@ -9,7 +9,7 @@ public class GetAvailableRoomsValidator : AbstractValidator<GetAvailableRoomsDto
     public GetAvailableRoomsValidator()
     {
         RuleFor(x => x.CheckInDate)
-            .ValidFutureDate("Check in date");
+            .ValidFutureDate("Check in date", true);
 
         RuleFor(x => x.CheckOutDate)
             .ValidFutureDate("Check-out")

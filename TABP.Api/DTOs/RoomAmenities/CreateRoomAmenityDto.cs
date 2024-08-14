@@ -2,5 +2,5 @@
 
 public class CreateRoomAmenityDto
 {
-    public Guid AmenityId { get; set; }
+    public IEnumerable<Guid> AmenitiesIds { get; set; }
 }

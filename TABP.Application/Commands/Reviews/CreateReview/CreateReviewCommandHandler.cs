@@ -3,6 +3,7 @@ using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Reviews.CreateReview;
@@ -27,7 +28,9 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand>
 
     public async Task Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
-        if (!await _bookingRepository.ExistsAsync(b => b.UserId == request.UserId && b.HotelId == request.HotelId))
+        if (!await _bookingRepository.ExistsAsync(b => b.UserId == request.UserId
+                                                       && b.HotelId == request.HotelId
+                                                       && b.BookingStatus == BookingStatus.Confirmed))
         {
             throw new NoBookingForHotelException("User should have a booking for the hotel to be able to review");
         }

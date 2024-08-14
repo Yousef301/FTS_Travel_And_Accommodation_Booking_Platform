@@ -21,6 +21,9 @@ public class GetInvoiceAsPdfQueryHandler : IRequestHandler<GetInvoiceAsPdfQuery,
         var invoice = await _invoiceRepository.GetByBookingIdAsync(request.BookingId) ??
                       throw new NotFoundException($"Invoice with booking id {request.BookingId} not found.");
 
+        if (invoice.Booking.UserId != request.UserId)
+            throw new UnauthorizedAccessException("You are not authorized to access this invoice.");
+
         var invoicePdf = await _pdfService.GenerateInvoiceAsPdfAsync(new EmailInvoiceBody
         {
             InvoiceId = invoice.Id,

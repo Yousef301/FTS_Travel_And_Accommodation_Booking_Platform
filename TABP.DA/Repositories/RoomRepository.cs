@@ -19,7 +19,8 @@ public class RoomRepository : IRoomRepository
 
     public async Task<PagedList<Room>> GetByHotelIdPagedAsync(
         Guid hotelId,
-        Filters<Room> filters)
+        Filters<Room> filters,
+        bool includeAmenities = false)
     {
         var roomsQuery = _context.Rooms
             .Where(r => r.HotelId == hotelId)

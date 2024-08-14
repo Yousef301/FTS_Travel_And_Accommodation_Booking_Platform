@@ -6,7 +6,7 @@ namespace TABP.DAL.Interfaces.Repositories;
 
 public interface IRoomRepository
 {
-    Task<PagedList<Room>> GetByHotelIdPagedAsync(Guid hotelId, Filters<Room> filters);
+    Task<PagedList<Room>> GetByHotelIdPagedAsync(Guid hotelId, Filters<Room> filters, bool includeAmenities = false);
 
     Task<IEnumerable<Room>> GetByHotelIdAsync(Guid hotelId,
         Expression<Func<Room, bool>>? predicate = null, bool includeAmenities = false);

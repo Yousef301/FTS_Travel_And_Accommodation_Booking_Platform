@@ -18,7 +18,7 @@ public class CityConfiguration : IEntityTypeConfiguration<City>
         builder.HasMany(c => c.Images)
             .WithOne(ci => ci.City)
             .IsRequired()
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasIndex(c => new { c.Name, c.Country });
     }
