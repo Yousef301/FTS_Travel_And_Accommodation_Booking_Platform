@@ -1,24 +1,27 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
+using TABP.Domain.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations;
 
 public class JwtTokenGeneratorService : ITokenGeneratorService
 {
-    private readonly IConfiguration _configuration;
+    private readonly ISecretsManagerService _secretsManagerService;
 
-    public JwtTokenGeneratorService(IConfiguration configuration)
+    public JwtTokenGeneratorService(ISecretsManagerService secretsManagerService)
     {
-        _configuration = configuration;
+        _secretsManagerService = secretsManagerService;
     }
 
     public string GenerateToken(User user, string username)
     {
-        var securityKey = new SymmetricSecurityKey(Convert.FromBase64String(_configuration["SecretKey"]));
+        var secrets = _secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_jwt").Result
+                      ?? throw new ArgumentNullException(nameof(_secretsManagerService));
+
+        var securityKey = new SymmetricSecurityKey(Convert.FromBase64String(secrets["SecretKey"]));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var tokenClaims = new List<Claim>()
@@ -33,8 +36,8 @@ public class JwtTokenGeneratorService : ITokenGeneratorService
 
 
         var jwtToken = new JwtSecurityToken(
-            issuer: _configuration["JWT:Issuer"],
-            audience: _configuration["JWT:Audience"],
+            issuer: secrets["Issuer"],
+            audience: secrets["Audience"],
             claims: tokenClaims,
             expires: DateTime.Now.AddHours(1),
             signingCredentials: signingCredentials

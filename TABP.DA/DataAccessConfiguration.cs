@@ -1,32 +1,33 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.DAL.Repositories;
+using TABP.Domain.Services.Interfaces;
 
 namespace TABP.DAL;
 
 public static class DataAccessConfiguration
 {
     public static IServiceCollection AddDataAccessInfrastructure(this IServiceCollection services,
-        IConfiguration configuration)
+        ISecretsManagerService secretsManagerService)
     {
-        services.AddDbContext(configuration)
+        services.AddDbContext(secretsManagerService)
             .AddRepositories();
 
         return services;
     }
 
     private static IServiceCollection AddDbContext(
-        this IServiceCollection services, IConfiguration configuration)
+        this IServiceCollection services,
+        ISecretsManagerService secretsManagerService)
     {
-        services.AddDbContext<TABPDbContext>(options =>
-        {
-            options.UseSqlServer(configuration["ConnectionStrings:TABPDb"]);
-        });
+        var secrets = secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_database").Result
+                      ?? throw new ArgumentNullException(nameof(secretsManagerService));
+
+        services.AddDbContext<TABPDbContext>(options => { options.UseSqlServer(secrets["TABPDb"]); });
 
         return services;
     }

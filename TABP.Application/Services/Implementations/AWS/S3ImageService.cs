@@ -1,11 +1,9 @@
-﻿using System.Linq.Expressions;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using TABP.Application.Services.Interfaces;
-using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations.AWS;
 
@@ -17,12 +15,16 @@ public class S3ImageService : IImageService
 
     public S3ImageService(
         IAmazonS3 s3Client,
-        IConfiguration configuration,
-        ILogger<S3ImageService> logger)
+        ILogger<S3ImageService> logger,
+        ISecretsManagerService secretsManagerService)
     {
         _s3Client = s3Client;
-        _bucketName = configuration["AWS:BucketName"] ?? throw new ArgumentNullException(nameof(configuration));
         _logger = logger;
+
+        var secrets = secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_aws").Result
+                      ?? throw new ArgumentNullException(nameof(secretsManagerService));
+
+        _bucketName = secrets["ImagesBucket"];
     }
 
     public async Task UploadImagesAsync(
@@ -159,7 +161,7 @@ public class S3ImageService : IImageService
             throw;
         }
     }
-    
+
     public async Task<bool> DeleteImageAsync(string path)
     {
         var deleteRequest = new DeleteObjectRequest
