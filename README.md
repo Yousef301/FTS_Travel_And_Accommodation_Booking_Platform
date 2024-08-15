@@ -115,9 +115,10 @@ This approach simplifies the process of evolving APIs while ensuring clear versi
    - **Redis**: Used to cache frequently searched cities for faster retrieval.
    - **AWS S3**: Used to store images related to cities, hotels, and rooms.
    - **AWS CloudWatch**: Used to log application activities for monitoring and debugging.
+   - **AWS Secrets Manager**: Used to store connection strings and secret keys.
 
 ## Configurations
-The application settings are managed through the appsettings.json file and environment variables.
+The application settings are managed through an external service called 'Secrets Manager,' which is an AWS service.
     
 ## Documentation
 For detailed API documentation, you can access the Swagger UI after running the project:
