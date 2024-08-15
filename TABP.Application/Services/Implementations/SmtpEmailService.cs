@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using TABP.Application.Queries.Invoices;
 using TABP.Application.Services.Interfaces;
 using TABP.Domain.Exceptions;
+using TABP.Domain.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations;
 
@@ -13,12 +13,13 @@ public class SmtpEmailService : IEmailService
     private readonly string _mail;
     private readonly string _password;
 
-    public SmtpEmailService(IConfiguration configuration)
+    public SmtpEmailService(ISecretsManagerService secretsManagerService)
     {
-        _mail = configuration["Mail"] ??
-                throw new ArgumentNullException(nameof(configuration), "Mail configuration is missing.");
-        _password = configuration["EmailPassword"] ??
-                    throw new ArgumentNullException(nameof(configuration), "Email password configuration is missing.");
+        var secrets = secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_smtp").Result
+                      ?? throw new ArgumentNullException(nameof(secretsManagerService));
+
+        _mail = secrets["Mail"];
+        _password = secrets["EmailPassword"];
     }
 
     public async Task SendEmailAsync(string email, string subject, EmailInvoiceBody invoice)

@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Amazon.SecretsManager;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+using TABP.Domain.Services.Implementations;
 
 namespace TABP.DAL.DbContexts;
 
@@ -8,13 +9,13 @@ public class TABPDbContextFactory : IDesignTimeDbContextFactory<TABPDbContext>
 {
     public TABPDbContext CreateDbContext(string[] args)
     {
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../TABP.Api"))
-            .AddJsonFile("appsettings.json")
-            .Build();
+        var secretsManagerService = new SecretsManagerService(new AmazonSecretsManagerClient());
+
+        var secrets = secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_database").Result
+                      ?? throw new ArgumentNullException(nameof(secretsManagerService));
 
         var optionsBuilder = new DbContextOptionsBuilder<TABPDbContext>();
-        var connectionString = configuration.GetConnectionString("TABPDb");
+        var connectionString = secrets["TABPDb"];
 
         optionsBuilder.UseSqlServer(connectionString);
 

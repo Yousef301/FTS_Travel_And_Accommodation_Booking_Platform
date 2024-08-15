@@ -7,10 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 
 builder.Configuration
-    .AddJsonFile("appsettings.json")
-    .AddEnvironmentVariables();
+    .AddJsonFile("appsettings.json");
 
-builder.Services.AddApiInfrastructure(builder.Configuration);
+builder.Services.AddApiInfrastructure();
 
 builder.Host.UseSerilog();
 

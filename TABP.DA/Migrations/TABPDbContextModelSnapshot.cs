@@ -40,7 +40,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Amenities");
+                    b.ToTable("Amenities", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.Booking", b =>
@@ -94,7 +94,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("CheckInDate", "CheckOutDate");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.BookingDetail", b =>
@@ -121,7 +121,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("BookingDetails");
+                    b.ToTable("BookingDetails", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.City", b =>
@@ -152,7 +152,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("Name", "Country");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.CityImage", b =>
@@ -181,7 +181,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("CityImages");
+                    b.ToTable("CityImages", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.Credential", b =>
@@ -215,7 +215,7 @@ namespace TABP.DAL.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Credentials");
+                    b.ToTable("Credentials", (string)null);
 
                     b.HasData(
                         new
@@ -283,7 +283,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("Rating");
 
-                    b.ToTable("Hotels");
+                    b.ToTable("Hotels", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.HotelImage", b =>
@@ -312,7 +312,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("HotelImages");
+                    b.ToTable("HotelImages", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.Invoice", b =>
@@ -346,7 +346,7 @@ namespace TABP.DAL.Migrations
                     b.HasIndex("BookingId")
                         .IsUnique();
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.Payment", b =>
@@ -385,7 +385,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.Review", b =>
@@ -422,7 +422,7 @@ namespace TABP.DAL.Migrations
                     b.HasIndex("UserId", "HotelId")
                         .IsUnique();
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.Room", b =>
@@ -478,7 +478,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("MaxAdults", "MaxChildren");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.RoomAmenity", b =>
@@ -505,7 +505,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomAmenities");
+                    b.ToTable("RoomAmenities", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.RoomImage", b =>
@@ -534,7 +534,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomImages");
+                    b.ToTable("RoomImages", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.SpecialOffer", b =>
@@ -570,7 +570,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasIndex("StartDate", "EndDate");
 
-                    b.ToTable("SpecialOffers");
+                    b.ToTable("SpecialOffers", (string)null);
                 });
 
             modelBuilder.Entity("TABP.DAL.Entities.User", b =>
@@ -614,7 +614,7 @@ namespace TABP.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new

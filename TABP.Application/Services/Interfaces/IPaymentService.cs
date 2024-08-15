@@ -1,7 +1,8 @@
-﻿namespace TABP.Application.Services.Interfaces;
+﻿using TABP.Domain.Models;
+
+namespace TABP.Application.Services.Interfaces;
 
 public interface IPaymentService
 {
-    Task<string> CreateCheckoutSessionAsync(decimal amount, string currency, string successUrl, string cancelUrl
-        , string bookingId, string userId, string userEmail);
+    Task<string> CreateCheckoutSessionAsync(PaymentData paymentData);
 }

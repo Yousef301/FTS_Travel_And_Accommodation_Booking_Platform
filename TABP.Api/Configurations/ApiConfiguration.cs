@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Amazon.CloudWatchLogs;
+using Amazon.SecretsManager;
 using Asp.Versioning;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -12,6 +13,8 @@ using Serilog.Sinks.AwsCloudWatch;
 using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using TABP.Application;
+using TABP.Domain.Services.Implementations;
+using TABP.Domain.Services.Interfaces;
 using TABP.Web.Filters;
 using TABP.Web.Services.Implementations;
 using TABP.Web.Services.Interfaces;
@@ -20,17 +23,22 @@ namespace TABP.Web.Configurations;
 
 public static class ApiConfiguration
 {
-    public static IServiceCollection AddApiInfrastructure(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddApiInfrastructure(this IServiceCollection services)
     {
-        services.AddApplicationInfrastructure(configuration)
+        services.AddSingleton<IAmazonSecretsManager>(sp => new AmazonSecretsManagerClient());
+        services.AddSingleton<ISecretsManagerService, SecretsManagerService>();
+
+        var serviceProvider = services.BuildServiceProvider();
+        var secretManager = serviceProvider.GetRequiredService<ISecretsManagerService>();
+
+        services.AddApplicationInfrastructure(secretManager)
             .AddSerilogConfigurations()
             .AddSwaggerConfigurations()
-            .AddAuthenticationConfigurations(configuration)
+            .AddAuthenticationConfigurations(secretManager)
             .AddFluentValidationConfigurations()
             .AddAutoMapperConfigurations()
             .AddApiVersioningConfigurations()
-            .AddRedisConfigurations(configuration);
+            .AddRedisConfigurations(secretManager);
 
         services.AddScoped<IUserContext, UserContext>();
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -79,8 +87,12 @@ public static class ApiConfiguration
     }
 
     private static IServiceCollection AddAuthenticationConfigurations(this IServiceCollection services,
-        IConfiguration configuration)
+        ISecretsManagerService secretsManagerService)
     {
+        var jwtConfigurations = secretsManagerService
+                                    .GetSecretAsDictionaryAsync("dev_fts_jwt").Result ??
+                                throw new ArgumentNullException(nameof(secretsManagerService));
+
         services.AddAuthentication("Bearer")
             .AddJwtBearer(options =>
             {
@@ -90,10 +102,10 @@ public static class ApiConfiguration
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
-                    ValidIssuer = configuration["JWT:Issuer"],
-                    ValidAudience = configuration["JWT:Audience"],
+                    ValidIssuer = jwtConfigurations["Issuer"],
+                    ValidAudience = jwtConfigurations["Audience"],
                     IssuerSigningKey =
-                        new SymmetricSecurityKey(Convert.FromBase64String(configuration["SecretKey"])),
+                        new SymmetricSecurityKey(Convert.FromBase64String(jwtConfigurations["SecretKey"])),
                     ClockSkew = TimeSpan
                         .Zero
                 };
@@ -170,14 +182,18 @@ public static class ApiConfiguration
     }
 
     private static IServiceCollection AddRedisConfigurations(this IServiceCollection services,
-        IConfiguration configuration)
+        ISecretsManagerService secretsManagerService)
     {
+        var redisConfigurations = secretsManagerService
+                                      .GetSecretAsDictionaryAsync("dev_fts_redis").Result ??
+                                  throw new ArgumentNullException(nameof(secretsManagerService));
+
         services.AddStackExchangeRedisCache(options =>
         {
             options.ConfigurationOptions = new ConfigurationOptions
             {
-                EndPoints = { configuration["Redis:Configuration"] },
-                Password = configuration["RedisPassword"],
+                EndPoints = { redisConfigurations["ConnectionString"] },
+                Password = redisConfigurations["RedisPassword"],
                 ConnectTimeout = 10000,
                 AbortOnConnectFail = false
             };

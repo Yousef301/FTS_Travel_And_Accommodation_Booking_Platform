@@ -1,23 +1,24 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Configuration;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
+using TABP.Domain.Models;
+using TABP.Domain.Services.Interfaces;
 
 namespace TABP.Application.Commands.Bookings.CheckoutBooking;
 
 public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingCommand, string>
 {
+    private readonly ISecretsManagerService _secretsManagerService;
     private readonly IBookingRepository _bookingRepository;
     private readonly IPaymentService _paymentService;
-    private readonly IConfiguration _configuration;
 
     public CheckoutBookingCommandHandler(IBookingRepository bookingRepository,
-        IPaymentService paymentService, IConfiguration configuration)
+        IPaymentService paymentService, ISecretsManagerService secretsManagerService)
     {
         _bookingRepository = bookingRepository;
-        _configuration = configuration;
+        _secretsManagerService = secretsManagerService;
         _paymentService = paymentService;
     }
 
@@ -36,13 +37,25 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
             throw new BookingStatusException();
         }
 
-        var successUrl = _configuration["Payment:SuccessUrl"] + $"{booking.Id}/invoice";
-        var cancelUrl = _configuration["Payment:CancelUrl"] + $"{booking.Id}";
+        var paymentUrls = _secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_payment").Result ??
+                          throw new ArgumentNullException(nameof(_secretsManagerService));
+
+        var successUrl = paymentUrls["SuccessUrl"] + $"{booking.Id}/invoice";
+        var cancelUrl = paymentUrls["CancelUrl"] + $"{booking.Id}";
+
+        var paymentData = new PaymentData
+        {
+            TotalPrice = booking.TotalPrice,
+            Currency = "usd",
+            SuccessUrl = successUrl,
+            CancelUrl = cancelUrl,
+            BookingId = booking.Id,
+            UserId = request.UserId,
+            UserEmail = request.UserEmail
+        };
 
         var checkoutUrl =
-            await _paymentService.CreateCheckoutSessionAsync(booking.TotalPrice,
-                "usd", successUrl, cancelUrl, booking.Id.ToString(), request.UserId.ToString(),
-                request.UserEmail);
+            await _paymentService.CreateCheckoutSessionAsync(paymentData);
 
 
         return checkoutUrl;

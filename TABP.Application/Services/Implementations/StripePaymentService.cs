@@ -2,13 +2,13 @@
 using Stripe.Checkout;
 using TABP.Application.Services.Interfaces;
 using TABP.Domain.Exceptions;
+using TABP.Domain.Models;
 
 namespace TABP.Application.Services.Implementations;
 
 public class StripePaymentService : IPaymentService
 {
-    public async Task<string> CreateCheckoutSessionAsync(decimal amount, string currency, string successUrl,
-        string cancelUrl, string bookingId, string userId, string userEmail)
+    public async Task<string> CreateCheckoutSessionAsync(PaymentData paymentData)
     {
         try
         {
@@ -21,8 +21,8 @@ public class StripePaymentService : IPaymentService
                     {
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            UnitAmount = (long)(amount * 100),
-                            Currency = currency,
+                            UnitAmount = (long)(paymentData.TotalPrice * 100),
+                            Currency = paymentData.Currency,
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
                                 Name = "Product Name",
@@ -32,13 +32,13 @@ public class StripePaymentService : IPaymentService
                     },
                 },
                 Mode = "payment",
-                SuccessUrl = successUrl,
-                CancelUrl = cancelUrl,
+                SuccessUrl = paymentData.SuccessUrl,
+                CancelUrl = paymentData.CancelUrl,
                 Metadata = new Dictionary<string, string>
                 {
-                    { "booking_id", bookingId },
-                    { "user_id", userId },
-                    { "user_email", userEmail }
+                    { "booking_id", paymentData.BookingId.ToString() },
+                    { "user_id", paymentData.UserId.ToString() },
+                    { "user_email", paymentData.UserEmail }
                 }
             };
 
