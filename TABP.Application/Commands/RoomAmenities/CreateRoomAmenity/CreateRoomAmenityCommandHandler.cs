@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
@@ -14,8 +13,10 @@ public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenity
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateRoomAmenityCommandHandler(IRoomAmenityRepository roomAmenityRepository, IUnitOfWork unitOfWork,
-        IRoomRepository roomRepository, IAmenityRepository amenityRepository)
+    public CreateRoomAmenityCommandHandler(IRoomAmenityRepository roomAmenityRepository,
+        IUnitOfWork unitOfWork,
+        IRoomRepository roomRepository,
+        IAmenityRepository amenityRepository)
     {
         _roomAmenityRepository = roomAmenityRepository;
         _unitOfWork = unitOfWork;
@@ -23,7 +24,8 @@ public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenity
         _amenityRepository = amenityRepository;
     }
 
-    public async Task Handle(CreateRoomAmenityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateRoomAmenityCommand request,
+        CancellationToken cancellationToken)
     {
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
             throw new NotFoundException($"Room with id {request.RoomId} wasn't found");

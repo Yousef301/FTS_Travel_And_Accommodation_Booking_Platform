@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Queries.Hotels;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
@@ -13,7 +12,8 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateHotelCommandHandler(IHotelRepository hotelRepository, IUnitOfWork unitOfWork,
+    public CreateHotelCommandHandler(IHotelRepository hotelRepository,
+        IUnitOfWork unitOfWork,
         IMapper mapper)
     {
         _hotelRepository = hotelRepository;
@@ -21,7 +21,8 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateHotelCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateHotelCommand request,
+        CancellationToken cancellationToken)
     {
         var hotel = _mapper.Map<Hotel>(request);
 

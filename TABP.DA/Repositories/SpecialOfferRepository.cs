@@ -32,7 +32,7 @@ public class SpecialOfferRepository : ISpecialOfferRepository
     {
         return await _context.SpecialOffers
             .AsQueryable()
-            .Where(so => so.RoomId == roomId)
+            .Where(so => so.RoomId == roomId && so.IsActive)
             .ToListAsync();
     }
 

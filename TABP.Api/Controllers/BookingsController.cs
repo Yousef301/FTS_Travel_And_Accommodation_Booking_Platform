@@ -10,7 +10,7 @@ using TABP.Application.Queries.Bookings.GetBookingById;
 using TABP.Application.Queries.Bookings.GetBookings;
 using TABP.Domain.Enums;
 using TABP.Web.DTOs.Bookings;
-using TABP.Web.Services.Interfaces;
+using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Controllers;
 
@@ -24,7 +24,9 @@ public class BookingsController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IUserContext _userContext;
 
-    public BookingsController(IMapper mapper, IMediator mediator, IUserContext userContext)
+    public BookingsController(IMapper mapper,
+        IMediator mediator,
+        IUserContext userContext)
     {
         _mapper = mapper;
         _mediator = mediator;

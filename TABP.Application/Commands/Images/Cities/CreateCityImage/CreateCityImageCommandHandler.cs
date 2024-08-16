@@ -14,8 +14,10 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
     private readonly ICityRepository _cityRepository;
     private readonly IImageRepository<CityImage> _cityImageRepository;
 
-    public CreateCityImageCommandHandler(IImageService imageService, IImageRepository<CityImage> cityImageRepository,
-        IUnitOfWork unitOfWork, ICityRepository cityRepository)
+    public CreateCityImageCommandHandler(IImageService imageService,
+        IImageRepository<CityImage> cityImageRepository,
+        IUnitOfWork unitOfWork,
+        ICityRepository cityRepository)
     {
         _unitOfWork = unitOfWork;
         _cityRepository = cityRepository;
@@ -23,7 +25,8 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
         _cityImageRepository = cityImageRepository;
     }
 
-    public async Task Handle(CreateCityImageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateCityImageCommand request,
+        CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.CityId) ??
                    throw new NotFoundException($"City with id {request.CityId} wasn't found");

@@ -13,7 +13,8 @@ public class DeleteCityImageCommandHandler : IRequestHandler<DeleteCityImageComm
     private readonly IImageService _imageService;
     private readonly IImageRepository<CityImage> _cityImageRepository;
 
-    public DeleteCityImageCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
+    public DeleteCityImageCommandHandler(IUnitOfWork unitOfWork,
+        IImageService imageService,
         IImageRepository<CityImage> cityImageRepository)
     {
         _unitOfWork = unitOfWork;
@@ -21,7 +22,8 @@ public class DeleteCityImageCommandHandler : IRequestHandler<DeleteCityImageComm
         _cityImageRepository = cityImageRepository;
     }
 
-    public async Task Handle(DeleteCityImageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCityImageCommand request,
+        CancellationToken cancellationToken)
     {
         var cityImagesPath = await _cityImageRepository.GetImagePathAsync(request.ImageId, request.CityId) ??
                              throw new NotFoundException($"City image with id {request.ImageId} wasn't found");

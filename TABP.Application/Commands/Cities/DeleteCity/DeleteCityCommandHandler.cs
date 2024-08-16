@@ -11,13 +11,15 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
     private readonly IUnitOfWork _unitOfWork;
 
 
-    public DeleteCityCommandHandler(ICityRepository cityRepository, IUnitOfWork unitOfWork)
+    public DeleteCityCommandHandler(ICityRepository cityRepository,
+        IUnitOfWork unitOfWork)
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(DeleteCityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteCityCommand request,
+        CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id) ??
                    throw new NotFoundException($"City with id {request.Id} wasn't found");

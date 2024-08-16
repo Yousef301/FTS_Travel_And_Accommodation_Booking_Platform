@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using AutoMapper;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
@@ -28,7 +27,8 @@ public class HotelsController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public HotelsController(IMediator mediator, IMapper mapper)
+    public HotelsController(IMediator mediator,
+        IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;

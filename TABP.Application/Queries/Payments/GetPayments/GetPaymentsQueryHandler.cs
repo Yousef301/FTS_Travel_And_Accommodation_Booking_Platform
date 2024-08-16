@@ -9,7 +9,8 @@ public class GetPaymentsQueryHandler : IRequestHandler<GetPaymentsQuery, IEnumer
     private readonly IPaymentRepository _paymentRepository;
     private readonly IMapper _mapper;
 
-    public GetPaymentsQueryHandler(IPaymentRepository paymentRepository, IMapper mapper)
+    public GetPaymentsQueryHandler(IPaymentRepository paymentRepository,
+        IMapper mapper)
     {
         _paymentRepository = paymentRepository;
         _mapper = mapper;

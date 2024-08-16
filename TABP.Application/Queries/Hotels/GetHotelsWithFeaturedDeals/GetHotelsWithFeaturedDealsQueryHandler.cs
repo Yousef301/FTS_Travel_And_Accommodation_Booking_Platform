@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using TABP.Application.Services.Interfaces;
-using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 
 namespace TABP.Application.Queries.Hotels.GetHotelsWithFeaturedDeals;
@@ -15,7 +14,8 @@ public class
     private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
-    public GetHotelsWithFeaturedDealsQueryHandler(IHotelRepository hotelRepository, IMapper mapper,
+    public GetHotelsWithFeaturedDealsQueryHandler(IHotelRepository hotelRepository,
+        IMapper mapper,
         IImageService imageService)
     {
         _hotelRepository = hotelRepository;
@@ -55,7 +55,8 @@ public class
         return mappedHotels;
     }
 
-    private void MapThumbnailUrls(List<HotelWithFeaturedDealResponse> hotels, List<string> imageUrls)
+    private void MapThumbnailUrls(List<HotelWithFeaturedDealResponse> hotels,
+        List<string> imageUrls)
     {
         foreach (var hotel in hotels)
         {

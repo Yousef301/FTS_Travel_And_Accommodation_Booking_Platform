@@ -11,7 +11,8 @@ public class GetAvailableRoomsQueryHandler : IRequestHandler<GetAvailableRoomsQu
     private readonly IRoomRepository _roomRepository;
     private readonly IMapper _mapper;
 
-    public GetAvailableRoomsQueryHandler(IRoomRepository roomRepository, IMapper mapper)
+    public GetAvailableRoomsQueryHandler(IRoomRepository roomRepository,
+        IMapper mapper)
     {
         _roomRepository = roomRepository;
         _mapper = mapper;
@@ -27,7 +28,8 @@ public class GetAvailableRoomsQueryHandler : IRequestHandler<GetAvailableRoomsQu
         return _mapper.Map<IEnumerable<RoomResponse>>(rooms);
     }
 
-    private Expression<Func<Room, bool>> GetAvailableRoomsExpression(DateOnly checkInDate, DateOnly checkOutDate)
+    private Expression<Func<Room, bool>> GetAvailableRoomsExpression(DateOnly checkInDate,
+        DateOnly checkOutDate)
     {
         return r => r.BookingDetails.All(bd =>
             bd.Booking.CheckOutDate <= checkInDate || bd.Booking.CheckInDate >= checkOutDate);

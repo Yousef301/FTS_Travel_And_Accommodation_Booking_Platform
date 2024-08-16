@@ -14,8 +14,10 @@ public class CreateHotelImageCommandHandler : IRequestHandler<CreateHotelImageCo
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository<HotelImage> _hotelImageRepository;
 
-    public CreateHotelImageCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        IHotelRepository hotelRepository, IImageRepository<HotelImage> hotelImageRepository)
+    public CreateHotelImageCommandHandler(IUnitOfWork unitOfWork,
+        IImageService imageService,
+        IHotelRepository hotelRepository,
+        IImageRepository<HotelImage> hotelImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
@@ -23,7 +25,8 @@ public class CreateHotelImageCommandHandler : IRequestHandler<CreateHotelImageCo
         _hotelImageRepository = hotelImageRepository;
     }
 
-    public async Task Handle(CreateHotelImageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateHotelImageCommand request,
+        CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.HotelId) ??
                     throw new NotFoundException($"Hotel with ID {request.HotelId} wasn't found");

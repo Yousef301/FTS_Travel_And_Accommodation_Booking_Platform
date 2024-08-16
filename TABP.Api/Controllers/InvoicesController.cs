@@ -2,10 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using TABP.Application.Queries.Invoices.GetInvoiceAsPdf;
 using TABP.Domain.Enums;
-using TABP.Web.Services.Interfaces;
+using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Controllers;
 
@@ -18,7 +17,8 @@ public class InvoicesController : ControllerBase
     private readonly IUserContext _userContext;
     private readonly IMediator _mediator;
 
-    public InvoicesController(IMediator mediator, IUserContext userContext)
+    public InvoicesController(IMediator mediator,
+        IUserContext userContext)
     {
         _mediator = mediator;
         _userContext = userContext;

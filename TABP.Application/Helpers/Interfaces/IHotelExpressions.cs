@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using TABP.Application.Queries.Hotels.GetHotelsForUser;
 using TABP.DAL.Entities;
 
 namespace TABP.Application.Helpers.Interfaces;
@@ -14,8 +13,7 @@ public interface IHotelExpressions
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnPriceRangeExpression(decimal minPrice,
         decimal maxPrice);
 
-    public Expression<Func<Hotel, bool>> GetHotelsBasedOnNumberOfAvailableRoomsAndDatesExpression(
-        int numberOfRooms,
+    public Expression<Func<Hotel, bool>> GetHotelsBasedOnNumberOfAvailableRoomsAndDatesExpression(int numberOfRooms,
         DateOnly checkInDate, DateOnly checkOutDate);
 
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnReviewRatingExpression(double reviewRating);

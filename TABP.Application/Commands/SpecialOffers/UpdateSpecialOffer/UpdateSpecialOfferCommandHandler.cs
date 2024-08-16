@@ -14,7 +14,8 @@ public class UpdateSpecialOfferCommandHandler : IRequestHandler<UpdateSpecialOff
     private readonly IMapper _mapper;
 
     public UpdateSpecialOfferCommandHandler(ISpecialOfferRepository specialOfferRepository,
-        IUnitOfWork unitOfWork, IMapper mapper)
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _specialOfferRepository = specialOfferRepository;
         _unitOfWork = unitOfWork;

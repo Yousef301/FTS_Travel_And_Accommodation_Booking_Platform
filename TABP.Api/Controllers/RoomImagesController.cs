@@ -75,7 +75,8 @@ public class RoomImagesController : ControllerBase
     /// <response code="403">User does not have permission to upload images for this room.</response>
     /// <response code="500">If an internal server error occurs while uploading the images.</response>
     [HttpPost]
-    public async Task<IActionResult> UploadImages(Guid roomId, Guid hotelId,
+    public async Task<IActionResult> UploadImages(Guid roomId,
+        Guid hotelId,
         [FromForm(Name = "Images")] List<IFormFile> files)
     {
         await _mediator.Send(new CreateRoomImageCommand
@@ -100,7 +101,8 @@ public class RoomImagesController : ControllerBase
     /// <response code="404">If the image is not found.</response>
     /// <response code="500">If an internal server error occurs while deleting the image.</response>
     [HttpDelete("{imageId:guid}")]
-    public async Task<IActionResult> DeleteImage(Guid imageId, Guid roomId)
+    public async Task<IActionResult> DeleteImage(Guid imageId,
+        Guid roomId)
     {
         await _mediator.Send(new DeleteRoomImageCommand
         {

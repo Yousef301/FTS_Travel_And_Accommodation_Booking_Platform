@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using TABP.Domain.Enums;
-using TABP.Web.Services.Interfaces;
+using TABP.Web.Helpers.Interfaces;
 
-namespace TABP.Web.Services.Implementations;
+namespace TABP.Web.Helpers.Implementations;
 
 public class UserContext : IUserContext
 {

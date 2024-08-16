@@ -16,8 +16,10 @@ public class GetHotelsForAdminQueryHandler : IRequestHandler<GetHotelsForAdminQu
     private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
-    public GetHotelsForAdminQueryHandler(IHotelRepository hotelRepository, IMapper mapper,
-        IHotelExpressions hotelExpressions, IImageService imageService)
+    public GetHotelsForAdminQueryHandler(IHotelRepository hotelRepository,
+        IMapper mapper,
+        IHotelExpressions hotelExpressions,
+        IImageService imageService)
     {
         _hotelRepository = hotelRepository;
         _mapper = mapper;
@@ -57,7 +59,8 @@ public class GetHotelsForAdminQueryHandler : IRequestHandler<GetHotelsForAdminQu
         return mappedHotels;
     }
 
-    private void MapThumbnailUrls(List<HotelAdminResponse> hotels, List<string> imageUrls)
+    private void MapThumbnailUrls(List<HotelAdminResponse> hotels,
+        List<string> imageUrls)
     {
         foreach (var hotel in hotels)
         {

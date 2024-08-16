@@ -12,7 +12,10 @@ public class PagedList<T>
     public bool HasNextPage => Page * PageSize < TotalCount;
     public bool HasPreviousPage => PageSize > 1;
 
-    private PagedList(List<T> items, int page, int pageSize, int totalCount)
+    private PagedList(List<T> items,
+        int page,
+        int pageSize,
+        int totalCount)
     {
         Items = items;
         Page = page;
@@ -20,7 +23,9 @@ public class PagedList<T>
         TotalCount = totalCount;
     }
 
-    public static async Task<PagedList<T>> CreateAsync(IQueryable<T> query, int page, int pageSize)
+    public static async Task<PagedList<T>> CreateAsync(IQueryable<T> query,
+        int page,
+        int pageSize)
     {
         var totalCount = await query.CountAsync();
         var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();

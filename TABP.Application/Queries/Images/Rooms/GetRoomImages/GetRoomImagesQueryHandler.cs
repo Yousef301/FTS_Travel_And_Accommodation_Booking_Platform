@@ -10,7 +10,8 @@ public class GetRoomImagesQueryHandler : IRequestHandler<GetRoomImagesQuery, IEn
     private readonly IImageRepository<RoomImage> _roomImageRepository;
     private readonly IImageService _imageService;
 
-    public GetRoomImagesQueryHandler(IImageRepository<RoomImage> roomImageRepository, IImageService imageService)
+    public GetRoomImagesQueryHandler(IImageRepository<RoomImage> roomImageRepository,
+        IImageService imageService)
     {
         _roomImageRepository = roomImageRepository;
         _imageService = imageService;

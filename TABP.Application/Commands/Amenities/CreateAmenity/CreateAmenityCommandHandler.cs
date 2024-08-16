@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using TABP.Application.Queries.Amenities;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
@@ -14,14 +13,17 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateAmenityCommandHandler(IAmenityRepository amenityRepository, IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateAmenityCommandHandler(IAmenityRepository amenityRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _amenityRepository = amenityRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateAmenityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateAmenityCommand request,
+        CancellationToken cancellationToken)
     {
         if (await _amenityRepository.ExistsAsync(a => a.Name.ToLower() == request.Name.ToLower()))
             throw new UniqueConstraintViolationException("An amenity with the same name already exists.");

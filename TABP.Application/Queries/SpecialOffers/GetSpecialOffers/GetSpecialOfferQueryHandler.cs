@@ -9,7 +9,8 @@ public class GetSpecialOfferQueryHandler : IRequestHandler<GetSpecialOfferQuery,
     private readonly ISpecialOfferRepository _specialOfferRepository;
     private readonly IMapper _mapper;
 
-    public GetSpecialOfferQueryHandler(ISpecialOfferRepository specialOfferRepository, IMapper mapper)
+    public GetSpecialOfferQueryHandler(ISpecialOfferRepository specialOfferRepository,
+        IMapper mapper)
     {
         _specialOfferRepository = specialOfferRepository;
         _mapper = mapper;

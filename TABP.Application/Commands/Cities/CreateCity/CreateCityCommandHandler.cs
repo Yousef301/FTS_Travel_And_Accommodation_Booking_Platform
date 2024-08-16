@@ -14,7 +14,9 @@ public class CreateCityCommandHandler : IRequestHandler<CreateCityCommand, CityR
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateCityCommandHandler(ICityRepository cityRepository, IMapper mapper, IUnitOfWork unitOfWork)
+    public CreateCityCommandHandler(ICityRepository cityRepository,
+        IMapper mapper,
+        IUnitOfWork unitOfWork)
     {
         _cityRepository = cityRepository;
         _mapper = mapper;
@@ -22,7 +24,8 @@ public class CreateCityCommandHandler : IRequestHandler<CreateCityCommand, CityR
     }
 
 
-    public async Task<CityResponse> Handle(CreateCityCommand request, CancellationToken cancellationToken)
+    public async Task<CityResponse> Handle(CreateCityCommand request,
+        CancellationToken cancellationToken)
     {
         if (await _cityRepository.ExistsAsync(c =>
                 c.Name.ToLower() == request.Name.ToLower() &&

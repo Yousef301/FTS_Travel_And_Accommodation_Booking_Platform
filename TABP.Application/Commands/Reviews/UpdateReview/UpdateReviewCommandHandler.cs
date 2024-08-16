@@ -14,7 +14,9 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
     private readonly IMapper _mapper;
 
     public UpdateReviewCommandHandler(IReviewRepository reviewRepository,
-        IHotelRepository hotelRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        IHotelRepository hotelRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _reviewRepository = reviewRepository;
         _hotelRepository = hotelRepository;
@@ -22,7 +24,8 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(UpdateReviewCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateReviewCommand request,
+        CancellationToken cancellationToken)
     {
         var review = await _reviewRepository.GetByIdAsync(request.ReviewId) ??
                      throw new NotFoundException($"Review with id {request.ReviewId} wasn't found.");
@@ -75,13 +78,16 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
         }
     }
 
-    private double CalculateNewHotelRate(double oldReviewRate, double newReviewRate, double currentHotelRate,
+    private double CalculateNewHotelRate(double oldReviewRate,
+        double newReviewRate,
+        double currentHotelRate,
         int hotelReviewsCount)
     {
         return (currentHotelRate * hotelReviewsCount - oldReviewRate + newReviewRate) / hotelReviewsCount;
     }
 
-    private bool IsReviewRateChanged(double oldReviewRate, double newReviewRate)
+    private bool IsReviewRateChanged(double oldReviewRate,
+        double newReviewRate)
     {
         return oldReviewRate != newReviewRate;
     }

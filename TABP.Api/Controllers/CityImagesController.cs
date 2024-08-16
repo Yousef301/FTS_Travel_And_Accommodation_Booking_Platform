@@ -143,7 +143,8 @@ public class  CityImagesController : ControllerBase
     /// <response code="403">User does not have permission to delete the image.</response>
     /// <response code="500">If an internal server error occurs while deleting the image.</response>
     [HttpDelete("{imageId:guid}")]
-    public async Task<IActionResult> DeleteImage(Guid imageId, Guid cityId)
+    public async Task<IActionResult> DeleteImage(Guid imageId,
+        Guid cityId)
     {
         await _mediator.Send(new DeleteCityImageCommand
         {

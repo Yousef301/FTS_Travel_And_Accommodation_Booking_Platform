@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using TABP.Application.Commands.Images.Hotels.DeleteHotelImage;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
@@ -14,7 +13,8 @@ public class DeleteRoomImageCommandHandler : IRequestHandler<DeleteRoomImageComm
     private readonly IImageService _imageService;
     private readonly IImageRepository<RoomImage> _roomImageRepository;
 
-    public DeleteRoomImageCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
+    public DeleteRoomImageCommandHandler(IUnitOfWork unitOfWork,
+        IImageService imageService,
         IImageRepository<RoomImage> roomImageRepository)
     {
         _unitOfWork = unitOfWork;
@@ -22,7 +22,8 @@ public class DeleteRoomImageCommandHandler : IRequestHandler<DeleteRoomImageComm
         _roomImageRepository = roomImageRepository;
     }
 
-    public async Task Handle(DeleteRoomImageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteRoomImageCommand request,
+        CancellationToken cancellationToken)
     {
         var roomImagePath = await _roomImageRepository.GetImagePathAsync(request.ImageId, request.RoomId)
                             ?? throw new NotFoundException($"Room image with id {request.ImageId} wasn't found");

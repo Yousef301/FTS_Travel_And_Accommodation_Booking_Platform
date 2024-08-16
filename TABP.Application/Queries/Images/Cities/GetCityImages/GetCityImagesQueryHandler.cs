@@ -10,7 +10,8 @@ public class GetCityImagesQueryHandler : IRequestHandler<GetCityImagesQuery, IEn
     private readonly IImageRepository<CityImage> _cityImageRepository;
     private readonly IImageService _imageService;
 
-    public GetCityImagesQueryHandler(IImageRepository<CityImage> cityImageRepository, IImageService imageService)
+    public GetCityImagesQueryHandler(IImageRepository<CityImage> cityImageRepository,
+        IImageService imageService)
     {
         _cityImageRepository = cityImageRepository;
         _imageService = imageService;

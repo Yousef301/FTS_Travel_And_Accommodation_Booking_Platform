@@ -12,14 +12,17 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UpdateCityCommandHandler(ICityRepository cityRepository, IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateCityCommandHandler(ICityRepository cityRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _cityRepository = cityRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task Handle(UpdateCityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateCityCommand request,
+        CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id) ??
                    throw new NotFoundException($"City with id {request.Id} wasn't found.");

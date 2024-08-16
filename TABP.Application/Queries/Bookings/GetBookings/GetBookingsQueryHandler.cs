@@ -9,7 +9,8 @@ public class GetBookingsQueryHandler : IRequestHandler<GetBookingsQuery, IEnumer
     private readonly IMapper _mapper;
     private readonly IBookingRepository _bookingRepository;
 
-    public GetBookingsQueryHandler(IMapper mapper, IBookingRepository bookingRepository)
+    public GetBookingsQueryHandler(IMapper mapper,
+        IBookingRepository bookingRepository)
     {
         _mapper = mapper;
         _bookingRepository = bookingRepository;

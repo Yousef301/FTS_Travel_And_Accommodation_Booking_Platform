@@ -10,13 +10,15 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
     private readonly IHotelRepository _hotelRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteHotelCommandHandler(IUnitOfWork unitOfWork, IHotelRepository hotelRepository)
+    public DeleteHotelCommandHandler(IUnitOfWork unitOfWork,
+        IHotelRepository hotelRepository)
     {
         _unitOfWork = unitOfWork;
         _hotelRepository = hotelRepository;
     }
 
-    public async Task Handle(DeleteHotelCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteHotelCommand request,
+        CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.Id) ??
                     throw new NotFoundException($"Hotel with id {request.Id} wasn't found");

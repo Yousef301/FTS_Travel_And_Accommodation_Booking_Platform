@@ -13,7 +13,8 @@ public class DeleteHotelImageCommandHandler : IRequestHandler<DeleteHotelImageCo
     private readonly IImageService _imageService;
     private readonly IImageRepository<HotelImage> _hotelImageRepository;
 
-    public DeleteHotelImageCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
+    public DeleteHotelImageCommandHandler(IUnitOfWork unitOfWork,
+        IImageService imageService,
         IImageRepository<HotelImage> hotelImageRepository)
     {
         _unitOfWork = unitOfWork;
@@ -21,7 +22,8 @@ public class DeleteHotelImageCommandHandler : IRequestHandler<DeleteHotelImageCo
         _hotelImageRepository = hotelImageRepository;
     }
 
-    public async Task Handle(DeleteHotelImageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteHotelImageCommand request,
+        CancellationToken cancellationToken)
     {
         var hotelImagePath = await _hotelImageRepository.GetImagePathAsync(request.ImageId, request.HotelId) ??
                              throw new NotFoundException($"Hotel image with id {request.ImageId} wasn't found");

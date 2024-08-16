@@ -9,7 +9,8 @@ public class GetAmenitiesQueryHandler : IRequestHandler<GetAmenitiesQuery, IEnum
     private readonly IAmenityRepository _amenityRepository;
     private readonly IMapper _mapper;
 
-    public GetAmenitiesQueryHandler(IAmenityRepository amenityRepository, IMapper mapper)
+    public GetAmenitiesQueryHandler(IAmenityRepository amenityRepository,
+        IMapper mapper)
     {
         _amenityRepository = amenityRepository;
         _mapper = mapper;

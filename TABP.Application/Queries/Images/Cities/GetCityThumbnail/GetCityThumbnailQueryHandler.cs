@@ -11,13 +11,15 @@ public class GetCityThumbnailQueryHandler : IRequestHandler<GetCityThumbnailQuer
     private readonly IImageRepository<CityImage> _cityImageRepository;
     private readonly IImageService _imageService;
 
-    public GetCityThumbnailQueryHandler(IImageRepository<CityImage> cityImageRepository, IImageService imageService)
+    public GetCityThumbnailQueryHandler(IImageRepository<CityImage> cityImageRepository,
+        IImageService imageService)
     {
         _cityImageRepository = cityImageRepository;
         _imageService = imageService;
     }
 
-    public async Task<ImageResponse> Handle(GetCityThumbnailQuery request, CancellationToken cancellationToken)
+    public async Task<ImageResponse> Handle(GetCityThumbnailQuery request,
+        CancellationToken cancellationToken)
     {
         var thumbnailPath = await _cityImageRepository.GetThumbnailPathAsync(request.CityId) ??
                             throw new NotFoundException($"Thumbnail for city with id {request.CityId} not found.");

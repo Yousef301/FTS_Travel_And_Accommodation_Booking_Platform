@@ -10,13 +10,15 @@ public class GetInvoiceAsPdfQueryHandler : IRequestHandler<GetInvoiceAsPdfQuery,
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IPdfService _pdfService;
 
-    public GetInvoiceAsPdfQueryHandler(IInvoiceRepository invoiceRepository, IPdfService pdfService)
+    public GetInvoiceAsPdfQueryHandler(IInvoiceRepository invoiceRepository,
+        IPdfService pdfService)
     {
         _invoiceRepository = invoiceRepository;
         _pdfService = pdfService;
     }
 
-    public async Task<byte[]> Handle(GetInvoiceAsPdfQuery request, CancellationToken cancellationToken)
+    public async Task<byte[]> Handle(GetInvoiceAsPdfQuery request,
+        CancellationToken cancellationToken)
     {
         var invoice = await _invoiceRepository.GetByBookingIdAsync(request.BookingId) ??
                       throw new NotFoundException($"Invoice with booking id {request.BookingId} not found.");

@@ -11,13 +11,15 @@ public class GetHotelThumbnailQueryHandler : IRequestHandler<GetHotelThumbnailQu
     private readonly IImageRepository<HotelImage> _hotelImageRepository;
     private readonly IImageService _imageService;
 
-    public GetHotelThumbnailQueryHandler(IImageRepository<HotelImage> hotelImageRepository, IImageService imageService)
+    public GetHotelThumbnailQueryHandler(IImageRepository<HotelImage> hotelImageRepository,
+        IImageService imageService)
     {
         _hotelImageRepository = hotelImageRepository;
         _imageService = imageService;
     }
 
-    public async Task<ImageResponse> Handle(GetHotelThumbnailQuery request, CancellationToken cancellationToken)
+    public async Task<ImageResponse> Handle(GetHotelThumbnailQuery request,
+        CancellationToken cancellationToken)
     {
         var thumbnailPath = await _hotelImageRepository.GetThumbnailPathAsync(request.HotelId) ??
                             throw new NotFoundException($"Thumbnail for hotel with id {request.HotelId} not found");

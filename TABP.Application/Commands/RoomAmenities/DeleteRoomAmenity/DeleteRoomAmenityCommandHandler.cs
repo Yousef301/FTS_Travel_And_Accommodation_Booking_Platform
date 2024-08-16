@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -18,7 +17,8 @@ public class DeleteRoomAmenityCommandHandler : IRequestHandler<DeleteRoomAmenity
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(DeleteRoomAmenityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteRoomAmenityCommand request,
+        CancellationToken cancellationToken)
     {
         if (!await _roomAmenityRepository.ExistsAsync(ra => ra.Id == request.Id
                                                             && ra.RoomId == request.RoomId))

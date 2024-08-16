@@ -15,14 +15,16 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
     private readonly IPaymentService _paymentService;
 
     public CheckoutBookingCommandHandler(IBookingRepository bookingRepository,
-        IPaymentService paymentService, ISecretsManagerService secretsManagerService)
+        IPaymentService paymentService,
+        ISecretsManagerService secretsManagerService)
     {
         _bookingRepository = bookingRepository;
         _secretsManagerService = secretsManagerService;
         _paymentService = paymentService;
     }
 
-    public async Task<string> Handle(CheckoutBookingCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CheckoutBookingCommand request,
+        CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdAsync(request.BookingId) ??
                       throw new NotFoundException($"Booking with id {request.BookingId} wasn't found");

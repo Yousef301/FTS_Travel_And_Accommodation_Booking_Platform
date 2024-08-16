@@ -22,7 +22,9 @@ public class SmtpEmailService : IEmailService
         _password = secrets["EmailPassword"];
     }
 
-    public async Task SendEmailAsync(string email, string subject, EmailInvoiceBody invoice)
+    public async Task SendEmailAsync(string email,
+        string subject,
+        EmailInvoiceBody invoice)
     {
         try
         {
@@ -70,9 +72,9 @@ public class SmtpEmailService : IEmailService
 
             return body;
         }
-        catch (Exception ex)
+        catch
         {
-            throw new EmailTemplateException("Failed to read the email template.", ex);
+            throw new EmailTemplateException("Failed to read the email template.");
         }
     }
 }

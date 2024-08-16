@@ -13,8 +13,7 @@ public class S3ImageService : IImageService
     private readonly string _bucketName;
     private readonly ILogger _logger;
 
-    public S3ImageService(
-        IAmazonS3 s3Client,
+    public S3ImageService(IAmazonS3 s3Client,
         ILogger<S3ImageService> logger,
         ISecretsManagerService secretsManagerService)
     {
@@ -27,8 +26,7 @@ public class S3ImageService : IImageService
         _bucketName = secrets["ImagesBucket"];
     }
 
-    public async Task UploadImagesAsync(
-        List<IFormFile> files,
+    public async Task UploadImagesAsync(List<IFormFile> files,
         Dictionary<string, object> configurations)
     {
         foreach (var file in files)

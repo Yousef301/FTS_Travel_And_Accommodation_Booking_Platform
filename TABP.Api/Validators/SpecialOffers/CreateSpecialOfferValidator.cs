@@ -10,11 +10,11 @@ public class CreateSpecialOfferValidator : AbstractValidator<CreateSpecialOfferD
     {
         RuleFor(x => x.StartDate)
             .NotEmpty().WithMessage("Start date is required")
-            .ValidFutureDate("Start date must be a future date", true);
+            .ValidFutureDate("Start date", true);
 
         RuleFor(x => x.EndDate)
             .NotEmpty().WithMessage("End date is required")
-            .ValidFutureDate("End date must be a future date")
+            .ValidFutureDate("End date")
             .GreaterThan(x => x.StartDate).WithMessage("End date must be greater than start date");
 
         RuleFor(x => x.Discount)

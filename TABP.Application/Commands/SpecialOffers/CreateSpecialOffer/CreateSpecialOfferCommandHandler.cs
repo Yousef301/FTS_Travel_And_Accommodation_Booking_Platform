@@ -15,8 +15,10 @@ public class CreateSpecialOfferCommandHandler : IRequestHandler<CreateSpecialOff
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateSpecialOfferCommandHandler(ISpecialOfferRepository specialOfferRepository, IUnitOfWork unitOfWork,
-        IMapper mapper, IRoomRepository roomRepository)
+    public CreateSpecialOfferCommandHandler(ISpecialOfferRepository specialOfferRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IRoomRepository roomRepository)
     {
         _specialOfferRepository = specialOfferRepository;
         _unitOfWork = unitOfWork;

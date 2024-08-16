@@ -12,14 +12,17 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UpdateAmenityCommandHandler(IAmenityRepository amenityRepository, IUnitOfWork unitOfWork, IMapper mapper)
+    public UpdateAmenityCommandHandler(IAmenityRepository amenityRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _amenityRepository = amenityRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task Handle(UpdateAmenityCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateAmenityCommand request,
+        CancellationToken cancellationToken)
     {
         var amenity = await _amenityRepository.GetByIdAsync(request.Id) ??
                       throw new NotFoundException($"Amenity with id {request.Id} not found.");

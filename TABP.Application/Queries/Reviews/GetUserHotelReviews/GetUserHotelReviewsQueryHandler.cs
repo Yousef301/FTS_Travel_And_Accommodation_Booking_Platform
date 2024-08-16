@@ -12,7 +12,8 @@ public class GetUserHotelReviewsQueryHandler : IRequestHandler<GetUserHotelRevie
     private readonly IHotelRepository _hotelRepository;
     private readonly IMapper _mapper;
 
-    public GetUserHotelReviewsQueryHandler(IReviewRepository reviewRepository, IMapper mapper,
+    public GetUserHotelReviewsQueryHandler(IReviewRepository reviewRepository,
+        IMapper mapper,
         IHotelRepository hotelRepository)
     {
         _reviewRepository = reviewRepository;

@@ -4,7 +4,8 @@ namespace TABP.Application.Extensions;
 
 public static class ExpressionExtensions
 {
-    public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> left, Expression<Func<T, bool>> right)
+    public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> left,
+        Expression<Func<T, bool>> right)
     {
         var parameter = Expression.Parameter(typeof(T));
 
@@ -15,7 +16,8 @@ public static class ExpressionExtensions
         return Expression.Lambda<Func<T, bool>>(body, parameter);
     }
 
-    private static Expression ReplaceParameter(Expression expression, ParameterExpression sourceParameter,
+    private static Expression ReplaceParameter(Expression expression,
+        ParameterExpression sourceParameter,
         ParameterExpression targetParameter)
     {
         return new ParameterRebinder(sourceParameter, targetParameter).Visit(expression);

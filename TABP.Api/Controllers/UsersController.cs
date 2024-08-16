@@ -1,11 +1,10 @@
 ﻿using Asp.Versioning;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Queries.Hotels.GetRecentlyVisitedHotels;
 using TABP.Domain.Enums;
-using TABP.Web.Services.Interfaces;
+using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Controllers;
 
@@ -18,7 +17,8 @@ public class UsersController : ControllerBase
     private readonly IUserContext _userContext;
     private readonly IMediator _mediator;
 
-    public UsersController(IUserContext userContext, IMediator mediator)
+    public UsersController(IUserContext userContext,
+        IMediator mediator)
     {
         _userContext = userContext;
         _mediator = mediator;

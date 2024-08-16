@@ -22,7 +22,8 @@ public class SpecialOffersController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public SpecialOffersController(IMediator mediator, IMapper mapper)
+    public SpecialOffersController(IMediator mediator,
+        IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -61,7 +62,8 @@ public class SpecialOffersController : ControllerBase
     /// <response code="409">If a conflict occurs, such as an existing active special offer for the same room.</response>
     /// <response code="500">If an internal server error occurs while creating the special offer.</response>
     [HttpPost]
-    public async Task<IActionResult> CreateSpecialOffer(Guid roomId, [FromBody] CreateSpecialOfferDto request)
+    public async Task<IActionResult> CreateSpecialOffer(Guid roomId,
+        [FromBody] CreateSpecialOfferDto request)
     {
         var command = _mapper.Map<CreateSpecialOfferCommand>(request);
         command.RoomId = roomId;
@@ -82,7 +84,8 @@ public class SpecialOffersController : ControllerBase
     /// <response code="404">The special offer or the room was not found.</response>
     /// <response code="500">If an internal server error occurs while deleting the special offer.</response>
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteSpecialOffer(Guid roomId, Guid id)
+    public async Task<IActionResult> DeleteSpecialOffer(Guid roomId,
+        Guid id)
     {
         await _mediator.Send(new DeleteSpecialOfferCommand { RoomId = roomId, Id = id });
 
@@ -102,7 +105,8 @@ public class SpecialOffersController : ControllerBase
     /// <response code="404">The special offer or the room was not found.</response>
     /// <response code="500">If an internal server error occurs while updating the special offer.</response>
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> UpdateSpecialOffer(Guid roomId, Guid id,
+    public async Task<IActionResult> UpdateSpecialOffer(Guid roomId,
+        Guid id,
         [FromBody] JsonPatchDocument<UpdateSpecialOfferDto> request)
     {
         var mappedRequest = _mapper.Map<JsonPatchDocument<SpecialOfferUpdate>>(request);
@@ -113,8 +117,8 @@ public class SpecialOffersController : ControllerBase
             RoomId = roomId, SpecialOfferDocument = mappedRequest
         };
 
-        var specialOffer = await _mediator.Send(command);
+        await _mediator.Send(command);
 
-        return Ok(specialOffer);
+        return Ok();
     }
 }

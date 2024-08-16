@@ -24,9 +24,13 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
     private readonly IUnitOfWork _unitOfWork;
 
     public PaymentWebhookCommandHandler(IBookingDetailRepository bookingDetailRepository,
-        IBookingRepository bookingRepository, IPaymentRepository paymentRepository,
-        IInvoiceRepository invoiceRepository, IRoomRepository roomRepository, IConfiguration configuration,
-        IEmailService emailService, IUnitOfWork unitOfWork)
+        IBookingRepository bookingRepository,
+        IPaymentRepository paymentRepository,
+        IInvoiceRepository invoiceRepository,
+        IRoomRepository roomRepository,
+        IConfiguration configuration,
+        IEmailService emailService,
+        IUnitOfWork unitOfWork)
     {
         _bookingDetailRepository = bookingDetailRepository;
         _bookingRepository = bookingRepository;
@@ -38,7 +42,8 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(PaymentWebhookCommand request, CancellationToken cancellationToken)
+    public async Task Handle(PaymentWebhookCommand request,
+        CancellationToken cancellationToken)
     {
         try
         {

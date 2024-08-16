@@ -16,7 +16,8 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
     private readonly IMapper _mapper;
 
     public GetRecentlyVisitedHotelsQueryHandler(IBookingRepository bookingRepository,
-        IHotelRepository hotelRepository, IMapper mapper)
+        IHotelRepository hotelRepository,
+        IMapper mapper)
     {
         _bookingRepository = bookingRepository;
         _hotelRepository = hotelRepository;
@@ -65,7 +66,8 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
         return mappedHotels;
     }
 
-    private void MapThumbnailUrls(List<RecentlyVisitedHotelsResponse> hotels, List<string> imageUrls)
+    private void MapThumbnailUrls(List<RecentlyVisitedHotelsResponse> hotels,
+        List<string> imageUrls)
     {
         foreach (var hotel in hotels)
         {

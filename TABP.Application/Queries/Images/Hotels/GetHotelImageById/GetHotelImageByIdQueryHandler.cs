@@ -11,13 +11,15 @@ public class GetHotelImageByIdQueryHandler : IRequestHandler<GetHotelImageByIdQu
     private readonly IImageRepository<HotelImage> _hotelImageRepository;
     private readonly IImageService _imageService;
 
-    public GetHotelImageByIdQueryHandler(IImageRepository<HotelImage> hotelImageRepository, IImageService imageService)
+    public GetHotelImageByIdQueryHandler(IImageRepository<HotelImage> hotelImageRepository,
+        IImageService imageService)
     {
         _hotelImageRepository = hotelImageRepository;
         _imageService = imageService;
     }
 
-    public async Task<ImageResponse> Handle(GetHotelImageByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ImageResponse> Handle(GetHotelImageByIdQuery request,
+        CancellationToken cancellationToken)
     {
         var hotelImage = await _hotelImageRepository.GetByIdAsync(hi => hi.Id == request.ImageId) ??
                          throw new NotFoundException($"Hotel image with id {request.ImageId} not found");

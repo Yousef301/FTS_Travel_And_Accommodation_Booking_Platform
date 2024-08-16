@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using MediatR;
-using TABP.Application.Queries.Amenities;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Models;
@@ -13,7 +12,8 @@ public class GetRoomsForAdminQueryHandler : IRequestHandler<GetRoomsForAdminQuer
     private readonly IRoomRepository _roomRepository;
     private readonly IMapper _mapper;
 
-    public GetRoomsForAdminQueryHandler(IRoomRepository roomRepository, IMapper mapper)
+    public GetRoomsForAdminQueryHandler(IRoomRepository roomRepository,
+        IMapper mapper)
     {
         _roomRepository = roomRepository;
         _mapper = mapper;

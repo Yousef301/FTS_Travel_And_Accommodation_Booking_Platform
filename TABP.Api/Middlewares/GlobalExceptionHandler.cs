@@ -11,7 +11,8 @@ public class GlobalExceptionHandler
     private readonly RequestDelegate _next;
     private readonly ILogger _logger;
 
-    public GlobalExceptionHandler(RequestDelegate next, ILogger<GlobalExceptionHandler> logger)
+    public GlobalExceptionHandler(RequestDelegate next,
+        ILogger<GlobalExceptionHandler> logger)
     {
         _next = next;
         _logger = logger;
@@ -34,7 +35,9 @@ public class GlobalExceptionHandler
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception, string traceId)
+    private static Task HandleExceptionAsync(HttpContext context,
+        Exception exception,
+        string traceId)
     {
         var statusCode = exception switch
         {

@@ -11,13 +11,15 @@ public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand>
     private readonly IBookingRepository _bookingRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CancelBookingCommandHandler(IBookingRepository bookingRepository, IUnitOfWork unitOfWork)
+    public CancelBookingCommandHandler(IBookingRepository bookingRepository,
+        IUnitOfWork unitOfWork)
     {
         _bookingRepository = bookingRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(CancelBookingCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CancelBookingCommand request,
+        CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdAsync(request.BookingId, true)
                       ?? throw new NotFoundException(
@@ -31,6 +33,11 @@ public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand>
         if (booking.BookingStatus != BookingStatus.Confirmed)
         {
             throw new BookingStatusException("Booking cannot be cancelled");
+        }
+
+        if (booking.CheckInDate <= DateOnly.FromDateTime(DateTime.Now))
+        {
+            throw new BookingStatusException("Booking cannot be cancelled it has already started");
         }
 
         booking.BookingStatus = BookingStatus.Cancelled;

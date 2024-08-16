@@ -11,7 +11,8 @@ public class DeleteRoomCommandHandler : IRequestHandler<DeleteRoomCommand>
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteRoomCommandHandler(IRoomRepository roomRepository, IUnitOfWork unitOfWork,
+    public DeleteRoomCommandHandler(IRoomRepository roomRepository,
+        IUnitOfWork unitOfWork,
         IHotelRepository hotelRepository)
     {
         _roomRepository = roomRepository;
@@ -19,7 +20,8 @@ public class DeleteRoomCommandHandler : IRequestHandler<DeleteRoomCommand>
         _hotelRepository = hotelRepository;
     }
 
-    public async Task Handle(DeleteRoomCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteRoomCommand request,
+        CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(r => r.Id == request.HotelId))
         {

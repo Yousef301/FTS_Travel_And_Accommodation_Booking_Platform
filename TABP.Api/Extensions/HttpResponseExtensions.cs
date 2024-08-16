@@ -5,7 +5,8 @@ namespace TABP.Web.Extensions;
 
 public static class HttpResponseExtensions
 {
-    public static void AddPaginationMetadata(this HttpResponse response, PaginationMetadata paginationMetadata,
+    public static void AddPaginationMetadata(this HttpResponse response,
+        PaginationMetadata paginationMetadata,
         HttpRequest request)
     {
         var baseUrl = request.GetDisplayUrl();

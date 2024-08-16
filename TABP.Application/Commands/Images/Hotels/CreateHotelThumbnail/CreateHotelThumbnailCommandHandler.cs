@@ -15,8 +15,10 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
     private readonly IHotelRepository _hotelRepository;
     private readonly IImageRepository<HotelImage> _hotelImageRepository;
 
-    public CreateHotelThumbnailCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        IHotelRepository hotelRepository, IImageRepository<HotelImage> hotelImageRepository)
+    public CreateHotelThumbnailCommandHandler(IUnitOfWork unitOfWork,
+        IImageService imageService,
+        IHotelRepository hotelRepository,
+        IImageRepository<HotelImage> hotelImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
@@ -24,7 +26,8 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
         _hotelImageRepository = hotelImageRepository;
     }
 
-    public async Task Handle(CreateHotelThumbnailCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateHotelThumbnailCommand request,
+        CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.HotelId) ??
                     throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");

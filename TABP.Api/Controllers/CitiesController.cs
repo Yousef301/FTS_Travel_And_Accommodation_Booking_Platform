@@ -32,7 +32,9 @@ public class CitiesController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public CitiesController(IMediator mediator, IMapper mapper, IDistributedCache distributedCache)
+    public CitiesController(IMediator mediator,
+        IMapper mapper,
+        IDistributedCache distributedCache)
     {
         _mediator = mediator;
         _mapper = mapper;

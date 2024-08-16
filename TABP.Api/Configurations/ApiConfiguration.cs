@@ -16,8 +16,8 @@ using TABP.Application;
 using TABP.Domain.Services.Implementations;
 using TABP.Domain.Services.Interfaces;
 using TABP.Web.Filters;
-using TABP.Web.Services.Implementations;
-using TABP.Web.Services.Interfaces;
+using TABP.Web.Helpers.Implementations;
+using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Configurations;
 

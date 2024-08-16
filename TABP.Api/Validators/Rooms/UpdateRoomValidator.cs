@@ -32,7 +32,7 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Max children is required")
-                    .Must(value => value is >= 0 and <= 10)
+                    .Must(value => Convert.ToInt32(value) >= 0 && Convert.ToInt32(value) <= 10)
                     .WithMessage("Max children must be between 0 and 10")
                     .WithName("MaxChildren");
             });
@@ -41,7 +41,7 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Max adults is required")
-                    .Must(value => value is >= 1 and <= 10)
+                    .Must(value => Convert.ToInt32(value) >= 1 && Convert.ToInt32(value) <= 10)
                     .WithMessage("Max adults must be between 1 and 10")
                     .WithName("MaxAdults");
             });
@@ -50,25 +50,9 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Price is required")
-                    .Must(value => value is >= 1 and <= 10000)
+                    .Must(value => Convert.ToDecimal(value) >= 1 && Convert.ToDecimal(value) <= 10000)
                     .WithMessage("Price must be between 1 and 10000")
                     .WithName("Price");
-            });
-
-            When(x => x.path.EndsWith("/RoomType", StringComparison.OrdinalIgnoreCase), () =>
-            {
-                RuleFor(x => x.value)
-                    .NotEmpty().WithMessage("Room Type is required")
-                    .Must(value => Enum.IsDefined(typeof(RoomType), value))
-                    .WithMessage("Invalid Room Type")
-                    .WithName("RoomType");
-            });
-
-            When(x => x.path.EndsWith("/Description", StringComparison.OrdinalIgnoreCase), () =>
-            {
-                RuleFor(x => x.value)
-                    .NotEmpty().WithMessage("Description is required")
-                    .ValidString(10, 150, "Description");
             });
         }
     }

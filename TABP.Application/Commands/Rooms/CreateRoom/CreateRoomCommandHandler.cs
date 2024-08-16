@@ -8,8 +8,6 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Rooms.CreateRoom;
 
-// TODO: Continue here
-
 public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomResponse>
 {
     private readonly IHotelRepository _hotelRepository;
@@ -17,8 +15,10 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateRoomCommandHandler(IRoomRepository roomRepository, IUnitOfWork unitOfWork,
-        IMapper mapper, IHotelRepository hotelRepository)
+    public CreateRoomCommandHandler(IRoomRepository roomRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IHotelRepository hotelRepository)
     {
         _roomRepository = roomRepository;
         _unitOfWork = unitOfWork;
@@ -27,7 +27,8 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
     }
 
 
-    public async Task<RoomResponse> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
+    public async Task<RoomResponse> Handle(CreateRoomCommand request,
+        CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
             throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");

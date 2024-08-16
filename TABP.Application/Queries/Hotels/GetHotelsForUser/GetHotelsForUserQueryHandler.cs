@@ -18,8 +18,10 @@ public class GetHotelsForUserQueryHandler : IRequestHandler<GetHotelsForUserQuer
     private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
-    public GetHotelsForUserQueryHandler(IHotelRepository hotelRepository, IMapper mapper,
-        IHotelExpressions hotelExpressions, IImageService imageService)
+    public GetHotelsForUserQueryHandler(IHotelRepository hotelRepository,
+        IMapper mapper,
+        IHotelExpressions hotelExpressions,
+        IImageService imageService)
     {
         _hotelRepository = hotelRepository;
         _mapper = mapper;
@@ -72,7 +74,8 @@ public class GetHotelsForUserQueryHandler : IRequestHandler<GetHotelsForUserQuer
             .And(_hotelExpressions.GetHotelsBasedOnAmenitiesExpression(request.Amenities));
     }
 
-    private void MapThumbnailUrls(List<HotelUserResponse> hotels, List<string> imageUrls)
+    private void MapThumbnailUrls(List<HotelUserResponse> hotels,
+        List<string> imageUrls)
     {
         foreach (var hotel in hotels)
         {

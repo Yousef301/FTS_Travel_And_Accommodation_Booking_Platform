@@ -9,7 +9,8 @@ public class GetRoomAmenitiesQueryHandler : IRequestHandler<GetRoomAmenitiesQuer
     private readonly IRoomAmenityRepository _roomAmenityRepository;
     private readonly IMapper _mapper;
 
-    public GetRoomAmenitiesQueryHandler(IRoomAmenityRepository roomAmenityRepository, IMapper mapper)
+    public GetRoomAmenitiesQueryHandler(IRoomAmenityRepository roomAmenityRepository,
+        IMapper mapper)
     {
         _roomAmenityRepository = roomAmenityRepository;
         _mapper = mapper;

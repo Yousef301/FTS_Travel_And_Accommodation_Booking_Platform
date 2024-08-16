@@ -11,13 +11,15 @@ public class GetCityImageByIdQueryHandler : IRequestHandler<GetCityImageByIdQuer
     private readonly IImageRepository<CityImage> _cityImageRepository;
     private readonly IImageService _imageService;
 
-    public GetCityImageByIdQueryHandler(IImageRepository<CityImage> cityImageRepository, IImageService imageService)
+    public GetCityImageByIdQueryHandler(IImageRepository<CityImage> cityImageRepository,
+        IImageService imageService)
     {
         _cityImageRepository = cityImageRepository;
         _imageService = imageService;
     }
 
-    public async Task<ImageResponse> Handle(GetCityImageByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ImageResponse> Handle(GetCityImageByIdQuery request,
+        CancellationToken cancellationToken)
     {
         var cityImage = await _cityImageRepository.GetByIdAsync(ci => ci.Id == request.ImageId) ??
                         throw new NotFoundException($"City image with id {request.ImageId} not found.");

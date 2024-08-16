@@ -11,7 +11,8 @@ public class DeleteSpecialOfferCommandHandler : IRequestHandler<DeleteSpecialOff
     private readonly IRoomRepository _roomRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteSpecialOfferCommandHandler(IUnitOfWork unitOfWork, ISpecialOfferRepository specialOfferRepository,
+    public DeleteSpecialOfferCommandHandler(IUnitOfWork unitOfWork,
+        ISpecialOfferRepository specialOfferRepository,
         IRoomRepository roomRepository)
     {
         _unitOfWork = unitOfWork;
@@ -19,7 +20,8 @@ public class DeleteSpecialOfferCommandHandler : IRequestHandler<DeleteSpecialOff
         _roomRepository = roomRepository;
     }
 
-    public async Task Handle(DeleteSpecialOfferCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteSpecialOfferCommand request,
+        CancellationToken cancellationToken)
     {
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
             throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");

@@ -26,7 +26,8 @@ public class RoomsController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public RoomsController(IMediator mediator, IMapper mapper)
+    public RoomsController(IMediator mediator,
+        IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;
@@ -94,7 +95,8 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the hotel is not found.</response>
     /// <response code="500">If an internal server error occurs while creating the room.</response>
     [HttpPost]
-    public async Task<IActionResult> CreateRoom([FromBody] CreateRoomDto createRoomDto, Guid hotelId)
+    public async Task<IActionResult> CreateRoom([FromBody] CreateRoomDto createRoomDto,
+        Guid hotelId)
     {
         var command = _mapper.Map<CreateRoomCommand>(createRoomDto);
 
@@ -116,7 +118,8 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the room or hotel does not exist.</response>
     /// <response code="500">If an internal server error occurs while deleting the room.</response>
     [HttpDelete("{roomId:guid}")]
-    public async Task<IActionResult> DeleteRoom(Guid roomId, Guid hotelId)
+    public async Task<IActionResult> DeleteRoom(Guid roomId,
+        Guid hotelId)
     {
         await _mediator.Send(new DeleteRoomCommand
         {
@@ -140,7 +143,8 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the room or hotel does not exist.</response>
     /// <response code="500">If an internal server error occurs while updating the room.</response>
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> UpdateRoom(Guid id, Guid hotelId,
+    public async Task<IActionResult> UpdateRoom(Guid id,
+        Guid hotelId,
         [FromBody] JsonPatchDocument<UpdateRoomDto> roomUpdateDto)
     {
         var roomDocument = _mapper.Map<JsonPatchDocument<RoomUpdate>>(roomUpdateDto);

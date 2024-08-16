@@ -16,7 +16,8 @@ public class JwtTokenGeneratorService : ITokenGeneratorService
         _secretsManagerService = secretsManagerService;
     }
 
-    public string GenerateToken(User user, string username)
+    public string GenerateToken(User user,
+        string username)
     {
         var secrets = _secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_jwt").Result
                       ?? throw new ArgumentNullException(nameof(_secretsManagerService));

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -13,14 +12,16 @@ public class DeleteReviewCommandHandler : IRequestHandler<DeleteReviewCommand>
     private readonly IUnitOfWork _unitOfWork;
 
     public DeleteReviewCommandHandler(IReviewRepository reviewRepository,
-        IHotelRepository hotelRepository, IUnitOfWork unitOfWork)
+        IHotelRepository hotelRepository,
+        IUnitOfWork unitOfWork)
     {
         _reviewRepository = reviewRepository;
         _hotelRepository = hotelRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(DeleteReviewCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteReviewCommand request,
+        CancellationToken cancellationToken)
     {
         var review = await _reviewRepository.GetByIdAsync(request.ReviewId) ??
                      throw new NotFoundException($"Review with id {request.ReviewId} wasn't found.");

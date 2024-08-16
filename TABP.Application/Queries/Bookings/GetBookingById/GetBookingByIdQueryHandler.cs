@@ -10,13 +10,15 @@ public class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, B
     private readonly IMapper _mapper;
     private readonly IBookingRepository _bookingRepository;
 
-    public GetBookingByIdQueryHandler(IMapper mapper, IBookingRepository bookingRepository)
+    public GetBookingByIdQueryHandler(IMapper mapper,
+        IBookingRepository bookingRepository)
     {
         _mapper = mapper;
         _bookingRepository = bookingRepository;
     }
 
-    public async Task<BookingResponse> Handle(GetBookingByIdQuery request, CancellationToken cancellationToken)
+    public async Task<BookingResponse> Handle(GetBookingByIdQuery request,
+        CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetDetailedByIdAsync(request.BookingId) ??
                       throw new NotFoundException($"Booking with id {request.BookingId} wasn't found.");

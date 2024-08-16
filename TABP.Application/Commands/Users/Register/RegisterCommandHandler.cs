@@ -17,8 +17,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
     private readonly IMapper _mapper;
     private readonly IPasswordService _passwordService;
 
-    public RegisterCommandHandler(IUserRepository userRepository, ICredentialRepository credentialRepository,
-        IUnitOfWork unitOfWork, IMapper mapper, IPasswordService passwordService)
+    public RegisterCommandHandler(IUserRepository userRepository,
+        ICredentialRepository credentialRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper,
+        IPasswordService passwordService)
     {
         _userRepository = userRepository;
         _credentialRepository = credentialRepository;
@@ -28,7 +31,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand>
     }
 
 
-    public async Task Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RegisterCommand request,
+        CancellationToken cancellationToken)
     {
         if (await _userRepository.ExistsAsync(user => user.Email == request.Email))
         {

@@ -10,7 +10,8 @@ public class GetHotelImagesQueryHandler : IRequestHandler<GetHotelImagesQuery, I
     private readonly IImageRepository<HotelImage> _hotelImageRepository;
     private readonly IImageService _imageService;
 
-    public GetHotelImagesQueryHandler(IImageRepository<HotelImage> hotelImageRepository, IImageService imageService)
+    public GetHotelImagesQueryHandler(IImageRepository<HotelImage> hotelImageRepository,
+        IImageService imageService)
     {
         _hotelImageRepository = hotelImageRepository;
         _imageService = imageService;

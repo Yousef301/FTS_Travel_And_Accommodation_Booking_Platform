@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using TABP.Application.Helpers.Interfaces;
-using TABP.Application.Queries.Hotels.GetHotelsForUser;
 using TABP.DAL.Entities;
 
 namespace TABP.Application.Helpers.Implementations;
@@ -32,7 +31,8 @@ public class HotelExpressions : IHotelExpressions
 
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnNumberOfAvailableRoomsAndDatesExpression(
         int numberOfRooms,
-        DateOnly checkInDate, DateOnly checkOutDate)
+        DateOnly checkInDate,
+        DateOnly checkOutDate)
     {
         return h => h.Rooms.Count(r => !r.BookingDetails.Any(bd =>
             bd.Booking.CheckInDate < checkOutDate &&

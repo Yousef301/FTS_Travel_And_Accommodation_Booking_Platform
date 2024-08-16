@@ -8,7 +8,8 @@ namespace TABP.Web.Filters;
 
 public class SwaggerDefaultValues : IOperationFilter
 {
-    public void Apply(OpenApiOperation operation, OperationFilterContext context)
+    public void Apply(OpenApiOperation operation,
+        OperationFilterContext context)
     {
         var apiDescription = context.ApiDescription;
         operation.Deprecated |= apiDescription.IsDeprecated();

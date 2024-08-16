@@ -15,8 +15,10 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
     private readonly ICityRepository _cityRepository;
     private readonly IImageRepository<CityImage> _cityImageRepository;
 
-    public CreateCityThumbnailCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        ICityRepository cityRepository, IImageRepository<CityImage> cityImageRepository)
+    public CreateCityThumbnailCommandHandler(IUnitOfWork unitOfWork,
+        IImageService imageService,
+        ICityRepository cityRepository,
+        IImageRepository<CityImage> cityImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
@@ -24,7 +26,8 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
         _cityImageRepository = cityImageRepository;
     }
 
-    public async Task Handle(CreateCityThumbnailCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateCityThumbnailCommand request,
+        CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.CityId) ??
                    throw new NotFoundException($"City with id {request.CityId} wasn't found.");

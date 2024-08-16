@@ -14,8 +14,10 @@ public class CreateRoomImageCommandHandler : IRequestHandler<CreateRoomImageComm
     private readonly IRoomRepository _roomRepository;
     private readonly IImageRepository<RoomImage> _roomImageRepository;
 
-    public CreateRoomImageCommandHandler(IUnitOfWork unitOfWork, IImageService imageService,
-        IRoomRepository roomRepository, IImageRepository<RoomImage> roomImageRepository)
+    public CreateRoomImageCommandHandler(IUnitOfWork unitOfWork,
+        IImageService imageService,
+        IRoomRepository roomRepository,
+        IImageRepository<RoomImage> roomImageRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
@@ -24,7 +26,8 @@ public class CreateRoomImageCommandHandler : IRequestHandler<CreateRoomImageComm
     }
 
 
-    public async Task Handle(CreateRoomImageCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateRoomImageCommand request,
+        CancellationToken cancellationToken)
     {
         var room = await _roomRepository.GetByIdAsync(request.RoomId, request.HotelId) ??
                    throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");

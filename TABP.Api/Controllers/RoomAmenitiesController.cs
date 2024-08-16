@@ -20,7 +20,8 @@ public class RoomAmenitiesController : ControllerBase
     private IMapper _mapper;
     private IMediator _mediator;
 
-    public RoomAmenitiesController(IMapper mapper, IMediator mediator)
+    public RoomAmenitiesController(IMapper mapper,
+        IMediator mediator)
     {
         _mapper = mapper;
         _mediator = mediator;
@@ -57,7 +58,8 @@ public class RoomAmenitiesController : ControllerBase
     /// <response code="403">User does not have permission to add an amenity to this room.</response>
     /// <response code="500">If an internal server error occurs while adding the amenity.</response>
     [HttpPost]
-    public async Task<IActionResult> CreateRoomAmenity(Guid roomId, CreateRoomAmenityDto request)
+    public async Task<IActionResult> CreateRoomAmenity(Guid roomId,
+        CreateRoomAmenityDto request)
     {
         var command = _mapper.Map<CreateRoomAmenityCommand>(request);
 
@@ -80,7 +82,8 @@ public class RoomAmenitiesController : ControllerBase
     /// <response code="404">If the room amenity is not found.</response>
     /// <response code="500">If an internal server error occurs while deleting the amenity.</response>
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteRoomAmenity(Guid id, Guid roomId)
+    public async Task<IActionResult> DeleteRoomAmenity(Guid id,
+        Guid roomId)
     {
         await _mediator.Send(new DeleteRoomAmenityCommand
         {

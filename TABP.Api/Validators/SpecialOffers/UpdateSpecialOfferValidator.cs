@@ -48,7 +48,7 @@ public class UpdateSpecialOfferValidator : AbstractValidator<JsonPatchDocument<U
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Discount is required")
-                    .Must(value => value is int discount && discount >= 1 && discount <= 100)
+                    .Must(value => Convert.ToDouble(value) >= 1 && Convert.ToDouble(value) <= 100)
                     .WithMessage("Discount must be between 1 and 100")
                     .WithName("Discount");
             });

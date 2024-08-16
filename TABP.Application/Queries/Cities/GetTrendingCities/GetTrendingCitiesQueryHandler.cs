@@ -14,7 +14,9 @@ public class
     private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
-    public GetTrendingCitiesQueryHandler(ICityRepository cityRepository, IMapper mapper, IImageService imageService)
+    public GetTrendingCitiesQueryHandler(ICityRepository cityRepository,
+        IMapper mapper,
+        IImageService imageService)
     {
         _cityRepository = cityRepository;
         _mapper = mapper;
@@ -46,7 +48,8 @@ public class
         return _mapper.Map<IEnumerable<TrendingCitiesResponse>>(trendingCitiesList);
     }
 
-    private void MapThumbnailUrls(List<TrendingCities> cities, List<string> imageUrls)
+    private void MapThumbnailUrls(List<TrendingCities> cities,
+        List<string> imageUrls)
     {
         foreach (var city in cities)
         {

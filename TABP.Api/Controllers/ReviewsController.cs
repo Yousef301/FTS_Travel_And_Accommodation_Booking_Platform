@@ -11,7 +11,7 @@ using TABP.Application.Queries.Reviews.GetHotelReviews;
 using TABP.Application.Queries.Reviews.GetUserHotelReviews;
 using TABP.Domain.Enums;
 using TABP.Web.DTOs.Reviews;
-using TABP.Web.Services.Interfaces;
+using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Controllers;
 
@@ -25,7 +25,8 @@ public class ReviewsController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public ReviewsController(IUserContext userContext, IMapper mapper,
+    public ReviewsController(IUserContext userContext,
+        IMapper mapper,
         IMediator mediator)
     {
         _userContext = userContext;
@@ -87,7 +88,8 @@ public class ReviewsController : ControllerBase
     /// <response code="409">If a review for the same hotel by the same user already exists.</response>
     /// <response code="500">If an internal server error occurs while creating the review.</response>
     [HttpPost]
-    public async Task<IActionResult> CreateReview(Guid hotelId, [FromBody] CreateReviewDto createReviewDto)
+    public async Task<IActionResult> CreateReview(Guid hotelId,
+        [FromBody] CreateReviewDto createReviewDto)
     {
         var command = _mapper.Map<CreateReviewCommand>(createReviewDto);
         command.HotelId = hotelId;
@@ -109,7 +111,8 @@ public class ReviewsController : ControllerBase
     /// <response code="404">If the review is not found.</response>
     /// <response code="500">If an internal server error occurs while deleting the review.</response>
     [HttpDelete("{reviewId:guid}")]
-    public async Task<IActionResult> DeleteReview(Guid hotelId, Guid reviewId)
+    public async Task<IActionResult> DeleteReview(Guid hotelId,
+        Guid reviewId)
     {
         var command = new DeleteReviewCommand
         {
@@ -136,7 +139,8 @@ public class ReviewsController : ControllerBase
     /// <response code="404">If the review is not found.</response>
     /// <response code="500">If an internal server error occurs while updating the review.</response>
     [HttpPatch("{reviewId:guid}")]
-    public async Task<IActionResult> UpdateReview(Guid hotelId, Guid reviewId,
+    public async Task<IActionResult> UpdateReview(Guid hotelId,
+        Guid reviewId,
         [FromBody] JsonPatchDocument<UpdateReviewDto> reviewUpdateDto)
     {
         var reviewDocument = _mapper.Map<JsonPatchDocument<ReviewUpdate>>(reviewUpdateDto);

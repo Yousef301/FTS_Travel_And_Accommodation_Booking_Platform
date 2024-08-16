@@ -13,14 +13,16 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
     private readonly IPasswordService _passwordService;
 
     public LoginCommandHandler(ITokenGeneratorService tokenGeneratorService,
-        ICredentialRepository credentialRepository, IPasswordService passwordService)
+        ICredentialRepository credentialRepository,
+        IPasswordService passwordService)
     {
         _tokenGeneratorService = tokenGeneratorService;
         _credentialRepository = credentialRepository;
         _passwordService = passwordService;
     }
 
-    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResponse> Handle(LoginCommand request,
+        CancellationToken cancellationToken)
     {
         var user = await _credentialRepository.GetByUsername(request.Username) ??
                    throw new NotFoundException($"User with username {request.Username} wasn't found.");

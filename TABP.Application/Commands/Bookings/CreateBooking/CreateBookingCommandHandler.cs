@@ -18,8 +18,10 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateBookingCommandHandler(IBookingDetailRepository bookingDetailRepository,
-        IBookingRepository bookingRepository, IUnitOfWork unitOfWork,
-        IRoomRepository roomRepository, IHotelRepository hotelRepository)
+        IBookingRepository bookingRepository,
+        IUnitOfWork unitOfWork,
+        IRoomRepository roomRepository,
+        IHotelRepository hotelRepository)
     {
         _bookingDetailRepository = bookingDetailRepository;
         _bookingRepository = bookingRepository;
@@ -28,7 +30,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(CreateBookingCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateBookingCommand request,
+        CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
@@ -115,7 +118,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
     }
 
     private async Task<IEnumerable<string>?> ValidateRooms(IEnumerable<Guid> roomIds,
-        DateOnly checkInDate, DateOnly checkOutDate)
+        DateOnly checkInDate,
+        DateOnly checkOutDate)
     {
         List<string> unavailableRooms = new List<string>();
 

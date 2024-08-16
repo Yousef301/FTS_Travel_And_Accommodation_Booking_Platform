@@ -16,8 +16,11 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand>
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public CreateReviewCommandHandler(IBookingRepository bookingRepository, IReviewRepository reviewRepository,
-        IHotelRepository hotelRepository, IUnitOfWork unitOfWork, IMapper mapper)
+    public CreateReviewCommandHandler(IBookingRepository bookingRepository,
+        IReviewRepository reviewRepository,
+        IHotelRepository hotelRepository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _bookingRepository = bookingRepository;
         _reviewRepository = reviewRepository;
@@ -26,7 +29,8 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateReviewCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateReviewCommand request,
+        CancellationToken cancellationToken)
     {
         if (!await _bookingRepository.ExistsAsync(b => b.UserId == request.UserId
                                                        && b.HotelId == request.HotelId

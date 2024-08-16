@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Payments.PaymentWebhook;
 using TABP.Application.Queries.Payments.GetPayments;
 using TABP.Domain.Enums;
-using TABP.Web.Services.Interfaces;
+using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Controllers;
 
@@ -18,7 +18,8 @@ public class PaymentsController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IUserContext _userContext;
 
-    public PaymentsController(IMediator mediator, IUserContext userContext)
+    public PaymentsController(IMediator mediator,
+        IUserContext userContext)
     {
         _mediator = mediator;
         _userContext = userContext;

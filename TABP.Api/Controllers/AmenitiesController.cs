@@ -23,7 +23,8 @@ public class AmenitiesController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public AmenitiesController(IMediator mediator, IMapper mapper)
+    public AmenitiesController(IMediator mediator,
+        IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;

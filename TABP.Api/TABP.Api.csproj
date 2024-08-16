@@ -38,4 +38,8 @@
       <None Include="wwwroot\InvoiceTemplate.html" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Helpers\" />
+    </ItemGroup>
+
 </Project>

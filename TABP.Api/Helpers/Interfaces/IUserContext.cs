@@ -1,6 +1,6 @@
 ﻿using TABP.Domain.Enums;
 
-namespace TABP.Web.Services.Interfaces;
+namespace TABP.Web.Helpers.Interfaces;
 
 public interface IUserContext
 {

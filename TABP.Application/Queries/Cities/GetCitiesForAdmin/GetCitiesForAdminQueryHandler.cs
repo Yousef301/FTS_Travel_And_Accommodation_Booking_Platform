@@ -15,7 +15,9 @@ public class GetCitiesForAdminQueryHandler : IRequestHandler<GetCitiesForAdminQu
     private readonly IImageService _imageService;
     private readonly IMapper _mapper;
 
-    public GetCitiesForAdminQueryHandler(ICityRepository cityRepository, IMapper mapper, IImageService imageService)
+    public GetCitiesForAdminQueryHandler(ICityRepository cityRepository,
+        IMapper mapper,
+        IImageService imageService)
     {
         _cityRepository = cityRepository;
         _mapper = mapper;
@@ -73,7 +75,8 @@ public class GetCitiesForAdminQueryHandler : IRequestHandler<GetCitiesForAdminQu
         };
     }
 
-    private void MapThumbnailUrls(List<CityAdminResponse> cities, List<string> imageUrls)
+    private void MapThumbnailUrls(List<CityAdminResponse> cities,
+        List<string> imageUrls)
     {
         foreach (var city in cities)
         {
