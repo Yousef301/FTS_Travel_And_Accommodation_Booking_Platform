@@ -27,7 +27,7 @@ public static class DataAccessConfiguration
         var secrets = secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_database").Result
                       ?? throw new ArgumentNullException(nameof(secretsManagerService));
 
-        services.AddDbContext<TABPDbContext>(options => { options.UseSqlServer(secrets["TABPDb"]); });
+        services.AddDbContext<TABPDbContext>(options => { options.UseSqlServer(secrets["TABPDbLocal"]); });
 
         return services;
     }
