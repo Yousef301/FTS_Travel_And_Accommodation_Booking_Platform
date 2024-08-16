@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  tabp:
+    image: tabp:latest
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+    ports:
+      - "5111:8080"
+      - "7133:8080"
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: "Yousef1!"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"

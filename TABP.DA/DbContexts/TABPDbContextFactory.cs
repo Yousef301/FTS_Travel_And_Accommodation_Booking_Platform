@@ -15,7 +15,7 @@ public class TABPDbContextFactory : IDesignTimeDbContextFactory<TABPDbContext>
                       ?? throw new ArgumentNullException(nameof(secretsManagerService));
 
         var optionsBuilder = new DbContextOptionsBuilder<TABPDbContext>();
-        var connectionString = secrets["TABPDb"];
+        var connectionString = secrets["TABPDbLocal"];
 
         optionsBuilder.UseSqlServer(connectionString);
 
