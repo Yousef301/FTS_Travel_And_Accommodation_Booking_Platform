@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using TABP.Application.Commands.Bookings.CancelBooking;
 using TABP.Application.Queries.Bookings;
 using TABP.DAL.Entities;
 using TABP.DAL.Models;
@@ -19,5 +20,13 @@ public class BookingProfile : Profile
             .ForMember(dest => dest.PaymentStatus
                 , opt => opt.MapFrom(
                     src => src.PaymentStatus.ToString()));
+
+        CreateMap<Booking, CancelBookingResponse>()
+            .ForMember(dest => dest.BookingStatus
+                , opt => opt.MapFrom(
+                    src => src.BookingStatus.ToString()))
+            .ForMember(dest => dest.BookingId
+                , opt => opt.MapFrom(
+                    src => src.Id));
     }
 }

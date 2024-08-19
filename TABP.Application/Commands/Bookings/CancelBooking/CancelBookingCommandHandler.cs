@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using TABP.Application.Queries.Bookings;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
@@ -7,19 +9,22 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Bookings.CancelBooking;
 
-public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand>
+public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand, CancelBookingResponse>
 {
     private readonly IBookingRepository _bookingRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
 
     public CancelBookingCommandHandler(IBookingRepository bookingRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
         _bookingRepository = bookingRepository;
         _unitOfWork = unitOfWork;
+        _mapper = mapper;
     }
 
-    public async Task Handle(CancelBookingCommand request,
+    public async Task<CancelBookingResponse> Handle(CancelBookingCommand request,
         CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdAsync(request.BookingId, true)
@@ -46,5 +51,7 @@ public class CancelBookingCommandHandler : IRequestHandler<CancelBookingCommand>
 
         _bookingRepository.Update(booking);
         await _unitOfWork.SaveChangesAsync();
+
+        return _mapper.Map<CancelBookingResponse>(booking);
     }
 }

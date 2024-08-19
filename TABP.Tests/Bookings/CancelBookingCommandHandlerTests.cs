@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using AutoMapper;
 using FluentAssertions;
 using Moq;
 using TABP.Application.Commands.Bookings.CancelBooking;
@@ -14,16 +15,19 @@ public class CancelBookingCommandHandlerTests
 {
     private readonly Mock<IBookingRepository> _bookingRepository;
     private readonly Mock<IUnitOfWork> _unitOfWork;
+    private readonly Mock<IMapper> _mapper;
     private CancelBookingCommandHandler _handler;
 
     public CancelBookingCommandHandlerTests()
     {
         _bookingRepository = new();
         _unitOfWork = new();
+        _mapper = new();
 
         _handler = new CancelBookingCommandHandler(
             _bookingRepository.Object,
-            _unitOfWork.Object
+            _unitOfWork.Object,
+            _mapper.Object
         );
     }
 

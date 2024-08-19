@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using TABP.Application.Queries.Bookings;
 
 namespace TABP.Application.Commands.Bookings.CreateBooking;
 
-public class CreateBookingCommand : IRequest
+public class CreateBookingCommand : IRequest<Guid>
 {
     public Guid UserId { get; set; }
     public Guid HotelId { get; set; }

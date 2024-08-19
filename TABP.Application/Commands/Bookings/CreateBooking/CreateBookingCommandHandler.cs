@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Application.Queries.Bookings;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
@@ -9,7 +10,7 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Bookings.CreateBooking;
 
-public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
+public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand, Guid>
 {
     private readonly IBookingDetailRepository _bookingDetailRepository;
     private readonly IBookingRepository _bookingRepository;
@@ -30,7 +31,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task Handle(CreateBookingCommand request,
+    public async Task<Guid> Handle(CreateBookingCommand request,
         CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
@@ -67,12 +68,12 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
             ? parsedPaymentMethod
             : throw new InvalidPaymentMethodException();
 
-        var pendingBooking = await _bookingRepository.GetPendingBooking(request.UserId);
-
         await _unitOfWork.BeginTransactionAsync();
 
         try
         {
+            var pendingBooking = await _bookingRepository.GetPendingBooking(request.UserId);
+
             var booking = new Booking
             {
                 Id = Guid.NewGuid(),
@@ -109,6 +110,8 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
             await _unitOfWork.SaveChangesAsync();
 
             await _unitOfWork.CommitTransactionAsync();
+
+            return booking.Id;
         }
         catch
         {

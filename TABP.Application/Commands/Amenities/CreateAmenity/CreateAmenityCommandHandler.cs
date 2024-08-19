@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Application.Queries.Amenities;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
@@ -7,7 +8,7 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Amenities.CreateAmenity;
 
-public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand>
+public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand, Guid>
 {
     private readonly IAmenityRepository _amenityRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +23,7 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateAmenityCommand request,
+    public async Task<Guid> Handle(CreateAmenityCommand request,
         CancellationToken cancellationToken)
     {
         if (await _amenityRepository.ExistsAsync(a => a.Name.ToLower() == request.Name.ToLower()))
@@ -32,8 +33,10 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand>
 
         amenity.Id = Guid.NewGuid();
 
-        await _amenityRepository.CreateAsync(amenity);
+        var createdAmenity = await _amenityRepository.CreateAsync(amenity);
 
         await _unitOfWork.SaveChangesAsync();
+
+        return createdAmenity.Id;
     }
 }

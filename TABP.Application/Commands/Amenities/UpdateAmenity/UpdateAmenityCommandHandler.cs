@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.Application.Queries.Amenities;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
@@ -7,7 +8,7 @@ using TABP.Domain.Exceptions;
 
 namespace TABP.Application.Commands.Amenities.UpdateAmenity;
 
-public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
+public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand, AmenityResponse>
 {
     private readonly IAmenityRepository _amenityRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +23,7 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
         _mapper = mapper;
     }
 
-    public async Task Handle(UpdateAmenityCommand request,
+    public async Task<AmenityResponse> Handle(UpdateAmenityCommand request,
         CancellationToken cancellationToken)
     {
         var amenity = await _amenityRepository.GetByIdAsync(request.Id) ??
@@ -40,5 +41,7 @@ public class UpdateAmenityCommandHandler : IRequestHandler<UpdateAmenityCommand>
         _amenityRepository.Update(amenity);
 
         await _unitOfWork.SaveChangesAsync();
+
+        return _mapper.Map<AmenityResponse>(amenity);
     }
 }

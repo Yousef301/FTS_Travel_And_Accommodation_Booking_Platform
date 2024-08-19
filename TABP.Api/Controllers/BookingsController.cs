@@ -87,19 +87,20 @@ public class BookingsController : ControllerBase
     [HttpPatch("{bookingId:guid}/cancel")]
     public async Task<IActionResult> CancelBooking(Guid bookingId)
     {
-        await _mediator.Send(new CancelBookingCommand
+        var canceledBooking = await _mediator.Send(new CancelBookingCommand
         {
             UserId = _userContext.Id,
             BookingId = bookingId
         });
 
-        return Ok();
+        return Ok(canceledBooking);
     }
 
     /// <summary>
     /// Creates a new booking for the currently authenticated user.
     /// </summary>
     /// <param name="request">The details required to create a new booking.</param>
+    /// <returns>The created booking id.</returns>
     /// <response code="201">The booking was successfully created.</response>
     /// <response code="400">If the request contains invalid data or is missing required fields.</response>
     /// <response code="401">User is not authenticated.</response>
@@ -111,9 +112,11 @@ public class BookingsController : ControllerBase
         var command = _mapper.Map<CreateBookingCommand>(request);
         command.UserId = _userContext.Id;
 
-        await _mediator.Send(command);
+        var createdBookingId = await _mediator.Send(command);
 
-        return Created();
+        var resourceUri = Url.Action("GetBooking", new { id = createdBookingId });
+
+        return Created(resourceUri, new { id = createdBookingId });
     }
 
     /// <summary>

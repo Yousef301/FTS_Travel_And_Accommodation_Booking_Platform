@@ -64,6 +64,7 @@ public class AmenitiesController : ControllerBase
     /// Creates a new amenity.
     /// </summary>
     /// <param name="createAmenityDto">The data required to create a new amenity, including fields such as name, description, etc.</param>
+    /// <returns>The created amenity id.</returns>
     /// <response code="201">The amenity was created successfully.</response>
     /// <response code="400">The request is invalid due to bad input data.</response>
     /// <response code="401">User is not authenticated.</response>
@@ -75,9 +76,11 @@ public class AmenitiesController : ControllerBase
     {
         var command = _mapper.Map<CreateAmenityCommand>(createAmenityDto);
 
-        await _mediator.Send(command);
+        var createdAmenityId = await _mediator.Send(command);
 
-        return Created();
+        var resourceUri = Url.Action("GetAmenity", new { id = createdAmenityId });
+
+        return Created(resourceUri, new { id = createdAmenityId });
     }
 
 
@@ -103,6 +106,7 @@ public class AmenitiesController : ControllerBase
     /// </summary>
     /// <param name="id">The unique identifier of the amenity to be updated.</param>
     /// <param name="amenityUpdateDto">The JSON Patch document containing the updates to be applied to the amenity.</param>
+    /// <returns>The updated amenity.</returns>
     /// <response code="200">The amenity was successfully updated.</response>
     /// <response code="400">The JSON Patch document is invalid or contains errors.</response>
     /// <response code="404">The amenity with the specified id was not found.</response>
@@ -115,8 +119,9 @@ public class AmenitiesController : ControllerBase
     {
         var amenityDocument = _mapper.Map<JsonPatchDocument<AmenityUpdate>>(amenityUpdateDto);
 
-        await _mediator.Send(new UpdateAmenityCommand { Id = id, AmenityDocument = amenityDocument });
+        var amenityResponse = await _mediator.Send(new UpdateAmenityCommand
+            { Id = id, AmenityDocument = amenityDocument });
 
-        return Ok();
+        return Ok(amenityResponse);
     }
 }
