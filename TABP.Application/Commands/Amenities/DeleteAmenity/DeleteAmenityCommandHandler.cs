@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -21,7 +22,7 @@ public class DeleteAmenityCommandHandler : IRequestHandler<DeleteAmenityCommand>
         CancellationToken cancellationToken)
     {
         var amenity = await _amenityRepository.GetByIdAsync(request.Id) ??
-                      throw new NotFoundException($"Amenity with id {request.Id} not found");
+                      throw new NotFoundException(nameof(Amenity), request.Id);
 
         _amenityRepository.Delete(amenity);
 

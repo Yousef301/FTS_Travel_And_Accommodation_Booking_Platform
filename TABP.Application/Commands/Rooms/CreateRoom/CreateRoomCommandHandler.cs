@@ -31,7 +31,7 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
         CancellationToken cancellationToken)
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
-            throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");
+            throw new NotFoundException(nameof(Hotel), request.HotelId);
 
         if (await _roomRepository.ExistsAsync(r => r.RoomNumber == request.RoomNumber && r.HotelId == request.HotelId))
             throw new UniqueConstraintViolationException(

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -26,7 +27,7 @@ public class UpdateRoomCommandHandler : IRequestHandler<UpdateRoomCommand>
         CancellationToken cancellationToken)
     {
         var room = await _roomRepository.GetByIdAsync(request.Id, request.HotelId) ??
-                   throw new NotFoundException($"Room with id {request.Id} wasn't found");
+                   throw new NotFoundException(nameof(Room), request.Id);
 
         var oldRoomNumber = room.RoomNumber;
 

@@ -61,7 +61,7 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
                 var email = session.Metadata["user_email"];
 
                 var booking = await _bookingRepository.GetByIdAsync(bookingId) ??
-                              throw new NotFoundException($"Booking with id {bookingId} wasn't found.");
+                              throw new NotFoundException(nameof(Booking), bookingId);
 
                 if (booking.UserId != userId)
                 {

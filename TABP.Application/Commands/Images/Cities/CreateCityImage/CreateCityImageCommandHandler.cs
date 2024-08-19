@@ -29,7 +29,7 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
         CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.CityId) ??
-                   throw new NotFoundException($"City with id {request.CityId} wasn't found");
+                   throw new NotFoundException(nameof(City), request.CityId);
 
         city.Name = city.Name.ToLower();
 

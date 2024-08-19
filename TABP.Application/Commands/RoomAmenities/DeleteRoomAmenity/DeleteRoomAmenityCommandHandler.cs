@@ -22,7 +22,7 @@ public class DeleteRoomAmenityCommandHandler : IRequestHandler<DeleteRoomAmenity
     {
         if (!await _roomAmenityRepository.ExistsAsync(ra => ra.Id == request.Id
                                                             && ra.RoomId == request.RoomId))
-            throw new NotFoundException($"Room amenity with id {request.Id} wasn't found");
+            throw new NotFoundException("Room Amenity", request.Id);
 
         await _roomAmenityRepository.DeleteAsync(request.Id);
 

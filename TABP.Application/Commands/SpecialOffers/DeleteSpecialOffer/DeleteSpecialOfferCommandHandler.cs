@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -24,10 +25,10 @@ public class DeleteSpecialOfferCommandHandler : IRequestHandler<DeleteSpecialOff
         CancellationToken cancellationToken)
     {
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
-            throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");
+            throw new NotFoundException(nameof(Room), request.RoomId);
 
         var specialOffer = await _specialOfferRepository.GetByIdAsync(request.Id) ??
-                           throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");
+                           throw new NotFoundException("Offer", request.Id);
 
 
         _specialOfferRepository.Delete(specialOffer);

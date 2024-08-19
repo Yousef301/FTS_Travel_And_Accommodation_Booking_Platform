@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -25,7 +26,7 @@ public class UpdateCityCommandHandler : IRequestHandler<UpdateCityCommand>
         CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id) ??
-                   throw new NotFoundException($"City with id {request.Id} wasn't found.");
+                   throw new NotFoundException(nameof(City), request.Id);
 
         var updatedCityDto = _mapper.Map<CityUpdate>(city);
 

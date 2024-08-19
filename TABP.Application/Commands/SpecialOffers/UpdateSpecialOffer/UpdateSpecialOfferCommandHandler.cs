@@ -27,7 +27,7 @@ public class UpdateSpecialOfferCommandHandler : IRequestHandler<UpdateSpecialOff
     {
         var offer = await _specialOfferRepository
                         .GetByRoomIdAndOfferIdAsync(request.Id, request.RoomId) ??
-                    throw new NotFoundException($"Special offer with id {request.Id} wasn't found.");
+                    throw new NotFoundException("Offer", request.Id);
 
         var updatedOfferDto = _mapper.Map<SpecialOfferUpdate>(offer);
 

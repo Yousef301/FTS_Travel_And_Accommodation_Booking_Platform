@@ -29,7 +29,7 @@ public class CreateHotelImageCommandHandler : IRequestHandler<CreateHotelImageCo
         CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.HotelId) ??
-                    throw new NotFoundException($"Hotel with ID {request.HotelId} wasn't found");
+                    throw new NotFoundException(nameof(Hotel), request.HotelId);
 
         hotel.Name = hotel.Name.ToLower();
 

@@ -35,7 +35,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand>
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
-            throw new NotFoundException($"Hotel with id {request.HotelId} wasn't found");
+            throw new NotFoundException(nameof(Hotel), request.HotelId);
         }
 
         var rooms = await _roomRepository.GetByIdAndHotelIdAsync(request.HotelId, request.RoomIds);

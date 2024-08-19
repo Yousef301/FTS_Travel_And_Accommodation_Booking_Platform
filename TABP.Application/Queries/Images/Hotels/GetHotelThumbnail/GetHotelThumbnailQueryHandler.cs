@@ -22,9 +22,10 @@ public class GetHotelThumbnailQueryHandler : IRequestHandler<GetHotelThumbnailQu
         CancellationToken cancellationToken)
     {
         var thumbnailPath = await _hotelImageRepository.GetThumbnailPathAsync(request.HotelId) ??
-                            throw new NotFoundException($"Thumbnail for hotel with id {request.HotelId} not found");
-        
-        var image = await _imageService.GetImageAsync(thumbnailPath);
+                            throw new NotFoundException($"Thumbnail for hotel", request.HotelId);
+
+        var image = await _imageService.GetImageAsync(thumbnailPath) ??
+                    throw new NotFoundException($"Thumbnail for hotel", request.HotelId);
 
         return new ImageResponse
         {

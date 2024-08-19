@@ -23,10 +23,10 @@ public class GetRoomImageByIdQueryHandler : IRequestHandler<GetRoomImageByIdQuer
         CancellationToken cancellationToken)
     {
         var roomImage = await _roomImageRepository.GetByIdAsync(ri => ri.Id == request.ImageId) ??
-                        throw new NotFoundException($"Room image with id {request.ImageId} not found.");
+                        throw new NotFoundException("Room Image", request.ImageId);
 
         var image = await _imageService.GetImageAsync(roomImage.ImagePath) ??
-                    throw new NotFoundException($"Room image with id {request.ImageId} not found.");
+                    throw new NotFoundException("Room Image", request.ImageId);
 
         return new ImageResponse
         {

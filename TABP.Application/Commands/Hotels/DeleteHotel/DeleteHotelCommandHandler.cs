@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -21,7 +22,7 @@ public class DeleteHotelCommandHandler : IRequestHandler<DeleteHotelCommand>
         CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.Id) ??
-                    throw new NotFoundException($"Hotel with id {request.Id} wasn't found");
+                    throw new NotFoundException(nameof(Hotel), request.Id);
 
         _hotelRepository.Delete(hotel);
 

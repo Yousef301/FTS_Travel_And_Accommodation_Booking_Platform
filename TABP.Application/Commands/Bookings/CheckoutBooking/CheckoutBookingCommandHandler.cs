@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TABP.Application.Services.Interfaces;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
@@ -27,7 +28,7 @@ public class CheckoutBookingCommandHandler : IRequestHandler<CheckoutBookingComm
         CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetByIdAsync(request.BookingId) ??
-                      throw new NotFoundException($"Booking with id {request.BookingId} wasn't found");
+                      throw new NotFoundException(nameof(Booking), request.BookingId);
 
         if (booking.UserId != request.UserId)
         {

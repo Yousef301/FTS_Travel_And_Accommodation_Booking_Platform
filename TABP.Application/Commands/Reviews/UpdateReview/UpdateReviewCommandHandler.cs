@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Stripe;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -28,7 +29,7 @@ public class UpdateReviewCommandHandler : IRequestHandler<UpdateReviewCommand>
         CancellationToken cancellationToken)
     {
         var review = await _reviewRepository.GetByIdAsync(request.ReviewId) ??
-                     throw new NotFoundException($"Review with id {request.ReviewId} wasn't found.");
+                     throw new NotFoundException(nameof(Review), request.ReviewId);
 
         if (review.UserId != request.UserId)
         {

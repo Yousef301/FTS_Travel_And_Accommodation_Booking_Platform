@@ -26,7 +26,7 @@ public class DeleteHotelImageCommandHandler : IRequestHandler<DeleteHotelImageCo
         CancellationToken cancellationToken)
     {
         var hotelImagePath = await _hotelImageRepository.GetImagePathAsync(request.ImageId, request.HotelId) ??
-                             throw new NotFoundException($"Hotel image with id {request.ImageId} wasn't found");
+                             throw new NotFoundException("Hotel Image", request.ImageId);
 
         await _imageService.DeleteImageAsync(hotelImagePath);
 

@@ -3,25 +3,34 @@ using AutoMapper;
 using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.Domain.Exceptions;
 using TABP.Domain.Models;
 
 namespace TABP.Application.Queries.Rooms.GetRoomsForAdmin;
 
 public class GetRoomsForAdminQueryHandler : IRequestHandler<GetRoomsForAdminQuery, PagedList<RoomAdminResponse>>
 {
+    private readonly IHotelRepository _hotelRepository;
     private readonly IRoomRepository _roomRepository;
     private readonly IMapper _mapper;
 
     public GetRoomsForAdminQueryHandler(IRoomRepository roomRepository,
+        IHotelRepository hotelRepository,
         IMapper mapper)
     {
         _roomRepository = roomRepository;
+        _hotelRepository = hotelRepository;
         _mapper = mapper;
     }
 
     public async Task<PagedList<RoomAdminResponse>> Handle(GetRoomsForAdminQuery request,
         CancellationToken cancellationToken)
     {
+        if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
+        {
+            throw new NotFoundException(nameof(Hotel), request.HotelId);
+        }
+
         var rooms = await _roomRepository.GetByHotelIdPagedAsync(request.HotelId,
             new Filters<Room>
             {

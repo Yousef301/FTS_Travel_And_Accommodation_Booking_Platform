@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -25,7 +26,7 @@ public class UpdateHotelCommandHandler : IRequestHandler<UpdateHotelCommand>
         CancellationToken cancellationToken)
     {
         var hotel = await _hotelRepository.GetByIdAsync(request.Id) ??
-                    throw new NotFoundException($"Hotel with id {request.Id} wasn't found.");
+                    throw new NotFoundException(nameof(Hotel), request.Id);
 
         var updatedHotelDto = _mapper.Map<HotelUpdate>(hotel);
 

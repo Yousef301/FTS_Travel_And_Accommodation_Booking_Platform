@@ -22,10 +22,10 @@ public class GetCityImageByIdQueryHandler : IRequestHandler<GetCityImageByIdQuer
         CancellationToken cancellationToken)
     {
         var cityImage = await _cityImageRepository.GetByIdAsync(ci => ci.Id == request.ImageId) ??
-                        throw new NotFoundException($"City image with id {request.ImageId} not found.");
+                        throw new NotFoundException("City Image", request.ImageId);
 
         var image = await _imageService.GetImageAsync(cityImage.ImagePath) ??
-                    throw new NotFoundException($"City image with id {request.ImageId} not found.");
+                    throw new NotFoundException("City Image", request.ImageId);
 
         return new ImageResponse
         {

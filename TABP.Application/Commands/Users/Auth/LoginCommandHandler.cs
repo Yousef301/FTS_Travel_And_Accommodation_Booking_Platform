@@ -25,7 +25,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
         CancellationToken cancellationToken)
     {
         var user = await _credentialRepository.GetByUsername(request.Username) ??
-                   throw new NotFoundException($"User with username {request.Username} wasn't found.");
+                   throw new NotFoundException($"Username {request.Username} wasn't found.");
 
         if (!_passwordService.ValidatePassword(request.Password, user.HashedPassword))
             throw new InvalidCredentialException("Invalid username or password.");

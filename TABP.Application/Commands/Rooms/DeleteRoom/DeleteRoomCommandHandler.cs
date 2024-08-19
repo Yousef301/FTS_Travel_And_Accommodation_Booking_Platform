@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -25,11 +26,11 @@ public class DeleteRoomCommandHandler : IRequestHandler<DeleteRoomCommand>
     {
         if (!await _hotelRepository.ExistsAsync(r => r.Id == request.HotelId))
         {
-            throw new NotFoundException($"Hotel with id {request.Id} wasn't found");
+            throw new NotFoundException(nameof(Hotel), request.HotelId);
         }
 
         var room = await _roomRepository.GetByIdAsync(request.Id, request.HotelId) ??
-                   throw new NotFoundException($"Room with id {request.Id} wasn't found");
+                   throw new NotFoundException(nameof(Room), request.Id);
 
         _roomRepository.Delete(room);
 

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
@@ -22,7 +23,7 @@ public class DeleteCityCommandHandler : IRequestHandler<DeleteCityCommand>
         CancellationToken cancellationToken)
     {
         var city = await _cityRepository.GetByIdAsync(request.Id) ??
-                   throw new NotFoundException($"City with id {request.Id} wasn't found");
+                   throw new NotFoundException(nameof(City), request.Id);
 
         _cityRepository.Delete(city);
 

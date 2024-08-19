@@ -30,7 +30,7 @@ public class CreateSpecialOfferCommandHandler : IRequestHandler<CreateSpecialOff
         CancellationToken cancellationToken)
     {
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
-            throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");
+            throw new NotFoundException(nameof(Room), request.RoomId);
 
         if (await _specialOfferRepository.ExistsAsync(so => so.RoomId == request.RoomId && so.IsActive))
             throw new BadRequestException("Special offer for this room already exists.");

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
 
@@ -21,7 +22,7 @@ public class GetBookingByIdQueryHandler : IRequestHandler<GetBookingByIdQuery, B
         CancellationToken cancellationToken)
     {
         var booking = await _bookingRepository.GetDetailedByIdAsync(request.BookingId) ??
-                      throw new NotFoundException($"Booking with id {request.BookingId} wasn't found.");
+                      throw new NotFoundException(nameof(Booking), request.BookingId);
 
         if (booking.UserId != request.UserId)
         {

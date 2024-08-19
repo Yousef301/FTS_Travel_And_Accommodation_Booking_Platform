@@ -21,7 +21,7 @@ public class GetInvoiceAsPdfQueryHandler : IRequestHandler<GetInvoiceAsPdfQuery,
         CancellationToken cancellationToken)
     {
         var invoice = await _invoiceRepository.GetByBookingIdAsync(request.BookingId) ??
-                      throw new NotFoundException($"Invoice with booking id {request.BookingId} not found.");
+                      throw new NotFoundException($"Invoice with booking", request.BookingId);
 
         if (invoice.Booking.UserId != request.UserId)
             throw new UnauthorizedAccessException("You are not authorized to access this invoice.");

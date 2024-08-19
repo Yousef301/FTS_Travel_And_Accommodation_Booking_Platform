@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
 
@@ -21,7 +22,7 @@ public class GetAmenityByIdQueryHandler : IRequestHandler<GetAmenityByIdQuery, A
         CancellationToken cancellationToken)
     {
         var amenity = await _amenityRepository.GetByIdAsync(request.Id) ??
-                      throw new NotFoundException($"Amenity with id {request.Id} wasn't found");
+                      throw new NotFoundException(nameof(Amenity), request.Id);
 
         return _mapper.Map<AmenityResponse>(amenity);
     }

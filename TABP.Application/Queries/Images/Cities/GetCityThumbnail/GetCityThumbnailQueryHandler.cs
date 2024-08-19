@@ -22,9 +22,10 @@ public class GetCityThumbnailQueryHandler : IRequestHandler<GetCityThumbnailQuer
         CancellationToken cancellationToken)
     {
         var thumbnailPath = await _cityImageRepository.GetThumbnailPathAsync(request.CityId) ??
-                            throw new NotFoundException($"Thumbnail for city with id {request.CityId} not found.");
-        
-        var image = await _imageService.GetImageAsync(thumbnailPath);
+                            throw new NotFoundException($"Thumbnail for city", request.CityId);
+
+        var image = await _imageService.GetImageAsync(thumbnailPath) ??
+                    throw new NotFoundException($"Thumbnail for city", request.CityId);
 
         return new ImageResponse
         {

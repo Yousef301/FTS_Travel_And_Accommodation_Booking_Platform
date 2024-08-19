@@ -22,10 +22,10 @@ public class GetHotelImageByIdQueryHandler : IRequestHandler<GetHotelImageByIdQu
         CancellationToken cancellationToken)
     {
         var hotelImage = await _hotelImageRepository.GetByIdAsync(hi => hi.Id == request.ImageId) ??
-                         throw new NotFoundException($"Hotel image with id {request.ImageId} not found");
+                         throw new NotFoundException($"Hotel Image", request.ImageId);
 
         var image = await _imageService.GetImageAsync(hotelImage.ImagePath) ??
-                    throw new NotFoundException($"Hotel image with id {request.ImageId} not found");
+                    throw new NotFoundException($"Hotel Image", request.ImageId);
 
         return new ImageResponse
         {

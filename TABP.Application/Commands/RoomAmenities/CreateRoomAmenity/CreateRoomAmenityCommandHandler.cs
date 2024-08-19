@@ -28,7 +28,7 @@ public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenity
         CancellationToken cancellationToken)
     {
         if (!await _roomRepository.ExistsAsync(r => r.Id == request.RoomId))
-            throw new NotFoundException($"Room with id {request.RoomId} wasn't found");
+            throw new NotFoundException(nameof(Room), request.RoomId);
 
 
         var roomAmenities = new List<RoomAmenity>();
@@ -36,7 +36,7 @@ public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenity
         foreach (var amenity in request.AmenitiesIds)
         {
             if (!await _amenityRepository.ExistsAsync(a => a.Id == amenity))
-                throw new NotFoundException($"Amenity with id {amenity} wasn't found");
+                throw new NotFoundException(nameof(Amenity), amenity);
 
             var createdRoomAmenity = new RoomAmenity
             {

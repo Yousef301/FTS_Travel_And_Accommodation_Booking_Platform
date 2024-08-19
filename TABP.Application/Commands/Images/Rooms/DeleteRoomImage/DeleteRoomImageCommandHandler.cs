@@ -26,7 +26,7 @@ public class DeleteRoomImageCommandHandler : IRequestHandler<DeleteRoomImageComm
         CancellationToken cancellationToken)
     {
         var roomImagePath = await _roomImageRepository.GetImagePathAsync(request.ImageId, request.RoomId)
-                            ?? throw new NotFoundException($"Room image with id {request.ImageId} wasn't found");
+                            ?? throw new NotFoundException("Room Image", request.ImageId);
 
         await _imageService.DeleteImageAsync(roomImagePath);
 

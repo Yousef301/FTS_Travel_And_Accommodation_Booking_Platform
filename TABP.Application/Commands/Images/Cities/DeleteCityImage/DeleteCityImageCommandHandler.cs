@@ -26,7 +26,7 @@ public class DeleteCityImageCommandHandler : IRequestHandler<DeleteCityImageComm
         CancellationToken cancellationToken)
     {
         var cityImagesPath = await _cityImageRepository.GetImagePathAsync(request.ImageId, request.CityId) ??
-                             throw new NotFoundException($"City image with id {request.ImageId} wasn't found");
+                             throw new NotFoundException("City image", request.ImageId);
 
         await _imageService.DeleteImageAsync(cityImagesPath);
 

@@ -30,7 +30,7 @@ public class CreateRoomImageCommandHandler : IRequestHandler<CreateRoomImageComm
         CancellationToken cancellationToken)
     {
         var room = await _roomRepository.GetByIdAsync(request.RoomId, request.HotelId) ??
-                   throw new NotFoundException($"Room with id {request.RoomId} wasn't found.");
+                   throw new NotFoundException(nameof(Room), request.RoomId);
 
         room.RoomNumber = room.RoomNumber.ToLower();
 

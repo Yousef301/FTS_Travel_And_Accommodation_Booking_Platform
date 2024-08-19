@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Exceptions;
 
@@ -25,7 +26,7 @@ public class GetHotelReviewsQueryHandler : IRequestHandler<GetHotelReviewsQuery,
     {
         if (!await _hotelRepository.ExistsAsync(h => h.Id == request.HotelId))
         {
-            throw new NotFoundException($"Hotel with ID {request.HotelId} was not found.");
+            throw new NotFoundException(nameof(Hotel), request.HotelId);
         }
 
         var reviews = await _reviewRepository
