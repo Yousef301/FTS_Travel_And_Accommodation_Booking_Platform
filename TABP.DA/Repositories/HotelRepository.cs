@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
+using TABP.DAL.Models;
 using TABP.Domain.Enums;
 using TABP.Domain.Models;
 
@@ -95,11 +96,11 @@ public class HotelRepository : IHotelRepository
         return hotels;
     }
 
-    public async Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5)
+    public async Task<IEnumerable<FeaturedHotel>> GetHotelsWithDealsAsync(int count = 5)
     {
         var hotels = await _context.Hotels
             .Where(h => h.Rooms.Any(r => r.SpecialOffers.Any(so => so.IsActive)))
-            .Select(h => new
+            .Select(h => new 
             {
                 h.Id,
                 h.CityId,
@@ -110,21 +111,23 @@ public class HotelRepository : IHotelRepository
                 h.PhoneNumber,
                 h.Email,
                 h.Rating,
-                Images = h.Images.Where(hi => hi.Thumbnail).ToList(),
+                ThumbnailPath = h.Images.SingleOrDefault(hi => hi.Thumbnail)!.ImagePath,
                 BestRoomDeal = h.Rooms
                     .Where(r => r.SpecialOffers.Any(so => so.IsActive))
                     .Select(r => new
                     {
-                        Room = r,
-                        MaxDiscount = r.SpecialOffers.Max(so => so.Discount)
+                        OriginalPrice = r.Price,
+                        BestOffer = r.SpecialOffers
+                            .Where(so => so.IsActive)
+                            .Select(so => so.Discount)
+                            .SingleOrDefault()
                     })
-                    .OrderByDescending(r => r.MaxDiscount)
                     .FirstOrDefault()
             })
             .Take(count)
             .ToListAsync();
 
-        return hotels.Select(h => new Hotel
+        return hotels.Select(h => new FeaturedHotel
         {
             Id = h.Id,
             CityId = h.CityId,
@@ -135,11 +138,11 @@ public class HotelRepository : IHotelRepository
             PhoneNumber = h.PhoneNumber,
             Email = h.Email,
             Rating = h.Rating,
-            Images = h.Images,
-            Rooms = new List<Room> { h.BestRoomDeal?.Room }
+            ThumbnailUrl = h.ThumbnailPath,
+            OriginalPrice = h.BestRoomDeal.OriginalPrice,
+            Discount = h.BestRoomDeal.BestOffer
         });
     }
-
 
     public async Task<Hotel?> GetByIdAsync(
         Guid id,

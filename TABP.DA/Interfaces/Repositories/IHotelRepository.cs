@@ -13,7 +13,7 @@ public interface IHotelRepository
     Task<PagedList<Hotel>> GetFilteredHotelsAsync(Filters<Hotel> filters, bool includeCity = false,
         bool includeRooms = false, bool includeThumbnail = false);
 
-    Task<IEnumerable<Hotel>> GetHotelsWithDealsAsync(int count = 5);
+    Task<IEnumerable<FeaturedHotel>> GetHotelsWithDealsAsync(int count = 5);
 
     Task<Hotel?> GetByIdAsync(Guid id, bool includeCity = false, bool includeRooms = false
         , bool includeThumbnail = false);

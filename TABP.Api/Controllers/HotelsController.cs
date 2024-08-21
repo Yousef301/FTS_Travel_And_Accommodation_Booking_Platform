@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Hotels.CreateHotel;
 using TABP.Application.Commands.Hotels.DeleteHotel;
 using TABP.Application.Commands.Hotels.UpdateHotel;
+using TABP.Application.Queries.Hotels.GetHotelById;
 using TABP.Application.Queries.Hotels.GetHotelsForAdmin;
 using TABP.Application.Queries.Hotels.GetHotelsForUser;
 using TABP.Application.Queries.Hotels.GetHotelsWithFeaturedDeals;
@@ -55,6 +56,15 @@ public class HotelsController : ControllerBase
         Response.AddPaginationMetadata(metadata, Request);
 
         return Ok(hotels.Items);
+    }
+
+    [HttpGet("{id:guid}")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetHotel(Guid id)
+    {
+        var hotel = await _mediator.Send(new GetHotelByIdQuery { Id = id });
+
+        return Ok(hotel);
     }
 
     /// <summary>

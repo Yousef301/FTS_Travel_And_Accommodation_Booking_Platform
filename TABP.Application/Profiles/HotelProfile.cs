@@ -3,6 +3,7 @@ using TABP.Application.Commands.Hotels.CreateHotel;
 using TABP.Application.Commands.Hotels.UpdateHotel;
 using TABP.Application.Queries.Hotels;
 using TABP.DAL.Entities;
+using TABP.DAL.Models;
 using TABP.Domain.Models;
 
 namespace TABP.Application.Profiles;
@@ -14,6 +15,7 @@ public class HotelProfile : Profile
         CreateMap<CreateHotelCommand, Hotel>();
         CreateMap<Hotel, HotelUpdate>();
         CreateMap<HotelUpdate, Hotel>();
+        CreateMap<Hotel, HotelResponseBase>();
         CreateMap<Hotel, HotelAdminResponse>()
             .ForMember(dest => dest.City,
                 opt =>
@@ -57,21 +59,10 @@ public class HotelProfile : Profile
                 opt =>
                     opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
 
-        CreateMap<Hotel, HotelWithFeaturedDealResponse>()
-            .ForMember(dest => dest.OriginalPrice,
-                opt =>
-                    opt.MapFrom(src => src.Rooms.First().Price))
-            .ForMember(dest => dest.ThumbnailUrl,
-                opt =>
-                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath))
+        CreateMap<FeaturedHotel, HotelWithFeaturedDealResponse>()
             .ForMember(dest => dest.DiscountedPrice,
                 opt =>
                     opt.MapFrom(src =>
-                        src.Rooms.First().SpecialOffers.Any(so => so.IsActive)
-                            ? src.Rooms.First().Price -
-                              ((Convert.ToDecimal(src.Rooms.First().SpecialOffers
-                                   .First(so => so.IsActive).Discount) / 100) *
-                               src.Rooms.First().Price)
-                            : src.Rooms.First().Price));
+                        src.OriginalPrice - Convert.ToDecimal(src.Discount) * src.OriginalPrice / 100));
     }
 }
