@@ -71,7 +71,8 @@ public class GetHotelsForUserQueryHandler : IRequestHandler<GetHotelsForUserQuer
                 request.CheckInDate,
                 request.CheckOutDate))
             .And(_hotelExpressions.GetHotelsBasedOnReviewRatingExpression(request.ReviewRating))
-            .And(_hotelExpressions.GetHotelsBasedOnAmenitiesExpression(request.Amenities));
+            .And(_hotelExpressions.GetHotelsBasedOnAmenitiesExpression(request.Amenities))
+            .And(_hotelExpressions.GetHotelsBasedOnRoomTypeExpression(request.RoomType));
     }
 
     private void MapThumbnailUrls(List<HotelUserResponse> hotels,

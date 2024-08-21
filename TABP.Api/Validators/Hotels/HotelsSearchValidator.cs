@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TABP.Domain.Enums;
 using TABP.Web.DTOs.Hotels;
 using TABP.Web.Extensions;
 using TABP.Web.Validators.Filters;
@@ -35,6 +36,9 @@ public class HotelsSearchValidator : AbstractValidator<HotelsSearchDto>
         RuleFor(x => x.MaxPrice)
             .GreaterThan(x => x.MinPrice).WithMessage("Maximum price must be greater than minimum price.")
             .LessThanOrEqualTo(10000).WithMessage("Maximum price must be at most 1000.");
+
+        RuleFor(x => x.RoomType)
+            .ValidEnumValue<HotelsSearchDto, RoomType>();
 
         RuleFor(x => x.ReviewRating)
             .InclusiveBetween(0, 10).WithMessage("Rate must be between 0 and 10");

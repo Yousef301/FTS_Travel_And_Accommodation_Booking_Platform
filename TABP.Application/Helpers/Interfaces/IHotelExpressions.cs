@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using TABP.DAL.Entities;
+using TABP.Domain.Enums;
 
 namespace TABP.Application.Helpers.Interfaces;
 
@@ -18,5 +19,6 @@ public interface IHotelExpressions
 
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnReviewRatingExpression(double reviewRating);
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnAmenitiesExpression(IEnumerable<Guid> amenities);
+    public Expression<Func<Hotel, bool>> GetHotelsBasedOnRoomTypeExpression(string roomType);
     public Expression<Func<Hotel, object>> GetSortExpression(string? sortBy);
 }

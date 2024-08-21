@@ -100,8 +100,10 @@ public static class ValidationExtensions
     public static IRuleBuilderOptions<T, string> ValidEnumValue<T, TEnum>(this IRuleBuilder<T, string> ruleBuilder)
         where TEnum : struct, Enum
     {
-        return ruleBuilder.Must(BeValidEnumValue<TEnum>)
-            .WithMessage($"Value must be a valid {typeof(TEnum).Name}.");
+        var validValues = string.Join(", ", Enum.GetNames(typeof(TEnum)));
+
+        return ruleBuilder.Must(value => string.IsNullOrEmpty(value) || BeValidEnumValue<TEnum>(value))
+            .WithMessage($"Value must be a valid {typeof(TEnum).Name}. Possible values: {validValues}.");
     }
 
     private static bool BeValidEnumValue<TEnum>(string value) where TEnum : struct, Enum

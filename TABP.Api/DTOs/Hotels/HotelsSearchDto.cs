@@ -10,5 +10,6 @@ public class HotelsSearchDto : FilterParameters
     public decimal MinPrice { get; init; } = 0;
     public decimal MaxPrice { get; init; } = 10000;
     public decimal ReviewRating { get; init; } = 0;
+    public string? RoomType { get; init; }
     public IEnumerable<Guid> Amenities { get; init; } = new List<Guid>();
 }

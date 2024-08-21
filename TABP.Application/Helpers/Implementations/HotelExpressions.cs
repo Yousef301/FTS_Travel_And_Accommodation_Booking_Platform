@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using TABP.Application.Helpers.Interfaces;
 using TABP.DAL.Entities;
+using TABP.Domain.Enums;
 
 namespace TABP.Application.Helpers.Implementations;
 
@@ -51,13 +52,25 @@ public class HotelExpressions : IHotelExpressions
 
     public Expression<Func<Hotel, bool>> GetHotelsBasedOnAmenitiesExpression(IEnumerable<Guid> amenities)
     {
-        if (!amenities.Any())
+        var amenitiesList = amenities.ToList();
+
+        if (!amenitiesList.Any())
         {
             return h => true;
         }
 
         return h => h.Rooms.Any(r =>
-            r.RoomAmenities.Any(ra => amenities.Contains(ra.AmenityId)));
+            r.RoomAmenities.Any(ra => amenitiesList.Contains(ra.AmenityId)));
+    }
+
+    public Expression<Func<Hotel, bool>> GetHotelsBasedOnRoomTypeExpression(string roomType)
+    {
+        if (Enum.TryParse(roomType, true, out RoomType result))
+        {
+            return h => h.Rooms.Any(r => r.RoomType == result);
+        }
+
+        return h => true;
     }
 
     public Expression<Func<Hotel, object>> GetSortExpression(string? sortBy)
