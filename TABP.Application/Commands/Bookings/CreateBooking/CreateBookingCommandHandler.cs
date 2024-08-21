@@ -62,7 +62,7 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
             throw new RoomsNotAvailableException(resultsList);
         }
 
-        var totalPrice = CalculateTotalPrice(roomsList);
+        var totalPrice = CalculateTotalPrice(roomsList, request.CheckInDate, request.CheckOutDate);
 
         var paymentMethod = Enum.TryParse<PaymentMethod>(request.PaymentMethod, out var parsedPaymentMethod)
             ? parsedPaymentMethod
@@ -139,8 +139,11 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         return unavailableRooms;
     }
 
-    private decimal CalculateTotalPrice(IEnumerable<Room> rooms)
+    private decimal CalculateTotalPrice(IEnumerable<Room> rooms,
+        DateOnly checkInDate,
+        DateOnly checkOutDate)
     {
+        var days = (checkOutDate.ToDateTime(TimeOnly.MinValue) - checkInDate.ToDateTime(TimeOnly.MinValue)).Days;
         decimal totalPrice = 0;
 
         foreach (var room in rooms)
@@ -148,11 +151,11 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
             if (room.SpecialOffers.Any())
             {
                 var specialOffer = room.SpecialOffers.First();
-                totalPrice += room.Price - room.Price * Convert.ToDecimal(specialOffer.Discount) / 100;
+                totalPrice += (room.Price - room.Price * Convert.ToDecimal(specialOffer.Discount) / 100) * days;
             }
             else
             {
-                totalPrice += room.Price;
+                totalPrice += room.Price * days;
             }
         }
 
