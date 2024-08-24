@@ -8,20 +8,20 @@ namespace TABP.Application.Queries.Images.Cities.GetCityThumbnail;
 
 public class GetCityThumbnailQueryHandler : IRequestHandler<GetCityThumbnailQuery, ImageResponse>
 {
-    private readonly IImageRepository<CityImage> _cityImageRepository;
+    private readonly ICityRepository _cityRepository;
     private readonly IImageService _imageService;
 
-    public GetCityThumbnailQueryHandler(IImageRepository<CityImage> cityImageRepository,
+    public GetCityThumbnailQueryHandler(ICityRepository cityRepository,
         IImageService imageService)
     {
-        _cityImageRepository = cityImageRepository;
+        _cityRepository = cityRepository;
         _imageService = imageService;
     }
 
     public async Task<ImageResponse> Handle(GetCityThumbnailQuery request,
         CancellationToken cancellationToken)
     {
-        var thumbnailPath = await _cityImageRepository.GetThumbnailPathAsync(request.CityId) ??
+        var thumbnailPath = await _cityRepository.GetThumbnailPathAsync(request.CityId) ??
                             throw new NotFoundException($"Thumbnail for city", request.CityId);
 
         var image = await _imageService.GetImageAsync(thumbnailPath) ??

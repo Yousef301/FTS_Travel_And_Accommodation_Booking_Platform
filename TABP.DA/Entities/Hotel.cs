@@ -12,6 +12,7 @@ public class Hotel : IAuditableEntity
     public string? Description { get; set; } = "";
     public string PhoneNumber { get; set; } = "";
     public string Email { get; set; } = "";
+    public string? ThumbnailUrl { get; set; }
     public double Rating { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime? ModifiedAt { get; set; }

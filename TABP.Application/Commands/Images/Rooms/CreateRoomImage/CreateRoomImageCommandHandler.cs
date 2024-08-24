@@ -44,8 +44,7 @@ public class CreateRoomImageCommandHandler : IRequestHandler<CreateRoomImageComm
         {
             Id = new Guid(),
             RoomId = request.RoomId,
-            ImagePath = $"rooms/{room.RoomNumber}_{image.FileName}".Replace(' ', '_'),
-            Thumbnail = false
+            ImagePath = $"rooms/{room.RoomNumber}_{image.FileName}".Replace(' ', '_')
         });
 
         await _roomImageRepository.AddRangeAsync(roomImages);

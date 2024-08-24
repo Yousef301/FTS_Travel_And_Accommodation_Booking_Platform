@@ -17,11 +17,13 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
 
     public GetRecentlyVisitedHotelsQueryHandler(IBookingRepository bookingRepository,
         IHotelRepository hotelRepository,
+        IImageService imageService,
         IMapper mapper)
     {
         _bookingRepository = bookingRepository;
         _hotelRepository = hotelRepository;
         _mapper = mapper;
+        _imageService = imageService;
     }
 
     public async Task<IEnumerable<RecentlyVisitedHotelsResponse>> Handle(GetRecentlyVisitedHotelsQuery request,
@@ -40,7 +42,7 @@ public class GetRecentlyVisitedHotelsQueryHandler : IRequestHandler<GetRecentlyV
 
         foreach (var hotelId in hotelsId)
         {
-            var hotel = await _hotelRepository.GetByIdAsync(hotelId, true, true, true);
+            var hotel = await _hotelRepository.GetByIdAsync(hotelId, true, true);
 
             if (hotel is not null) hotels.Add(hotel);
         }

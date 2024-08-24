@@ -37,14 +37,6 @@ public class RoomImageRepository : IImageRepository<RoomImage>
             .ToListAsync();
     }
 
-    public async Task<string?> GetThumbnailPathAsync(Guid id)
-    {
-        return await _context.RoomImages
-            .Where(r => r.RoomId == id && r.Thumbnail)
-            .Select(r => r.ImagePath)
-            .SingleOrDefaultAsync();
-    }
-
     public async Task<RoomImage> CreateAsync(RoomImage roomImage)
     {
         var createdRoomImage = await _context.RoomImages

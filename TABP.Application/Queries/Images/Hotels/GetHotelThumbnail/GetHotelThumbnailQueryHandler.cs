@@ -8,20 +8,20 @@ namespace TABP.Application.Queries.Images.Hotels.GetHotelThumbnail;
 
 public class GetHotelThumbnailQueryHandler : IRequestHandler<GetHotelThumbnailQuery, ImageResponse>
 {
-    private readonly IImageRepository<HotelImage> _hotelImageRepository;
+    private readonly IHotelRepository _hotelRepository;
     private readonly IImageService _imageService;
 
-    public GetHotelThumbnailQueryHandler(IImageRepository<HotelImage> hotelImageRepository,
+    public GetHotelThumbnailQueryHandler(IHotelRepository hotelRepository,
         IImageService imageService)
     {
-        _hotelImageRepository = hotelImageRepository;
+        _hotelRepository = hotelRepository;
         _imageService = imageService;
     }
 
     public async Task<ImageResponse> Handle(GetHotelThumbnailQuery request,
         CancellationToken cancellationToken)
     {
-        var thumbnailPath = await _hotelImageRepository.GetThumbnailPathAsync(request.HotelId) ??
+        var thumbnailPath = await _hotelRepository.GetThumbnailPathAsync(request.HotelId) ??
                             throw new NotFoundException($"Thumbnail for hotel", request.HotelId);
 
         var image = await _imageService.GetImageAsync(thumbnailPath) ??

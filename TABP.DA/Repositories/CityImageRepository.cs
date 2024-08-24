@@ -48,7 +48,7 @@ public class CityImageRepository : IImageRepository<CityImage>
     public async Task<string?> GetThumbnailPathAsync(Guid cityId)
     {
         return await _context.CityImages
-            .Where(h => h.CityId == cityId && h.Thumbnail)
+            .Where(h => h.CityId == cityId)
             .Select(h => h.ImagePath)
             .SingleOrDefaultAsync();
     }

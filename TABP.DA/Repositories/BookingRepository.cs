@@ -46,6 +46,7 @@ public class BookingRepository : IBookingRepository
             .Where(b => b.UserId == userId)
             .OrderByDescending(b => b.CheckOutDate)
             .Select(b => b.HotelId)
+            .Distinct()
             .Take(count)
             .ToListAsync();
     }

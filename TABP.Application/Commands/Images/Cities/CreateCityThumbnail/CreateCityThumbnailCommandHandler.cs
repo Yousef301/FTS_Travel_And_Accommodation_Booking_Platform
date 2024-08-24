@@ -13,17 +13,14 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageService _imageService;
     private readonly ICityRepository _cityRepository;
-    private readonly IImageRepository<CityImage> _cityImageRepository;
 
     public CreateCityThumbnailCommandHandler(IUnitOfWork unitOfWork,
         IImageService imageService,
-        ICityRepository cityRepository,
-        IImageRepository<CityImage> cityImageRepository)
+        ICityRepository cityRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
         _cityRepository = cityRepository;
-        _cityImageRepository = cityImageRepository;
     }
 
     public async Task Handle(CreateCityThumbnailCommand request,
@@ -45,27 +42,8 @@ public class CreateCityThumbnailCommandHandler : IRequestHandler<CreateCityThumb
             });
 
 
-        var cityThumbnail =
-            await _cityImageRepository.GetByIdAsync(ci => ci.CityId == request.CityId && ci.Thumbnail);
+        city.ThumbnailUrl = $"cities/{city.Name}_{request.Image.FileName}".Replace(' ', '_');
 
-        if (cityThumbnail != null)
-        {
-            cityThumbnail.ImagePath = $"cities/{city.Name}_{request.Image.FileName}".Replace(' ', '_');
-
-            await _unitOfWork.SaveChangesAsync();
-        }
-        else
-        {
-            cityThumbnail = new CityImage
-            {
-                Id = new Guid(),
-                CityId = request.CityId,
-                ImagePath = $"cities/{city.Name}_{request.Image.FileName}".Replace(' ', '_'),
-                Thumbnail = true
-            };
-
-            await _cityImageRepository.CreateAsync(cityThumbnail);
-            await _unitOfWork.SaveChangesAsync();
-        }
+        await _unitOfWork.SaveChangesAsync();
     }
 }

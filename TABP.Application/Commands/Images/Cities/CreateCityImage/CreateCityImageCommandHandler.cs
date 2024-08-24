@@ -43,8 +43,7 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
         {
             Id = new Guid(),
             CityId = request.CityId,
-            ImagePath = $"cities/{city.Name}_{image.FileName}".Replace(' ', '_'),
-            Thumbnail = false
+            ImagePath = $"cities/{city.Name}_{image.FileName}".Replace(' ', '_')
         });
 
         await _cityImageRepository.AddRangeAsync(cityImages);

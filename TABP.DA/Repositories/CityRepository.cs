@@ -20,8 +20,7 @@ public class CityRepository : ICityRepository
 
     public async Task<PagedList<City>> GetAsync(
         Filters<City> filters,
-        bool includeHotels = false,
-        bool includeThumbnail = false)
+        bool includeHotels = false)
     {
         var citiesQuery = _context.Cities.AsQueryable();
 
@@ -34,12 +33,6 @@ public class CityRepository : ICityRepository
         if (includeHotels)
         {
             citiesQuery = citiesQuery.Include(c => c.Hotels);
-        }
-
-        if (includeThumbnail)
-        {
-            citiesQuery = citiesQuery.Include(c =>
-                c.Images.Where(i => i.Thumbnail));
         }
 
         var cities = await PagedList<City>.CreateAsync(
@@ -58,6 +51,14 @@ public class CityRepository : ICityRepository
     public async Task<City?> GetByIdAsync(Guid id)
     {
         return await _context.Cities.FindAsync(id);
+    }
+
+    public async Task<string?> GetThumbnailPathAsync(Guid id)
+    {
+        return await _context.Cities
+            .Where(c => c.Id == id)
+            .Select(c => c.ThumbnailUrl)
+            .SingleOrDefaultAsync();
     }
 
     public async Task<City> CreateAsync(City city)

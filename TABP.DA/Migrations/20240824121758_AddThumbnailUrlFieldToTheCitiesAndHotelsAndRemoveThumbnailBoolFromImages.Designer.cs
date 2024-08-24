@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TABP.DAL.DbContexts;
 
@@ -11,9 +12,11 @@ using TABP.DAL.DbContexts;
 namespace TABP.DAL.Migrations
 {
     [DbContext(typeof(TABPDbContext))]
-    partial class TABPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240824121758_AddThumbnailUrlFieldToTheCitiesAndHotelsAndRemoveThumbnailBoolFromImages")]
+    partial class AddThumbnailUrlFieldToTheCitiesAndHotelsAndRemoveThumbnailBoolFromImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -149,6 +152,7 @@ namespace TABP.DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ThumbnailUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -278,6 +282,7 @@ namespace TABP.DAL.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("ThumbnailUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

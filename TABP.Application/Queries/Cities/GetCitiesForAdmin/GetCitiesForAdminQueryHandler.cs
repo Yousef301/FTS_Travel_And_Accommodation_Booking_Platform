@@ -34,7 +34,7 @@ public class GetCitiesForAdminQueryHandler : IRequestHandler<GetCitiesForAdminQu
             SortOrder = request.SortOrder,
             Page = request.Page,
             PageSize = request.PageSize
-        }, includeHotels: true, true);
+        }, includeHotels: true);
 
         var mappedCities = _mapper.Map<PagedList<CityAdminResponse>>(cities);
 

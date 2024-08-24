@@ -43,8 +43,7 @@ public class CreateHotelImageCommandHandler : IRequestHandler<CreateHotelImageCo
         {
             Id = new Guid(),
             HotelId = request.HotelId,
-            ImagePath = $"hotels/{hotel.Name}_{image.FileName}".Replace(' ', '_'),
-            Thumbnail = false
+            ImagePath = $"hotels/{hotel.Name}_{image.FileName}".Replace(' ', '_')
         });
 
         await _hotelImageRepository.AddRangeAsync(hotelImages);

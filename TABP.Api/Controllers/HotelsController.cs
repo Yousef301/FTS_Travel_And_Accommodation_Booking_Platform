@@ -57,7 +57,15 @@ public class HotelsController : ControllerBase
 
         return Ok(hotels.Items);
     }
-
+    
+    /// <summary>
+    /// Retrieves an amenity by its id.
+    /// </summary>
+    /// <param name="id">The unique identifier of the hotel.</param>
+    /// <returns>The requested hotel.</returns>
+    /// <response code="200">Returns the requested hotel.</response>
+    /// <response code="404">If the requested hotel wasn't found.</response>
+    /// <response code="500">If an internal server error occurs while retrieving the hotel.</response>
     [HttpGet("{id:guid}")]
     [AllowAnonymous]
     public async Task<IActionResult> GetHotel(Guid id)

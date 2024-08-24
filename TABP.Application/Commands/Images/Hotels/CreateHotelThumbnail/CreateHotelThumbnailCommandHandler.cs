@@ -13,17 +13,14 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
     private readonly IUnitOfWork _unitOfWork;
     private readonly IImageService _imageService;
     private readonly IHotelRepository _hotelRepository;
-    private readonly IImageRepository<HotelImage> _hotelImageRepository;
 
     public CreateHotelThumbnailCommandHandler(IUnitOfWork unitOfWork,
         IImageService imageService,
-        IHotelRepository hotelRepository,
-        IImageRepository<HotelImage> hotelImageRepository)
+        IHotelRepository hotelRepository)
     {
         _unitOfWork = unitOfWork;
         _imageService = imageService;
         _hotelRepository = hotelRepository;
-        _hotelImageRepository = hotelImageRepository;
     }
 
     public async Task Handle(CreateHotelThumbnailCommand request,
@@ -44,27 +41,8 @@ public class CreateHotelThumbnailCommandHandler : IRequestHandler<CreateHotelThu
                 { "fileExtension", $"{fileExtension}" },
             });
 
-        var hotelThumbnail =
-            await _hotelImageRepository.GetByIdAsync(hi => hi.HotelId == request.HotelId && hi.Thumbnail);
+        hotel.ThumbnailUrl = $"hotels/{hotel.Name}_{request.Image.FileName}".Replace(' ', '_');
 
-        if (hotelThumbnail != null)
-        {
-            hotelThumbnail.ImagePath = $"hotels/{hotel.Name}_{request.Image.FileName}".Replace(' ', '_');
-
-            await _unitOfWork.SaveChangesAsync();
-        }
-        else
-        {
-            hotelThumbnail = new HotelImage
-            {
-                Id = new Guid(),
-                HotelId = request.HotelId,
-                ImagePath = $"hotels/{hotel.Name}_{request.Image.FileName}".Replace(' ', '_'),
-                Thumbnail = true
-            };
-
-            await _hotelImageRepository.CreateAsync(hotelThumbnail);
-            await _unitOfWork.SaveChangesAsync();
-        }
+        await _unitOfWork.SaveChangesAsync();
     }
 }

@@ -4,5 +4,4 @@ public class Image
 {
     public Guid Id { get; set; }
     public string ImagePath { get; set; } = "";
-    public bool Thumbnail { get; set; }
 }

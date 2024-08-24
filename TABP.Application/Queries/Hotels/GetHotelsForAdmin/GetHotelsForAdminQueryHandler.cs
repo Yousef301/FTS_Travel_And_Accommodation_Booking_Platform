@@ -37,7 +37,7 @@ public class GetHotelsForAdminQueryHandler : IRequestHandler<GetHotelsForAdminQu
             SortOrder = request.SortOrder,
             Page = request.Page,
             PageSize = request.PageSize
-        }, true, true, true);
+        }, true, true);
 
         var mappedHotels = _mapper.Map<PagedList<HotelAdminResponse>>(hotels);
 

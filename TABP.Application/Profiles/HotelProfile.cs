@@ -22,21 +22,15 @@ public class HotelProfile : Profile
                     opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.NumberOfRooms,
                 opt =>
-                    opt.MapFrom(src => src.Rooms.Count))
-            .ForMember(dest => dest.ThumbnailUrl,
-                opt =>
-                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
-
+                    opt.MapFrom(src => src.Rooms.Count));
+        ;
         CreateMap<Hotel, HotelUserResponse>()
             .ForMember(dest => dest.City,
                 opt =>
                     opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.Price,
                 opt =>
-                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)))
-            .ForMember(dest => dest.ThumbnailUrl,
-                opt =>
-                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
+                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)));
 
         CreateMap<PagedList<Hotel>, PagedList<HotelAdminResponse>>()
             .ForMember(dest => dest.Items,
@@ -54,10 +48,7 @@ public class HotelProfile : Profile
                     opt.MapFrom(src => src.City.Name))
             .ForMember(dest => dest.Price,
                 opt =>
-                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)))
-            .ForMember(dest => dest.ThumbnailUrl,
-                opt =>
-                    opt.MapFrom(src => src.Images.FirstOrDefault()!.ImagePath));
+                    opt.MapFrom(src => src.Rooms.Min(r => r.Price)));
 
         CreateMap<FeaturedHotel, HotelWithFeaturedDealResponse>()
             .ForMember(dest => dest.DiscountedPrice,

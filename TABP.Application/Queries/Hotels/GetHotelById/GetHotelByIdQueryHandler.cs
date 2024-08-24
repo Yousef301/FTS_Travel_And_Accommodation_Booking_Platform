@@ -24,7 +24,7 @@ public class GetHotelByIdQueryHandler : IRequestHandler<GetHotelByIdQuery, Hotel
 
     public async Task<HotelResponseBase> Handle(GetHotelByIdQuery request, CancellationToken cancellationToken)
     {
-        var hotel = await _hotelRepository.GetByIdAsync(request.Id, includeThumbnail: true)
+        var hotel = await _hotelRepository.GetByIdAsync(request.Id)
                     ?? throw new NotFoundException(nameof(Hotel), request.Id);
 
         var mappedHotel = _mapper.Map<HotelResponseBase>(hotel);

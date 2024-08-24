@@ -41,14 +41,6 @@ public class HotelImageRepository : IImageRepository<HotelImage>
             .ToListAsync();
     }
 
-    public async Task<string?> GetThumbnailPathAsync(Guid id)
-    {
-        return await _context.HotelImages
-            .Where(h => h.HotelId == id && h.Thumbnail)
-            .Select(h => h.ImagePath)
-            .SingleOrDefaultAsync();
-    }
-
     public async Task<HotelImage> CreateAsync(HotelImage hotelImage)
     {
         var createdHotelImage = await _context.HotelImages

@@ -21,8 +21,7 @@ public class HotelRepository : IHotelRepository
     public async Task<PagedList<Hotel>> GetAsync(
         Filters<Hotel> filters,
         bool includeCity = false,
-        bool includeRooms = false,
-        bool includeThumbnail = false)
+        bool includeRooms = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
 
@@ -42,12 +41,6 @@ public class HotelRepository : IHotelRepository
             hotelsQuery = hotelsQuery.Include(h => h.Rooms);
         }
 
-        if (includeThumbnail)
-        {
-            hotelsQuery = hotelsQuery.Include(c =>
-                c.Images.Where(i => i.Thumbnail));
-        }
-
         var hotels = await PagedList<Hotel>.CreateAsync(
             hotelsQuery,
             filters.Page,
@@ -60,8 +53,7 @@ public class HotelRepository : IHotelRepository
     public async Task<PagedList<Hotel>> GetFilteredHotelsAsync(
         Filters<Hotel> filters,
         bool includeCity = false,
-        bool includeRooms = false,
-        bool includeThumbnail = false)
+        bool includeRooms = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
 
@@ -75,12 +67,6 @@ public class HotelRepository : IHotelRepository
         if (includeRooms)
         {
             hotelsQuery = hotelsQuery.Include(h => h.Rooms);
-        }
-
-        if (includeThumbnail)
-        {
-            hotelsQuery = hotelsQuery.Include(c =>
-                c.Images.Where(i => i.Thumbnail));
         }
 
         hotelsQuery = filters.SortOrder == SortOrder.DESC
@@ -100,7 +86,7 @@ public class HotelRepository : IHotelRepository
     {
         var hotels = await _context.Hotels
             .Where(h => h.Rooms.Any(r => r.SpecialOffers.Any(so => so.IsActive)))
-            .Select(h => new 
+            .Select(h => new
             {
                 h.Id,
                 h.CityId,
@@ -111,7 +97,7 @@ public class HotelRepository : IHotelRepository
                 h.PhoneNumber,
                 h.Email,
                 h.Rating,
-                ThumbnailPath = h.Images.SingleOrDefault(hi => hi.Thumbnail)!.ImagePath,
+                ThumbnailPath = h.ThumbnailUrl,
                 BestRoomDeal = h.Rooms
                     .Where(r => r.SpecialOffers.Any(so => so.IsActive))
                     .Select(r => new
@@ -147,8 +133,7 @@ public class HotelRepository : IHotelRepository
     public async Task<Hotel?> GetByIdAsync(
         Guid id,
         bool includeCity = false,
-        bool includeRooms = false,
-        bool includeThumbnail = false)
+        bool includeRooms = false)
     {
         var hotelsQuery = _context.Hotels.AsQueryable();
 
@@ -162,12 +147,6 @@ public class HotelRepository : IHotelRepository
             hotelsQuery = hotelsQuery.Include(h => h.Rooms);
         }
 
-        if (includeThumbnail)
-        {
-            hotelsQuery = hotelsQuery.Include(c =>
-                c.Images.Where(i => i.Thumbnail));
-        }
-
         return await hotelsQuery.SingleOrDefaultAsync(h => h.Id == id);
     }
 
@@ -176,6 +155,14 @@ public class HotelRepository : IHotelRepository
         return await _context.Hotels
             .Where(r => r.Id == id)
             .Select(r => r.Rating)
+            .SingleOrDefaultAsync();
+    }
+
+    public async Task<string?> GetThumbnailPathAsync(Guid id)
+    {
+        return await _context.Hotels
+            .Where(h => h.Id == id)
+            .Select(h => h.ThumbnailUrl)
             .SingleOrDefaultAsync();
     }
 
