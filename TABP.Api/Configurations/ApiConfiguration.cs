@@ -41,7 +41,7 @@ public static class ApiConfiguration
             .AddRedisConfigurations(secretManager);
 
         services.AddScoped<IUserContext, UserContext>();
-        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+        services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerOptionsConfigurations>();
 
         return services;
     }

@@ -9,35 +9,37 @@ using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.Domain.Enums;
 using TABP.Domain.Exceptions;
+using TABP.Domain.Services.Interfaces;
 
 namespace TABP.Application.Commands.Payments.PaymentWebhook;
 
 public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookCommand>
 {
     private readonly IBookingDetailRepository _bookingDetailRepository;
+    private readonly ISecretsManagerService _secretsManagerService;
     private readonly IBookingRepository _bookingRepository;
     private readonly IPaymentRepository _paymentRepository;
     private readonly IInvoiceRepository _invoiceRepository;
     private readonly IRoomRepository _roomRepository;
-    private readonly IConfiguration _configuration;
     private readonly IEmailService _emailService;
     private readonly IUnitOfWork _unitOfWork;
 
     public PaymentWebhookCommandHandler(IBookingDetailRepository bookingDetailRepository,
+        ISecretsManagerService secretsManagerService,
         IBookingRepository bookingRepository,
         IPaymentRepository paymentRepository,
         IInvoiceRepository invoiceRepository,
         IRoomRepository roomRepository,
-        IConfiguration configuration,
         IEmailService emailService,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork
+    )
     {
         _bookingDetailRepository = bookingDetailRepository;
+        _secretsManagerService = secretsManagerService;
         _bookingRepository = bookingRepository;
         _paymentRepository = paymentRepository;
         _invoiceRepository = invoiceRepository;
         _roomRepository = roomRepository;
-        _configuration = configuration;
         _emailService = emailService;
         _unitOfWork = unitOfWork;
     }
@@ -47,10 +49,13 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
     {
         try
         {
+            var secrets = await _secretsManagerService.GetSecretAsDictionaryAsync("dev_fts_payment");
+
             var stripeEvent = EventUtility.ConstructEvent(
                 request.DataStream,
                 request.Signature,
-                _configuration["StripeWebhookSecret"]
+                secrets["StripeWebhookSecret"] ??
+                throw new InvalidOperationException("Stripe webhook secret is missing.")
             );
 
             if (stripeEvent.Type == Events.CheckoutSessionCompleted)
