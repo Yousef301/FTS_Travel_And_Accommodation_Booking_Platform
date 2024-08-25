@@ -110,4 +110,11 @@ public static class ValidationExtensions
     {
         return Enum.TryParse(typeof(TEnum), value, true, out _);
     }
+
+    public static IRuleBuilderOptions<T, string> ValidSortOrder<T>(this IRuleBuilder<T, string> ruleBuilder)
+    {
+        return ruleBuilder.Must(value =>
+            value.Equals("asc", StringComparison.OrdinalIgnoreCase) ||
+            value.Equals("desc", StringComparison.OrdinalIgnoreCase));
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
+using TABP.Domain.Constants;
 using TABP.Domain.Enums;
 using TABP.Web.DTOs.Rooms;
 using TABP.Web.Extensions;
@@ -24,16 +25,21 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             When(x => x.path.EndsWith("/RoomNumber", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
-                    .NotEmpty().WithMessage("Room Number is required")
-                    .ValidString(1, 8, "RoomNumber");
+                    .NotEmpty()
+                    .WithMessage("Room Number is required")
+                    .ValidString(Constants.MinimumRoomNumberLength, Constants.MaximumRoomNumberLength, "RoomNumber");
             });
 
             When(x => x.path.EndsWith("/MaxChildren", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
-                    .NotEmpty().WithMessage("Max children is required")
-                    .Must(value => Convert.ToInt32(value) >= 0 && Convert.ToInt32(value) <= 10)
-                    .WithMessage("Max children must be between 0 and 10")
+                    .NotEmpty()
+                    .WithMessage("Max children is required")
+                    .Must(value =>
+                        Convert.ToInt32(value) >= Constants.MinimumNumberOfChildren &&
+                        Convert.ToInt32(value) <= Constants.MaximumNumberOfChildren)
+                    .WithMessage($"Max children must be between {Constants.MinimumNumberOfChildren}" +
+                                 $" and {Constants.MaximumNumberOfChildren}")
                     .WithName("MaxChildren");
             });
 
@@ -41,8 +47,11 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Max adults is required")
-                    .Must(value => Convert.ToInt32(value) >= 1 && Convert.ToInt32(value) <= 10)
-                    .WithMessage("Max adults must be between 1 and 10")
+                    .Must(value =>
+                        Convert.ToInt32(value) >= Constants.MinimumNumberOfAdults &&
+                        Convert.ToInt32(value) <= Constants.MaximumNumberOfAdults)
+                    .WithMessage($"Max adults must be between {Constants.MinimumNumberOfAdults}" +
+                                 $" and {Constants.MaximumNumberOfAdults}")
                     .WithName("MaxAdults");
             });
 
@@ -50,8 +59,11 @@ public class UpdateRoomValidator : AbstractValidator<JsonPatchDocument<UpdateRoo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Price is required")
-                    .Must(value => Convert.ToDecimal(value) >= 1 && Convert.ToDecimal(value) <= 10000)
-                    .WithMessage("Price must be between 1 and 10000")
+                    .Must(value =>
+                        Convert.ToDecimal(value) >= Constants.MinimumPrice &&
+                        Convert.ToDecimal(value) <= Constants.MaximumPrice)
+                    .WithMessage($"Price must be between {Constants.MinimumPrice}" +
+                                 $" and {Constants.MaximumPrice}")
                     .WithName("Price");
             });
         }

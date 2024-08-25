@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TABP.Domain.Constants;
 using TABP.Domain.Enums;
 using TABP.Web.DTOs.Hotels;
 using TABP.Web.Extensions;
@@ -21,26 +22,37 @@ public class HotelsSearchValidator : AbstractValidator<HotelsSearchDto>
             .WithMessage("Check-out date must be after check-in date.");
 
         RuleFor(x => x.NumberOfRooms)
-            .InclusiveBetween(1, 30).WithMessage("Number of rooms must be between 0 and 10");
+            .InclusiveBetween(Constants.MinimumNumberOfRooms, Constants.MaximumNumberOfRooms)
+            .WithMessage($"Number of rooms must be between {Constants.MinimumNumberOfRooms} " +
+                         $"and {Constants.MaximumNumberOfRooms}");
 
         RuleFor(x => x.NumberOfAdults)
-            .InclusiveBetween(2, 15).WithMessage("Number of adults must between 2 and 15");
+            .InclusiveBetween(Constants.MinimumNumberOfAdults, Constants.MaximumNumberOfAdults)
+            .WithMessage($"Number of adults must between {Constants.MinimumNumberOfAdults}" +
+                         $" and {Constants.MaximumNumberOfAdults}");
 
         RuleFor(x => x.NumberOfChildren)
-            .InclusiveBetween(0, 15).WithMessage("Number of children must between 0 and 15");
+            .InclusiveBetween(Constants.MinimumNumberOfChildren, Constants.MaximumNumberOfChildren)
+            .WithMessage($"Number of children must between {Constants.MinimumNumberOfChildren}" +
+                         $" and {Constants.MaximumNumberOfChildren}");
 
         RuleFor(x => x.MinPrice)
-            .GreaterThanOrEqualTo(0).WithMessage("Minimum price must be at least 0.")
-            .LessThan(x => x.MaxPrice).WithMessage("Minimum price must be less than maximum price.");
+            .GreaterThanOrEqualTo(Constants.MinimumPrice)
+            .WithMessage($"Minimum price must be at least {Constants.MinimumPrice}.")
+            .LessThan(x => x.MaxPrice)
+            .WithMessage("Minimum price must be less than maximum price.");
 
         RuleFor(x => x.MaxPrice)
-            .GreaterThan(x => x.MinPrice).WithMessage("Maximum price must be greater than minimum price.")
-            .LessThanOrEqualTo(10000).WithMessage("Maximum price must be at most 1000.");
+            .GreaterThan(x => x.MinPrice)
+            .WithMessage("Maximum price must be greater than minimum price.")
+            .LessThanOrEqualTo(Constants.MaximumPrice)
+            .WithMessage($"Maximum price must be at most {Constants.MaximumPrice}.");
 
         RuleFor(x => x.RoomType)
             .ValidEnumValue<HotelsSearchDto, RoomType>();
 
         RuleFor(x => x.ReviewRating)
-            .InclusiveBetween(0, 10).WithMessage("Rate must be between 0 and 10");
+            .InclusiveBetween(Constants.MinimumReviewRating, Constants.MaximumReviewRating)
+            .WithMessage($"Rate must be between {Constants.MinimumReviewRating} and {Constants.MaximumReviewRating}");
     }
 }

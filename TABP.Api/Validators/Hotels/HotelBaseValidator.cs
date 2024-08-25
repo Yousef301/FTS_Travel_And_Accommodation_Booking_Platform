@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TABP.Domain.Constants;
 using TABP.Web.DTOs.Hotels;
 using TABP.Web.Extensions;
 
@@ -13,18 +14,19 @@ public class HotelBaseValidator : AbstractValidator<HotelBase>
 
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Hotel name is required")
-            .ValidString(3, 50, "Hotel name");
+            .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Hotel name");
 
         RuleFor(x => x.Owner)
             .NotEmpty().WithMessage("Owner name is required")
-            .ValidString(3, 50, "Owner name");
+            .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Owner name");
 
         RuleFor(x => x.Address)
             .NotEmpty().WithMessage("Address is required")
-            .ValidString(3, 50, "Address");
-        
+            .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Address");
+
         RuleFor(x => x.Description)
             .NotEmpty()
-            .ValidString(10, 150, "Description");;
+            .ValidString(Constants.TextMinLength, Constants.TextMaxLength, "Description");
+        ;
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
+using TABP.Domain.Constants;
 using TABP.Web.DTOs.Hotels;
 using TABP.Web.Extensions;
 
@@ -30,28 +31,28 @@ public class UpdateHotelValidator : AbstractValidator<JsonPatchDocument<UpdateHo
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Country name is required")
-                    .ValidString(3, 50, "Name");
+                    .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Name");
             });
 
             When(x => x.path.EndsWith("/Owner", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Post Office is required")
-                    .ValidString(3, 50, "Owner");
+                    .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Owner");
             });
 
             When(x => x.path.EndsWith("/Address", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Address is required")
-                    .ValidString(3, 50, "Address");
+                    .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Address");
             });
 
             When(x => x.path.EndsWith("/Description", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Description is required")
-                    .ValidString(10, 150, "Description");
+                    .ValidString(Constants.TextMinLength, Constants.TextMaxLength, "Description");
             });
         }
     }

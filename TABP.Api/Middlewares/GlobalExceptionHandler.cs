@@ -1,7 +1,5 @@
 ﻿using System.Security.Authentication;
 using FluentValidation;
-using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using TABP.Domain.Exceptions;
 
 namespace TABP.Web.Middlewares;
@@ -41,16 +39,12 @@ public class GlobalExceptionHandler
     {
         var statusCode = exception switch
         {
-            ValidationException => StatusCodes.Status400BadRequest,
-            ArgumentException => StatusCodes.Status400BadRequest,
+            ValidationException or ArgumentException or BadRequestException => StatusCodes.Status400BadRequest,
             UnauthorizedAccessException => StatusCodes.Status403Forbidden,
             NotFoundException => StatusCodes.Status404NotFound,
             ConflictException => StatusCodes.Status409Conflict,
-            BadRequestException => StatusCodes.Status400BadRequest,
-            InternalServerErrorException => StatusCodes.Status500InternalServerError,
             PaymentRequiredException => StatusCodes.Status402PaymentRequired,
             InvalidCredentialException => StatusCodes.Status401Unauthorized,
-            SqlException => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError,
         };
 

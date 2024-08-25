@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
+using TABP.Domain.Constants;
 using TABP.Web.DTOs.Amenities;
 using TABP.Web.Extensions;
 
@@ -24,7 +25,7 @@ public class UpdateAmenityValidator : AbstractValidator<JsonPatchDocument<Update
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Name is required")
-                    .ValidString(2, 50, "Name");
+                    .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Name");
             });
         }
     }

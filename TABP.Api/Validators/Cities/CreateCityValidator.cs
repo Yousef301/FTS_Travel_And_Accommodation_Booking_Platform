@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TABP.Domain.Constants;
 using TABP.Web.DTOs.Cities;
 using TABP.Web.Extensions;
 
@@ -10,14 +11,14 @@ public class CreateCityValidator : AbstractValidator<CreateCityDto>
     {
         RuleFor(city => city.Name)
             .NotEmpty().WithMessage("City name is required.")
-            .ValidString(2, 50, "City name");
+            .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "City name");
 
         RuleFor(city => city.Country)
             .NotEmpty().WithMessage("Country is required.")
-            .ValidString(2, 50, "Country name");
+            .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Country name");
 
         RuleFor(city => city.PostOffice)
             .NotEmpty().WithMessage("Postal code is required.")
-            .ValidString(3, 30, "Postal Code");
+            .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Postal Code");
     }
 }

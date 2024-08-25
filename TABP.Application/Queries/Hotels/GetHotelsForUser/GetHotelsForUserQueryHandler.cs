@@ -36,7 +36,7 @@ public class GetHotelsForUserQueryHandler : IRequestHandler<GetHotelsForUserQuer
         {
             Page = request.Page,
             PageSize = request.PageSize,
-            FilterExpression = GetSearchExpression(request),
+            FilterExpression = GetFilterExpression(request),
             SortExpression = _hotelExpressions.GetSortExpression(request.SortBy),
             SortOrder = request.SortOrder
         }, true, true);
@@ -61,7 +61,7 @@ public class GetHotelsForUserQueryHandler : IRequestHandler<GetHotelsForUserQuer
         return mappedHotels;
     }
 
-    private Expression<Func<Hotel, bool>> GetSearchExpression(GetHotelsForUserQuery request)
+    private Expression<Func<Hotel, bool>> GetFilterExpression(GetHotelsForUserQuery request)
     {
         return _hotelExpressions.GetHotelsBasedOnCityOrHotelNameExpression(request.SearchString)
             .And(_hotelExpressions.GetHotelsBasedOnAdultsAndChildrenExpression(request.NumberOfAdults,

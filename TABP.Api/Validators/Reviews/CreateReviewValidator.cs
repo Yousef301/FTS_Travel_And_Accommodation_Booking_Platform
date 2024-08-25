@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TABP.Domain.Constants;
 using TABP.Web.DTOs.Reviews;
 using TABP.Web.Extensions;
 
@@ -10,10 +11,11 @@ public class CreateReviewValidator : AbstractValidator<CreateReviewDto>
     {
         RuleFor(x => x.Comment)
             .NotEmpty().WithMessage("Comment is required")
-            .ValidString(3, 120, "Comment");
+            .ValidString(Constants.TextMinLength, Constants.TextMaxLength, "Comment");
 
         RuleFor(x => x.Rate)
             .NotEmpty().WithMessage("Rate is required")
-            .InclusiveBetween(0, 10).WithMessage("Rate must be between 0 and 10");
+            .InclusiveBetween(Constants.MinimumReviewRating, Constants.MaximumReviewRating)
+            .WithMessage($"Rate must be between {Constants.MinimumReviewRating} and {Constants.MaximumReviewRating}");
     }
 }

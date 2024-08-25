@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using TABP.Domain.Constants;
 using TABP.Web.DTOs.Amenities;
 using TABP.Web.Extensions;
 
@@ -10,6 +11,6 @@ public class CreateAmenityValidator : AbstractValidator<CreateAmenityDto>
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Amenity name is required")
-            .ValidString(2, 30, "Amenity name");
+            .ValidString(Constants.NameMinLength, Constants.NameMaxLength, "Amenity name");
     }
 }

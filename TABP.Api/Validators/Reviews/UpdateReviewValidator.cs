@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
+using TABP.Domain.Constants;
 using TABP.Web.DTOs.Reviews;
 using TABP.Web.Extensions;
 
@@ -24,15 +25,18 @@ public class UpdateReviewValidator : AbstractValidator<JsonPatchDocument<UpdateR
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Comment is required")
-                    .ValidString(3, 120, "Name");
+                    .ValidString(Constants.TextMinLength, Constants.TextMaxLength, "Name");
             });
 
             When(x => x.path.EndsWith("/Rate", StringComparison.OrdinalIgnoreCase), () =>
             {
                 RuleFor(x => x.value)
                     .NotEmpty().WithMessage("Rate is required")
-                    .Must(value => Convert.ToDecimal(value) >= 0 && Convert.ToDecimal(value) <= 10)
-                    .WithMessage("Rate must be between 0 and 10")
+                    .Must(value =>
+                        Convert.ToDecimal(value) >= Constants.MinimumReviewRating &&
+                        Convert.ToDecimal(value) <= Constants.MaximumReviewRating)
+                    .WithMessage($"Rate must be between {Constants.MinimumReviewRating}" +
+                                 $" and {Constants.MaximumReviewRating}")
                     .WithName("Rate");
             });
         }
