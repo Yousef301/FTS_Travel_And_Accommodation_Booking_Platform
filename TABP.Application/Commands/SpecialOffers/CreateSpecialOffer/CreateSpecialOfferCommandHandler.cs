@@ -37,8 +37,6 @@ public class CreateSpecialOfferCommandHandler : IRequestHandler<CreateSpecialOff
 
         var specialOffer = _mapper.Map<SpecialOffer>(request);
 
-        specialOffer.Id = Guid.NewGuid();
-
         await _specialOfferRepository.CreateAsync(specialOffer);
 
         await _unitOfWork.SaveChangesAsync();

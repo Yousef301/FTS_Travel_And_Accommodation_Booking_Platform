@@ -5,7 +5,7 @@ namespace TABP.DAL.Entities;
 
 public class Invoice : IAuditableEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = new Guid();
     public Guid BookingId { get; set; }
     public decimal TotalPrice { get; set; }
     public PaymentStatus PaymentStatus { get; set; }

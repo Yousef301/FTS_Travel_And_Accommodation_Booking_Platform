@@ -24,9 +24,9 @@ public class RoomAmenityRepository : IRoomAmenityRepository
             .ToListAsync();
     }
 
-    public void AddRange(IEnumerable<RoomAmenity> roomAmenities)
+    public async Task AddRangeAsync(IEnumerable<RoomAmenity> roomAmenities)
     {
-        _context.RoomAmenities.AddRange(roomAmenities);
+        await _context.RoomAmenities.AddRangeAsync(roomAmenities);
     }
 
     public async Task DeleteAsync(Guid id)

@@ -4,7 +4,7 @@ namespace TABP.DAL.Entities;
 
 public class City : IAuditableEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = new Guid();
     public string Name { get; set; } = "";
     public string Country { get; set; } = "";
     public string PostOffice { get; set; } = "";

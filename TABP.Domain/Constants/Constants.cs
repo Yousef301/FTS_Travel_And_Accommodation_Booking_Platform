@@ -25,4 +25,5 @@ public static class Constants
     public const int MaximumRoomNumberLength = 8;
     public const int MinimumDiscount = 1;
     public const int MaximumDiscount = 100;
+    public const string CachedCitiesKey = "TrendingCities";
 }

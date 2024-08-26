@@ -74,6 +74,9 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
         {
             var pendingBooking = await _bookingRepository.GetPendingBooking(request.UserId);
 
+            if (pendingBooking != null)
+                _bookingRepository.Delete(pendingBooking);
+
             var booking = new Booking
             {
                 Id = Guid.NewGuid(),
@@ -92,20 +95,20 @@ public class CreateBookingCommandHandler : IRequestHandler<CreateBookingCommand,
 
             await _unitOfWork.SaveChangesAsync();
 
+            var bookingsDetails = new List<BookingDetail>();
+
             foreach (var room in roomsList)
             {
                 var bookingDetail = new BookingDetail
                 {
-                    Id = Guid.NewGuid(),
                     BookingId = booking.Id,
                     RoomId = room.Id
                 };
 
-                await _bookingDetailRepository.CreateAsync(bookingDetail);
+                bookingsDetails.Add(bookingDetail);
             }
 
-            if (pendingBooking != null)
-                _bookingRepository.Delete(pendingBooking);
+            await _bookingDetailRepository.AddRangeAsync(bookingsDetails);
 
             await _unitOfWork.SaveChangesAsync();
 

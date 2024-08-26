@@ -39,8 +39,6 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, RoomR
 
         var room = _mapper.Map<Room>(request);
 
-        room.Id = new Guid();
-
         await _roomRepository.CreateAsync(room);
 
         await _unitOfWork.SaveChangesAsync();

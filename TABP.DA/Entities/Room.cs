@@ -5,7 +5,7 @@ namespace TABP.DAL.Entities;
 
 public class Room : IAuditableEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = new Guid();
     public Guid HotelId { get; set; }
     public string RoomNumber { get; set; } = "";
     public RoomType RoomType { get; set; }

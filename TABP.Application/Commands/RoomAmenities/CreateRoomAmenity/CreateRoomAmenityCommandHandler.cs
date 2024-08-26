@@ -40,7 +40,6 @@ public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenity
 
             var createdRoomAmenity = new RoomAmenity
             {
-                Id = new Guid(),
                 RoomId = request.RoomId,
                 AmenityId = amenity
             };
@@ -48,7 +47,7 @@ public class CreateRoomAmenityCommandHandler : IRequestHandler<CreateRoomAmenity
             roomAmenities.Add(createdRoomAmenity);
         }
 
-        _roomAmenityRepository.AddRange(roomAmenities);
+        await _roomAmenityRepository.AddRangeAsync(roomAmenities);
 
         await _unitOfWork.SaveChangesAsync();
     }

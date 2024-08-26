@@ -39,6 +39,11 @@ public class BookingDetailRepository : IBookingDetailRepository
         return createdBookingDetail.Entity;
     }
 
+    public async Task AddRangeAsync(List<BookingDetail> bookingsDetails)
+    {
+        await _context.BookingDetails.AddRangeAsync(bookingsDetails);
+    }
+
     public async Task<bool> ExistsAsync(Expression<Func<BookingDetail, bool>> predicate)
     {
         return await _context.BookingDetails.AnyAsync(predicate);

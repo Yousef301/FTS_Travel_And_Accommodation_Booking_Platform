@@ -41,7 +41,6 @@ public class CreateCityImageCommandHandler : IRequestHandler<CreateCityImageComm
 
         var cityImages = request.Images.Select(image => new CityImage
         {
-            Id = new Guid(),
             CityId = request.CityId,
             ImagePath = $"cities/{city.Name}_{image.FileName}".Replace(' ', '_')
         });

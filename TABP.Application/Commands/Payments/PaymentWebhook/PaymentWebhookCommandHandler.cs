@@ -93,7 +93,6 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
 
                     var payment = new Payment
                     {
-                        Id = new Guid(),
                         UserId = userId,
                         BookingId = booking.Id,
                         PaymentDate = DateTime.Now,
@@ -112,7 +111,6 @@ public class PaymentWebhookCommandHandler : IRequestHandler<PaymentWebhookComman
 
                     var invoice = new DAL.Entities.Invoice
                     {
-                        Id = new Guid(),
                         BookingId = booking.Id,
                         TotalPrice = booking.TotalPrice,
                         InvoiceDate = DateTime.Now,

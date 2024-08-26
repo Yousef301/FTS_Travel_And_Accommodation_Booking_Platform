@@ -2,6 +2,6 @@
 
 public class Image
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = new Guid();
     public string ImagePath { get; set; } = "";
 }

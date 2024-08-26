@@ -16,7 +16,7 @@ public class CreateBookingCommandHandlerTests
     private readonly Mock<IHotelRepository> _hotelRepository;
     private readonly Mock<IRoomRepository> _roomRepository;
     private readonly Mock<IUnitOfWork> _unitOfWork;
-    private CreateBookingCommandHandler _handler;
+    private readonly CreateBookingCommandHandler _handler;
 
     public CreateBookingCommandHandlerTests()
     {
@@ -108,24 +108,12 @@ public class CreateBookingCommandHandlerTests
             .ReturnsAsync(exists);
     }
 
-    private void SetupRoomRepository(IEnumerable<Room> rooms)
-    {
-        _roomRepository.Setup(x => x.GetByIdAndHotelIdAsync(It.IsAny<Guid>(), It.IsAny<IEnumerable<Guid>>()))
-            .ReturnsAsync(rooms);
-    }
-
     private void SetupBookingRepository(bool overlap)
     {
         _bookingRepository.Setup(x =>
                 x.IsBookingOverlapsAsync(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<DateOnly>(),
                     It.IsAny<DateOnly>()))
             .ReturnsAsync(overlap);
-    }
-
-    private void SetupBookingRepositoryPending(Booking? booking)
-    {
-        _bookingRepository.Setup(x => x.GetPendingBooking(It.IsAny<Guid>()))
-            .ReturnsAsync(booking);
     }
 
     private CreateBookingCommand CreateCommand(

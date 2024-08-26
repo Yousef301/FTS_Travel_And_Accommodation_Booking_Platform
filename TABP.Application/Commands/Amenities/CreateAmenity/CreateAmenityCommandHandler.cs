@@ -31,8 +31,6 @@ public class CreateAmenityCommandHandler : IRequestHandler<CreateAmenityCommand,
 
         var amenity = _mapper.Map<Amenity>(request);
 
-        amenity.Id = Guid.NewGuid();
-
         var createdAmenity = await _amenityRepository.CreateAsync(amenity);
 
         await _unitOfWork.SaveChangesAsync();

@@ -26,8 +26,6 @@ public class CreateHotelCommandHandler : IRequestHandler<CreateHotelCommand>
     {
         var hotel = _mapper.Map<Hotel>(request);
 
-        hotel.Id = Guid.NewGuid();
-
         await _hotelRepository.CreateAsync(hotel);
 
         await _unitOfWork.SaveChangesAsync();

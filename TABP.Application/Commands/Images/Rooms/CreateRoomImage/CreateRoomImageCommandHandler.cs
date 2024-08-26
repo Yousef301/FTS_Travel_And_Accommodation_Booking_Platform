@@ -42,7 +42,6 @@ public class CreateRoomImageCommandHandler : IRequestHandler<CreateRoomImageComm
 
         var roomImages = request.Images.Select(image => new RoomImage
         {
-            Id = new Guid(),
             RoomId = request.RoomId,
             ImagePath = $"rooms/{room.RoomNumber}_{image.FileName}".Replace(' ', '_')
         });

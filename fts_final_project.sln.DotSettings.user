@@ -5,5 +5,7 @@
     &lt;TestId&gt;xUnit::79CE4CC7-8759-4A4E-9880-CF5789092FA9::net8.0::TABP.Tests.ProjectDependencyTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::79CE4CC7-8759-4A4E-9880-CF5789092FA9::net8.0::TABP.Tests.Bookings.CancelBookingCommandHandlerTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::79CE4CC7-8759-4A4E-9880-CF5789092FA9::net8.0::TABP.Tests.DependenciesTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::79CE4CC7-8759-4A4E-9880-CF5789092FA9::net8.0::TABP.Tests.Services.SmtpEmailServiceTests.SendEmailAsync_ShouldSendEmail_WhenCalled&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::79CE4CC7-8759-4A4E-9880-CF5789092FA9::net8.0::TABP.Tests.Bookings.CreateBookingCommandHandlerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

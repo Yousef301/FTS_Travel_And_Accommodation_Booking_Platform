@@ -16,7 +16,7 @@ public class CancelBookingCommandHandlerTests
     private readonly Mock<IBookingRepository> _bookingRepository;
     private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly Mock<IMapper> _mapper;
-    private CancelBookingCommandHandler _handler;
+    private readonly CancelBookingCommandHandler _handler;
 
     public CancelBookingCommandHandlerTests()
     {

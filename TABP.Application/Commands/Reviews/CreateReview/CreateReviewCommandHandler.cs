@@ -51,7 +51,6 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand>
         var newRate = (currentHotelRate * hotelReviewsCount + request.Rate) / (hotelReviewsCount + 1);
 
         var createReview = _mapper.Map<Review>(request);
-        createReview.Id = Guid.NewGuid();
 
         await _unitOfWork.BeginTransactionAsync();
 

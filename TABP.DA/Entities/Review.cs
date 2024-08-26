@@ -4,7 +4,7 @@ namespace TABP.DAL.Entities;
 
 public class Review : IAuditableEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = new Guid();
     public Guid UserId { get; set; }
     public Guid HotelId { get; set; }
     public double Rate { get; set; }

@@ -36,8 +36,6 @@ public class CreateCityCommandHandler : IRequestHandler<CreateCityCommand, CityR
 
         var city = _mapper.Map<City>(request);
 
-        city.Id = new Guid();
-
         var createdCity = await _cityRepository.CreateAsync(city);
 
         await _unitOfWork.SaveChangesAsync();

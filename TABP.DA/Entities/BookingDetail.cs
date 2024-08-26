@@ -4,7 +4,7 @@ namespace TABP.DAL.Entities;
 
 public class BookingDetail : IAuditableEntity
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = new Guid();
     public Guid BookingId { get; set; }
     public Guid RoomId { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;

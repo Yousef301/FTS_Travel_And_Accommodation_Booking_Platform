@@ -12,6 +12,7 @@ using TABP.Application.Commands.Cities.UpdateCity;
 using TABP.Application.Queries.Cities;
 using TABP.Application.Queries.Cities.GetCitiesForAdmin;
 using TABP.Application.Queries.Cities.GetTrendingCities;
+using TABP.Domain.Constants;
 using TABP.Domain.Enums;
 using TABP.Domain.Extensions;
 using TABP.Web.DTOs;
@@ -26,8 +27,6 @@ namespace TABP.Web.Controllers;
 [Authorize(Roles = nameof(Role.Admin))]
 public class CitiesController : ControllerBase
 {
-    private const string CacheKey = "TrendingCities";
-
     private readonly IDistributedCache _distributedCache;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
@@ -51,7 +50,7 @@ public class CitiesController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> GetTrendingCities()
     {
-        var cachedCities = await _distributedCache.GetStringAsync(CacheKey);
+        var cachedCities = await _distributedCache.GetStringAsync(Constants.CachedCitiesKey);
 
         if (string.IsNullOrEmpty(cachedCities))
         {
@@ -63,7 +62,9 @@ public class CitiesController : ControllerBase
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
             };
 
-            await _distributedCache.SetStringAsync(CacheKey, JsonSerializer.Serialize(trendingCities), cacheOptions);
+            await _distributedCache.SetStringAsync(Constants.CachedCitiesKey, JsonSerializer.Serialize(trendingCities),
+                cacheOptions);
+
             return Ok(trendingCities);
         }
 

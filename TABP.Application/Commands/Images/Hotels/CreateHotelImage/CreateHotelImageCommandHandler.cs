@@ -41,7 +41,6 @@ public class CreateHotelImageCommandHandler : IRequestHandler<CreateHotelImageCo
 
         var hotelImages = request.Images.Select(image => new HotelImage
         {
-            Id = new Guid(),
             HotelId = request.HotelId,
             ImagePath = $"hotels/{hotel.Name}_{image.FileName}".Replace(' ', '_')
         });
