@@ -3,8 +3,8 @@ using AutoMapper;
 using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Exceptions;
-using TABP.Domain.Models;
+using TABP.Shared.Exceptions;
+using TABP.Shared.Models;
 
 namespace TABP.Application.Queries.Rooms.GetRoomsForAdmin;
 

@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using TABP.DAL.Entities;
 using TABP.DAL.Models.Procedures;
-using TABP.Domain.Models;
+using TABP.Shared.Models;
 
 namespace TABP.DAL.Interfaces.Repositories;
 

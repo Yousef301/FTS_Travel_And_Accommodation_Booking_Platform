@@ -2,7 +2,7 @@
 using MediatR;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Exceptions;
+using TABP.Shared.Exceptions;
 
 namespace TABP.Application.Commands.Users.Auth;
 

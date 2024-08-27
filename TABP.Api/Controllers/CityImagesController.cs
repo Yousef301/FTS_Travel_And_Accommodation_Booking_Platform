@@ -8,7 +8,7 @@ using TABP.Application.Commands.Images.Cities.DeleteCityImage;
 using TABP.Application.Queries.Images.Cities.GetCityImageById;
 using TABP.Application.Queries.Images.Cities.GetCityImages;
 using TABP.Application.Queries.Images.Cities.GetCityThumbnail;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 
 namespace TABP.Web.Controllers;
 

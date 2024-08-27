@@ -3,8 +3,8 @@ using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Enums;
-using TABP.Domain.Exceptions;
+using TABP.Shared.Enums;
+using TABP.Shared.Exceptions;
 
 namespace TABP.Application.Commands.Reviews.CreateReview;
 

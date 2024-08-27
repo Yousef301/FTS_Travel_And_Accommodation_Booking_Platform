@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 using TABP.Web.DTOs.Bookings;
 using TABP.Web.Extensions;
 

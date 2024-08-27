@@ -4,8 +4,8 @@ using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.DAL.Models;
-using TABP.Domain.Enums;
-using TABP.Domain.Models;
+using TABP.Shared.Enums;
+using TABP.Shared.Models;
 
 namespace TABP.DAL.Repositories;
 
@@ -97,7 +97,7 @@ public class HotelRepository : IHotelRepository
                 h.PhoneNumber,
                 h.Email,
                 h.Rating,
-                ThumbnailPath = h.ThumbnailUrl,
+                h.ThumbnailUrl,
                 BestRoomDeal = h.Rooms
                     .Where(r => r.SpecialOffers.Any(so => so.IsActive))
                     .Select(r => new
@@ -124,7 +124,7 @@ public class HotelRepository : IHotelRepository
             PhoneNumber = h.PhoneNumber,
             Email = h.Email,
             Rating = h.Rating,
-            ThumbnailUrl = h.ThumbnailPath,
+            ThumbnailUrl = h.ThumbnailUrl,
             OriginalPrice = h.BestRoomDeal.OriginalPrice,
             Discount = h.BestRoomDeal.BestOffer
         });

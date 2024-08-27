@@ -8,7 +8,7 @@ using TABP.Application.Commands.Images.Hotels.DeleteHotelImage;
 using TABP.Application.Queries.Images.Hotels.GetHotelImageById;
 using TABP.Application.Queries.Images.Hotels.GetHotelImages;
 using TABP.Application.Queries.Images.Hotels.GetHotelThumbnail;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 
 namespace TABP.Web.Controllers;
 

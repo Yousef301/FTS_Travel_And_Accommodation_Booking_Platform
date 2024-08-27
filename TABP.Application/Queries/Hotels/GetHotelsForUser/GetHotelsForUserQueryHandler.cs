@@ -7,7 +7,7 @@ using TABP.Application.Helpers.Interfaces;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Models;
+using TABP.Shared.Models;
 
 namespace TABP.Application.Queries.Hotels.GetHotelsForUser;
 

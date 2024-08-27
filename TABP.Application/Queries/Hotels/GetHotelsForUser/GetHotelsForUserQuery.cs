@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using TABP.Domain.Enums;
-using TABP.Domain.Models;
+using TABP.Shared.Enums;
+using TABP.Shared.Models;
 
 namespace TABP.Application.Queries.Hotels.GetHotelsForUser;
 

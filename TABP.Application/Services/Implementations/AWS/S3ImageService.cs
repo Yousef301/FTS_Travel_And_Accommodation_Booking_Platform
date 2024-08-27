@@ -3,7 +3,7 @@ using Amazon.S3.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using TABP.Application.Services.Interfaces;
-using TABP.Domain.Services.Interfaces;
+using TABP.Shared.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations.AWS;
 

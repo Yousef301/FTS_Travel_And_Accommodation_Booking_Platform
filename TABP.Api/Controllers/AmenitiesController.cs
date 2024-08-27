@@ -9,7 +9,7 @@ using TABP.Application.Commands.Amenities.DeleteAmenity;
 using TABP.Application.Commands.Amenities.UpdateAmenity;
 using TABP.Application.Queries.Amenities.GetAmenities;
 using TABP.Application.Queries.Amenities.GetAmenityById;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 using TABP.Web.DTOs.Amenities;
 
 namespace TABP.Web.Controllers;

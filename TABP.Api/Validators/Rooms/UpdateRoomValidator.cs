@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
-using TABP.Domain.Constants;
-using TABP.Domain.Enums;
+using TABP.Shared.Constants;
 using TABP.Web.DTOs.Rooms;
 using TABP.Web.Extensions;
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
-using TABP.Domain.Models;
+using TABP.Shared.Models;
 
 namespace TABP.Web.Extensions;
 

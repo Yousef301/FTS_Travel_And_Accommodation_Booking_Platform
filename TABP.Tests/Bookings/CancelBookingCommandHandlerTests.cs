@@ -6,8 +6,8 @@ using TABP.Application.Commands.Bookings.CancelBooking;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Enums;
-using TABP.Domain.Exceptions;
+using TABP.Shared.Enums;
+using TABP.Shared.Exceptions;
 
 namespace TABP.Tests.Bookings;
 

@@ -4,7 +4,7 @@ using TABP.Application.Commands.Cities.UpdateCity;
 using TABP.Application.Queries.Cities;
 using TABP.DAL.Entities;
 using TABP.DAL.Models.Procedures;
-using TABP.Domain.Models;
+using TABP.Shared.Models;
 
 namespace TABP.Application.Profiles;
 

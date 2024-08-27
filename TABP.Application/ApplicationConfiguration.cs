@@ -8,7 +8,7 @@ using TABP.Application.Services.Implementations;
 using TABP.Application.Services.Implementations.AWS;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL;
-using TABP.Domain.Services.Interfaces;
+using TABP.Shared.Services.Interfaces;
 
 namespace TABP.Application;
 

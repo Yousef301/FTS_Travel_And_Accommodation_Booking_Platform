@@ -1,6 +1,6 @@
 ﻿using System.Security.Authentication;
 using FluentValidation;
-using TABP.Domain.Exceptions;
+using TABP.Shared.Exceptions;
 
 namespace TABP.Web.Middlewares;
 

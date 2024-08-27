@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
-using TABP.Domain.Services.Interfaces;
+using TABP.Shared.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations;
 

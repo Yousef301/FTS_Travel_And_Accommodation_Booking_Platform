@@ -4,7 +4,7 @@ using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.DAL.Models;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 
 namespace TABP.DAL.Repositories;
 

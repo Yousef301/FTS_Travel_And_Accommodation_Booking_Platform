@@ -5,7 +5,7 @@ using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
 using TABP.DAL.Repositories;
-using TABP.Domain.Services.Interfaces;
+using TABP.Shared.Services.Interfaces;
 
 namespace TABP.DAL;
 

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using TABP.Domain.Constants;
+using TABP.Shared.Constants;
 using TABP.Web.DTOs.SpecialOffers;
 using TABP.Web.Extensions;
 

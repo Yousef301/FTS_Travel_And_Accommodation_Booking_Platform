@@ -2,10 +2,10 @@
 using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Enums;
-using TABP.Domain.Exceptions;
-using TABP.Domain.Models;
-using TABP.Domain.Services.Interfaces;
+using TABP.Shared.Enums;
+using TABP.Shared.Exceptions;
+using TABP.Shared.Models;
+using TABP.Shared.Services.Interfaces;
 
 namespace TABP.Application.Commands.Bookings.CheckoutBooking;
 

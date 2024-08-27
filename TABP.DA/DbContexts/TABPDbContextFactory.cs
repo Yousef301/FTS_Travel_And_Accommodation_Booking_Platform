@@ -1,7 +1,7 @@
 ﻿using Amazon.SecretsManager;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using TABP.Domain.Services.Implementations;
+using TABP.Shared.Services.Implementations;
 
 namespace TABP.DAL.DbContexts;
 

@@ -1,6 +1,4 @@
-﻿using TABP.Domain.Constants;
-
-namespace TABP.Web.DTOs.Rooms;
+﻿namespace TABP.Web.DTOs.Rooms;
 
 public class RoomBase
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.Payments.PaymentWebhook;
 using TABP.Application.Queries.Payments.GetPayments;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Controllers;

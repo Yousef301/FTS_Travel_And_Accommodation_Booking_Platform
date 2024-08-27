@@ -1,5 +1,5 @@
 ﻿using TABP.DAL.Interfaces;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 
 namespace TABP.DAL.Entities;
 

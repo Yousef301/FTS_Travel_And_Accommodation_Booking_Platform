@@ -27,7 +27,7 @@
       <ProjectReference Include="..\TABP.Api\TABP.Api.csproj" />
       <ProjectReference Include="..\TABP.Application\TABP.Application.csproj" />
       <ProjectReference Include="..\TABP.DA\TABP.DA.csproj" />
-      <ProjectReference Include="..\TABP.Domain\TABP.Domain.csproj" />
+      <ProjectReference Include="..\TABP.Shared\TABP.Shared.csproj" />
     </ItemGroup>
 
 </Project>

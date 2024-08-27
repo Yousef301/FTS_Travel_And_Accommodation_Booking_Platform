@@ -1,4 +1,5 @@
-﻿using TABP.Domain.Models;
+﻿
+using TABP.Shared.Models;
 
 namespace TABP.Application.Services.Interfaces;
 

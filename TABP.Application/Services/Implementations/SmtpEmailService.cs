@@ -3,8 +3,8 @@ using System.Net.Mail;
 using System.Text;
 using TABP.Application.Queries.Invoices;
 using TABP.Application.Services.Interfaces;
-using TABP.Domain.Exceptions;
-using TABP.Domain.Services.Interfaces;
+using TABP.Shared.Exceptions;
+using TABP.Shared.Services.Interfaces;
 
 namespace TABP.Application.Services.Implementations;
 

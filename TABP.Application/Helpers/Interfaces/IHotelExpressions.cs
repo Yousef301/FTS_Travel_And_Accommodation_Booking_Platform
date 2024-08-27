@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using TABP.DAL.Entities;
-using TABP.Domain.Enums;
 
 namespace TABP.Application.Helpers.Interfaces;
 

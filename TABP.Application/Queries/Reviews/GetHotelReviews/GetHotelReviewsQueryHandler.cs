@@ -2,7 +2,7 @@
 using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Exceptions;
+using TABP.Shared.Exceptions;
 
 namespace TABP.Application.Queries.Reviews.GetHotelReviews;
 

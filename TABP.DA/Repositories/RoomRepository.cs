@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using TABP.DAL.DbContexts;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Enums;
-using TABP.Domain.Models;
+using TABP.Shared.Enums;
+using TABP.Shared.Models;
 
 namespace TABP.DAL.Repositories;
 

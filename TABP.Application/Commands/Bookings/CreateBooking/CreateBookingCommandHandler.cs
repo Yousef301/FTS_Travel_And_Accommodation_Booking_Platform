@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using MediatR;
-using TABP.Application.Queries.Bookings;
-using TABP.Application.Services.Interfaces;
+﻿using MediatR;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Enums;
-using TABP.Domain.Exceptions;
+using TABP.Shared.Enums;
+using TABP.Shared.Exceptions;
 
 namespace TABP.Application.Commands.Bookings.CreateBooking;
 

@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Queries.Invoices.GetInvoiceAsPdf;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Controllers;

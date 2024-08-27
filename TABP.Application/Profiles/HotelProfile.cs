@@ -4,7 +4,7 @@ using TABP.Application.Commands.Hotels.UpdateHotel;
 using TABP.Application.Queries.Hotels;
 using TABP.DAL.Entities;
 using TABP.DAL.Models;
-using TABP.Domain.Models;
+using TABP.Shared.Models;
 
 namespace TABP.Application.Profiles;
 

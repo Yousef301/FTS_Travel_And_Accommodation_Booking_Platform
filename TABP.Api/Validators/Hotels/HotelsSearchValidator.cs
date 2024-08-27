@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using TABP.Domain.Constants;
-using TABP.Domain.Enums;
+using TABP.Shared.Constants;
+using TABP.Shared.Enums;
 using TABP.Web.DTOs.Hotels;
 using TABP.Web.Extensions;
 using TABP.Web.Validators.Filters;

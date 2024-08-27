@@ -1,4 +1,5 @@
-﻿using TABP.Domain.Enums;
+﻿
+using TABP.Shared.Enums;
 
 namespace TABP.Web.Helpers.Interfaces;
 

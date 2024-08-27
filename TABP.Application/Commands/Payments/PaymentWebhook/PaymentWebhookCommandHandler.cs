@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Configuration;
 using Stripe;
 using Stripe.Checkout;
 using TABP.Application.Queries.Invoices;
@@ -7,9 +6,9 @@ using TABP.Application.Services.Interfaces;
 using TABP.DAL.Entities;
 using TABP.DAL.Interfaces;
 using TABP.DAL.Interfaces.Repositories;
-using TABP.Domain.Enums;
-using TABP.Domain.Exceptions;
-using TABP.Domain.Services.Interfaces;
+using TABP.Shared.Enums;
+using TABP.Shared.Exceptions;
+using TABP.Shared.Services.Interfaces;
 
 namespace TABP.Application.Commands.Payments.PaymentWebhook;
 

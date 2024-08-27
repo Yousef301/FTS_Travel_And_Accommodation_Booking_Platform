@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using TABP.Application.Commands.RoomAmenities.CreateRoomAmenity;
 using TABP.Application.Commands.RoomAmenities.DeleteRoomAmenity;
 using TABP.Application.Queries.RoomAmenities.GetRoomAmenities;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 using TABP.Web.DTOs.RoomAmenities;
 
 namespace TABP.Web.Controllers;

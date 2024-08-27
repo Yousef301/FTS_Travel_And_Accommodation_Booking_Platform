@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using TABP.Application.Helpers.Interfaces;
 using TABP.DAL.Entities;
-using TABP.Domain.Enums;
+using TABP.Shared.Enums;
 
 namespace TABP.Application.Helpers.Implementations;
 

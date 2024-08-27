@@ -3,7 +3,7 @@ using TABP.Application.Commands.Rooms.CreateRoom;
 using TABP.Application.Commands.Rooms.UpdateRoom;
 using TABP.Application.Queries.Rooms;
 using TABP.DAL.Entities;
-using TABP.Domain.Models;
+using TABP.Shared.Models;
 
 namespace TABP.Application.Profiles;
 

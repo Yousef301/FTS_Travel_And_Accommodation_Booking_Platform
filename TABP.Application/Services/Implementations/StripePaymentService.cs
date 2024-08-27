@@ -1,8 +1,8 @@
 ﻿using Stripe;
 using Stripe.Checkout;
 using TABP.Application.Services.Interfaces;
-using TABP.Domain.Exceptions;
-using TABP.Domain.Models;
+using TABP.Shared.Exceptions;
+using TABP.Shared.Models;
 
 namespace TABP.Application.Services.Implementations;
 

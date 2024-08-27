@@ -1,4 +1,5 @@
-﻿using TABP.Domain.Constants;
+﻿
+using TABP.Shared.Constants;
 
 namespace TABP.Web.DTOs;
 
