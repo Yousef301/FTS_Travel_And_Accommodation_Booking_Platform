@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["TABP.Api/TABP.Api.csproj", "TABP.Api/"]
 COPY ["TABP.Application/TABP.Application.csproj", "TABP.Application/"]
 COPY ["TABP.DA/TABP.DA.csproj", "TABP.DA/"]
-COPY ["TABP.Domain/TABP.Domain.csproj", "TABP.Domain/"]
+COPY ["TABP.Shared/TABP.Shared.csproj", "TABP.Shared/"]
 RUN dotnet restore "TABP.Api/TABP.Api.csproj"
 COPY . .
 WORKDIR "/src/TABP.Api"
