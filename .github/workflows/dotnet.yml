@@ -39,6 +39,17 @@ jobs:
         
     - name: Build and Push Docker image
       run: |
-        docker build -t secrets.DOCKER_USERNAME/tabp:latest .
-        docker push secrets.DOCKER_USERNAME/tabp:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/tabp:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/tabp:latest
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd ~/FTS_Travel_And_Accommodation_Booking_Platform/
+          ./deploy.sh
+
 
