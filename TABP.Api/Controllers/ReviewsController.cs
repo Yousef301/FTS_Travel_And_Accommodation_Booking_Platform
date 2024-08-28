@@ -21,15 +21,15 @@ namespace TABP.Web.Controllers;
 [Authorize(Roles = nameof(Role.Customer))]
 public class ReviewsController : ControllerBase
 {
-    private readonly IUserContext _userContext;
+    private readonly IUserIdentity _userIdentity;
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 
-    public ReviewsController(IUserContext userContext,
+    public ReviewsController(IUserIdentity userIdentity,
         IMapper mapper,
         IMediator mediator)
     {
-        _userContext = userContext;
+        _userIdentity = userIdentity;
         _mediator = mediator;
         _mapper = mapper;
     }
@@ -69,7 +69,7 @@ public class ReviewsController : ControllerBase
     {
         var userReviews = await _mediator.Send(new GetUserHotelReviewsQuery
         {
-            UserId = _userContext.Id,
+            UserId = _userIdentity.Id,
             HotelId = hotelId
         });
 
@@ -93,7 +93,7 @@ public class ReviewsController : ControllerBase
     {
         var command = _mapper.Map<CreateReviewCommand>(createReviewDto);
         command.HotelId = hotelId;
-        command.UserId = _userContext.Id;
+        command.UserId = _userIdentity.Id;
 
         await _mediator.Send(command);
 
@@ -118,7 +118,7 @@ public class ReviewsController : ControllerBase
         {
             HotelId = hotelId,
             ReviewId = reviewId,
-            UserId = _userContext.Id
+            UserId = _userIdentity.Id
         };
 
         await _mediator.Send(command);
@@ -149,7 +149,7 @@ public class ReviewsController : ControllerBase
         {
             HotelId = hotelId,
             ReviewId = reviewId,
-            UserId = _userContext.Id,
+            UserId = _userIdentity.Id,
             ReviewDocument = reviewDocument
         });
 

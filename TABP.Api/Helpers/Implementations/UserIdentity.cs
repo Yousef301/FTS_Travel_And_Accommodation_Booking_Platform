@@ -4,11 +4,11 @@ using TABP.Web.Helpers.Interfaces;
 
 namespace TABP.Web.Helpers.Implementations;
 
-public class UserContext : IUserContext
+public class UserIdentity : IUserIdentity
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserContext(IHttpContextAccessor httpContextAccessor)
+    public UserIdentity(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }

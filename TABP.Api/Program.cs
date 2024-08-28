@@ -48,6 +48,9 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.MapControllers();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.Lifetime.ApplicationStopped.Register(() => { Log.Information($"Application stopped at {DateTime.Now}"); });
 
 app.Run();

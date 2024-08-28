@@ -40,7 +40,7 @@ public static class ApiConfiguration
             .AddApiVersioningConfigurations()
             .AddRedisConfigurations(secretManager);
 
-        services.AddScoped<IUserContext, UserContext>();
+        services.AddScoped<IUserIdentity, UserIdentity>();
         services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerOptionsConfigurations>();
 
         return services;

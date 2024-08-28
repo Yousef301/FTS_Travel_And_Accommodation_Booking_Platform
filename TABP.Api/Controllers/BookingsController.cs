@@ -22,15 +22,15 @@ public class BookingsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IMediator _mediator;
-    private readonly IUserContext _userContext;
+    private readonly IUserIdentity _userIdentity;
 
     public BookingsController(IMapper mapper,
         IMediator mediator,
-        IUserContext userContext)
+        IUserIdentity userIdentity)
     {
         _mapper = mapper;
         _mediator = mediator;
-        _userContext = userContext;
+        _userIdentity = userIdentity;
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public class BookingsController : ControllerBase
     {
         var bookings = await _mediator.Send(new GetBookingsQuery
         {
-            UserId = _userContext.Id
+            UserId = _userIdentity.Id
         });
 
         return Ok(bookings);
@@ -67,7 +67,7 @@ public class BookingsController : ControllerBase
         var booking = await _mediator.Send(new GetBookingByIdQuery
         {
             BookingId = bookingId,
-            UserId = _userContext.Id
+            UserId = _userIdentity.Id
         });
 
         return Ok(booking);
@@ -89,7 +89,7 @@ public class BookingsController : ControllerBase
     {
         var canceledBooking = await _mediator.Send(new CancelBookingCommand
         {
-            UserId = _userContext.Id,
+            UserId = _userIdentity.Id,
             BookingId = bookingId
         });
 
@@ -110,7 +110,7 @@ public class BookingsController : ControllerBase
     public async Task<IActionResult> CreateBooking([FromBody] CreateBookingDto request)
     {
         var command = _mapper.Map<CreateBookingCommand>(request);
-        command.UserId = _userContext.Id;
+        command.UserId = _userIdentity.Id;
 
         var createdBookingId = await _mediator.Send(command);
 
@@ -135,8 +135,8 @@ public class BookingsController : ControllerBase
     {
         var checkoutUrl = await _mediator.Send(new CheckoutBookingCommand
         {
-            UserEmail = _userContext.Email,
-            UserId = _userContext.Id,
+            UserEmail = _userIdentity.Email,
+            UserId = _userIdentity.Id,
             BookingId = bookingId,
         });
 

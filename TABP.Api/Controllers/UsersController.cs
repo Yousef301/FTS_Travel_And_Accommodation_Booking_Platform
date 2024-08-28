@@ -14,13 +14,13 @@ namespace TABP.Web.Controllers;
 [Authorize(Roles = nameof(Role.Customer))]
 public class UsersController : ControllerBase
 {
-    private readonly IUserContext _userContext;
+    private readonly IUserIdentity _userIdentity;
     private readonly IMediator _mediator;
 
-    public UsersController(IUserContext userContext,
+    public UsersController(IUserIdentity userIdentity,
         IMediator mediator)
     {
-        _userContext = userContext;
+        _userIdentity = userIdentity;
         _mediator = mediator;
     }
 
@@ -39,7 +39,7 @@ public class UsersController : ControllerBase
         var recentlyVisitedHotels = await _mediator.Send(
             new GetRecentlyVisitedHotelsQuery
             {
-                UserId = _userContext.Id,
+                UserId = _userIdentity.Id,
                 Count = count
             });
 

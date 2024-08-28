@@ -3,7 +3,7 @@ using TABP.Shared.Enums;
 
 namespace TABP.Web.Helpers.Interfaces;
 
-public interface IUserContext
+public interface IUserIdentity
 {
     Guid Id { get; }
     string Username { get; }

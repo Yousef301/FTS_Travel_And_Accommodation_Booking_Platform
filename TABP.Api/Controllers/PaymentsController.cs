@@ -16,13 +16,13 @@ namespace TABP.Web.Controllers;
 public class PaymentsController : ControllerBase
 {
     private readonly IMediator _mediator;
-    private readonly IUserContext _userContext;
+    private readonly IUserIdentity _userIdentity;
 
     public PaymentsController(IMediator mediator,
-        IUserContext userContext)
+        IUserIdentity userIdentity)
     {
         _mediator = mediator;
-        _userContext = userContext;
+        _userIdentity = userIdentity;
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public class PaymentsController : ControllerBase
     {
         var payments = await _mediator.Send(new GetPaymentsQuery
         {
-            UserId = _userContext.Id
+            UserId = _userIdentity.Id
         });
 
         return Ok(payments);

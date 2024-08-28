@@ -14,14 +14,14 @@ namespace TABP.Web.Controllers;
 [Authorize(Roles = nameof(Role.Customer))]
 public class InvoicesController : ControllerBase
 {
-    private readonly IUserContext _userContext;
+    private readonly IUserIdentity _userIdentity;
     private readonly IMediator _mediator;
 
     public InvoicesController(IMediator mediator,
-        IUserContext userContext)
+        IUserIdentity userIdentity)
     {
         _mediator = mediator;
-        _userContext = userContext;
+        _userIdentity = userIdentity;
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class InvoicesController : ControllerBase
     {
         var invoice = await _mediator.Send(new GetInvoiceAsPdfQuery
         {
-            UserId = _userContext.Id,
+            UserId = _userIdentity.Id,
             BookingId = bookingId
         });
 
