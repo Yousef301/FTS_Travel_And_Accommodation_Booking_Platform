@@ -14,7 +14,7 @@ using TABP.Web.DTOs.Amenities;
 
 namespace TABP.Web.Controllers;
 
-[ApiVersion(1.0, Deprecated = true)]
+[ApiVersion(1.0)]
 [ApiController]
 [Route("api/v{v:apiVersion}/amenities")]
 [Authorize(Roles = nameof(Role.Admin))]
