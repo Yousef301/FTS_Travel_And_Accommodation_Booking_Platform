@@ -2,11 +2,12 @@ version: '3.8'
 
 services:
   tabp:
-    image: tabp:latest
+    image: yousef301/tabp:latest
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_REGION=${AWS_REGION}
+      - ASPNETCORE_ENVIRONMENT=Development
     ports:
       - "5111:8080"
       - "7133:8080"
