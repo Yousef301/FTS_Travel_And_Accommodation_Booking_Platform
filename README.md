@@ -27,7 +27,7 @@ The **Travel and Accommodation Booking Platform** is a robust ASP.NET Core-based
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 - [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
 - [Redis](https://redis.io/downloads/) (for caching)
-- [AWS CLI](https://aws.amazon.com/cli/) (for S3 and CloudWatch integration)
+- [AWS CLI](https://aws.amazon.com/cli/) (for S3, CloudWatch, Secrets Manager integration)
 - [ngrok](https://ngrok.com/download) (A Tunneling Service for Local Development)
 - [Postman](https://www.postman.com/) (for testing the API)
 
@@ -116,6 +116,7 @@ This approach simplifies the process of evolving APIs while ensuring clear versi
    - **AWS S3**: Used to store images related to cities, hotels, and rooms.
    - **AWS CloudWatch**: Used to log application activities for monitoring and debugging.
    - **AWS Secrets Manager**: Used to store connection strings and secret keys.
+   - **AWS EC2 Instances**: Used to host the app and SQL server.
 
 ## Configurations
 The application settings are managed through an external service called 'Secrets Manager,' which is an AWS service.
@@ -124,4 +125,3 @@ The application settings are managed through an external service called 'Secrets
 For detailed API documentation, you can access the Swagger UI after running the project:
    
    - **Swagger UI**: `https://localhost:7133/swagger`
-
