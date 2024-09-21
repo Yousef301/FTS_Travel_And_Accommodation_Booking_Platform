@@ -88,19 +88,16 @@ Below are some of the available controllers and their endpoints:
 And the list goes on...
 
 ## Architecture
-A 3-tier architecture used to organize the application into three distinct layers:
+A N-tier architecture used to organize the application into three distinct layers:
 
-1. Presentation Layer
+1. Presentation (API in my case) Layer
     - **Purpose**: Manages user interactions and displays information.
-    - **Components**: ASP.NET Core MVC Controllers, API Endpoints, and Models.
   
-3. Application Layer
+2. Application Layer
     - **Purpose**: Handles business logic and application workflows.
-    - **Components**: Services, MediatR for commands and queries.
   
-2. Data Layer
+3. Data Access Layer
     - **Purpose**: Manages data access and persistence.
-    - **Components**: Entity Framework Core for ORM, Repositories, and Unit of Work for transactions.
 
 ## API Versioning
 For managing and maintaining API compatibility, we use the Asp.Versioning.Http and Asp.Versioning.Mvc.ApiExplorer libraries with a focus on URL-based versioning.
