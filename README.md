@@ -1,4 +1,4 @@
-# Travel and Accommodation Booking Platform 
+# Hotel Booking Platform 
 
 The **Travel and Accommodation Booking Platform** is a robust ASP.NET Core-based API that facilitates the booking of accommodation services. It provides endpoints for users to search, book, and manage accommodations. This app is designed to be scalable, secure, and easy to integrate with other services.
 
